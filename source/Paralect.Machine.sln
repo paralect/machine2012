@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Paralect.Machine", "Paralect.Machine\Paralect.Machine.csproj", "{8BB02D8B-D654-4054-AAA2-D16743CFB501}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Paralect.Machine.Tests", "Paralect.Machine.Tests\Paralect.Machine.Tests.csproj", "{828DA56A-C260-4E74-8CDF-E9D46830CC2A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -13,6 +15,10 @@ Global
 		{8BB02D8B-D654-4054-AAA2-D16743CFB501}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8BB02D8B-D654-4054-AAA2-D16743CFB501}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8BB02D8B-D654-4054-AAA2-D16743CFB501}.Release|Any CPU.Build.0 = Release|Any CPU
+		{828DA56A-C260-4E74-8CDF-E9D46830CC2A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{828DA56A-C260-4E74-8CDF-E9D46830CC2A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{828DA56A-C260-4E74-8CDF-E9D46830CC2A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{828DA56A-C260-4E74-8CDF-E9D46830CC2A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
