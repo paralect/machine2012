@@ -13,10 +13,23 @@ namespace Paralect.Machine.Domain
     /// on larger projects. Idea by Jeremie, implementation approach stolen from Rinat
     /// TODO: I think identity internally should be binary represented. 
     /// TODO: It will be better for memory and still possible to use binary as ID for various DBs (like BinData in MongoDB)
+    /// 
+    /// Memory structure:
+    /// 
+    /// |------------------|--------------------|-------------------|
+    /// |  Tag (3 bytes)   |  Version (1 byte)  |  ID (unlimited)   |
+    /// |------------------|--------------------|-------------------|
+    /// 
+    /// Tag is number from 0 to 16.777.215.
+    /// Version is a number fr
+    /// 
     /// </summary>
     public interface IIdentity
     {
-//        Byte[] ByteArray { get; }
+/*        Byte[] Data { get; }
+
+        Int32 Tag { get; }
+        Int32 Version { get; }*/
 
   //      String ToBase64String();
 
@@ -40,7 +53,13 @@ namespace Paralect.Machine.Domain
     
     public abstract class AbstractIdentity : IIdentity
     {
-        private Byte[] _bindata;
+        private Byte[] _data;
+
+        public byte[] Data
+        {
+            get { return _data; }
+            set { _data = value; }
+        }
 
         /// <summary>
         /// Gets the id, converted to a string. Only alphanumerics and '-' are allowed.
@@ -48,8 +67,14 @@ namespace Paralect.Machine.Domain
         /// <returns></returns>
         public string GetId()
         {
-            MemoryStream stream = new MemoryStream(_bindata);
+            /*
+            byte[] b = { 1, 2, 3 };
+            //int m = (*b) | b
+
+//            MemoryStream stream = new MemoryStream(_bindata);
             StreamReader reader = new StreamReader(stream);
+            BinaryWriter writer = new BinaryWriter(stream);
+            writer.Write();*/
             return null;
         }
 
