@@ -46,7 +46,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Domain\EntityTagAttribute.cs" />
+    <Compile Include="Domain\IdentityFactory.cs" />
     <Compile Include="Domain\IIdentity.cs" />
+    <Compile Include="Domain\StringIdentity.cs" />
     <Compile Include="Engine\EngineHost.cs" />
     <Compile Include="Engine\Events\EngineInitializing.cs" />
     <Compile Include="Engine\Events\EngineInitialized.cs" />
@@ -59,6 +62,7 @@
     <Compile Include="Utils\BinaryReaderExtensions.cs" />
     <Compile Include="Utils\ByteArrayComparer.cs" />
     <Compile Include="Utils\BinaryWriterExtensions.cs" />
+    <Compile Include="Utils\ReflectionUtils.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

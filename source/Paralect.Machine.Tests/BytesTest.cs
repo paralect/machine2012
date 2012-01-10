@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using NUnit.Framework;
 
 namespace Paralect.Machine.Tests
@@ -18,33 +19,80 @@ namespace Paralect.Machine.Tests
         [Test]
         public void invalid()
         {
-            Do(16777216, 255);
+            //Do(16777216, 255);
         }
 
-
-        private void Do(UInt32 tag, Byte version)
+        private void Do(Int32 tag, Byte version)
         {
-            UInt32 packedValue = Pack(tag, version);
-            var unpacked = Unpack(packedValue);
+            Int32 packedValue = PackV2(tag, version);
+            var unpacked = UnpackV2(packedValue);
 
-            Assert.That(unpacked.Item1, Is.EqualTo(tag));
-            Assert.That(unpacked.Item2, Is.EqualTo(version));            
+//            Assert.That(unpacked.Item1, Is.EqualTo(tag));
+//            Assert.That(unpacked.Item2, Is.EqualTo(version));            
         }
 
-        private UInt32 Pack(UInt32 tag, Byte version)
+        private Int32 PackV2(Int32 tag, Byte version)
         {
-            byte[] bytes = BitConverter.GetBytes(tag);
-            bytes[3] = (byte)((byte)bytes[3] | (byte)version);
-            return BitConverter.ToUInt32(bytes, 0);
+            Int32 v = version;
+            Int32 result = tag | (v << 24);
+            return result;
         }
 
-        private Tuple<UInt32, Byte> Unpack(UInt32 packedValue)
+        private const UInt32 z = 0xff000000;
+        private const UInt32 notz = 0x00ffffff;
+
+        private Tuple<Int32, Byte> UnpackV2(Int32 packedValue)
         {
-            byte[] bytes = BitConverter.GetBytes(packedValue);
-            byte version = bytes[3];
-            bytes[3] = 0;
-            UInt32 tag = BitConverter.ToUInt32(bytes, 0);
-            return new Tuple<uint, byte>(tag, version);
+            Int32 v = packedValue >> 24;
+            Int32 t = (packedValue << 8) >> 8; // zero top most byte
+            //UInt32 t = (packedValue & notz); // zero top most byte
+            return new Tuple<int, byte>(t, (byte) v);
         }
+
+        private const int _numberOfIterations = 1000000;
+
+        public void PerformanceTestV2()
+        {
+            var watch = Stopwatch.StartNew();
+            for (int i = 0; i < _numberOfIterations; i++)
+            {
+                Do(56, 45);
+            }
+
+            Console.WriteLine("V1: Time: {0}. Iterations: {1}", watch.ElapsedMilliseconds, _numberOfIterations);
+        }
+
+        private void Profile(Action action, String what = null)
+        {
+            var watch = Stopwatch.StartNew();
+            action();
+            watch.Stop();
+            Console.WriteLine("{0}. Time: {1}.", what, watch.ElapsedMilliseconds);
+        }
+
+
+
+        [Test]
+        public void IntVsUInt()
+        {
+            Console.WriteLine(BitConverter.IsLittleEndian);
+
+            Int32 one = 56;
+            var one_ = BitConverter.GetBytes(one);
+
+            Int32 none = -56;
+            var none_ = BitConverter.GetBytes(none);
+
+            UInt32 zzz = (UInt32) none;
+            var zzznone_ = BitConverter.GetBytes(zzz);
+
+            var shift = none << 8;
+            var shiftnone_ = BitConverter.GetBytes(shift);
+
+            var neg = ~none;
+            var none__ = BitConverter.GetBytes(neg);
+        }
+
+
     }
 }
