@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Linq;
 
-namespace mPower.Accounting.Tests
+namespace Paralect.Machine.Tests.Helpers
 {
     /// <summary>
     /// Originally from:

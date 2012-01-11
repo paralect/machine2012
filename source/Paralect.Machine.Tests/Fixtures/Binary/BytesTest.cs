@@ -72,11 +72,9 @@ namespace Paralect.Machine.Tests.Fixtures.Binary
 
 
 
-        [Test]
+        [Ignore]
         public void IntVsUInt()
         {
-            Console.WriteLine(BitConverter.IsLittleEndian);
-
             Int32 one = 56;
             var one_ = BitConverter.GetBytes(one);
 
