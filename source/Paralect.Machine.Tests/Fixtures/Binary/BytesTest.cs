@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using NUnit.Framework;
 
-namespace Paralect.Machine.Tests
+namespace Paralect.Machine.Tests.Fixtures.Binary
 {
     [TestFixture]
     public class BytesTest

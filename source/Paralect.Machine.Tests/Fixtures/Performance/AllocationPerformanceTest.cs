@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
 using NUnit.Framework;
 
-namespace Paralect.Machine.Tests.Performance
+namespace Paralect.Machine.Tests.Fixtures.Performance
 {
     class Container
     {

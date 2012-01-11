@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using NUnit.Framework;
 using Paralect.Machine.Utils;
 
-namespace Paralect.Machine.Tests
+namespace Paralect.Machine.Tests.Fixtures.Binary
 {
     public class ByteArrayComparerTests
     {

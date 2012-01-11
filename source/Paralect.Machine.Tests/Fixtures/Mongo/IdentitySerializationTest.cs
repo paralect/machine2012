@@ -1,17 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using MongoDB.Bson;
 using MongoDB.Bson.IO;
 using MongoDB.Bson.Serialization;
 using NUnit.Framework;
 using Paralect.Machine.Domain;
 using Paralect.Machine.Mongo;
-using Paralect.Machine.Tests.Identities;
+using Paralect.Machine.Tests.Helpers.Mongo;
 using ProtoBuf;
 
-namespace Paralect.Machine.Tests.Mongo
+namespace Paralect.Machine.Tests.Fixtures.Mongo
 {
     [TestFixture]
     public class IdentitySerializationTest
@@ -72,22 +69,6 @@ namespace Paralect.Machine.Tests.Mongo
         public SchoolId SchoolIdentity { get; set; }
         public String Name { get; set; }
         public Int32 Year { get; set; }
-    }
-
-    public class MongoSerializer
-    {
-        public static Object Deserialize(BsonDocument doc, Type type)
-        {
-            return BsonSerializer.Deserialize(doc, type);
-        }
-
-        public static BsonDocument Serialize(Object obj)
-        {
-            BsonDocument data = new BsonDocument();
-            var writer = BsonWriter.Create(data);
-            BsonSerializer.Serialize(writer, obj.GetType(), obj);
-            return data;
-        }
     }
 
     #endregion

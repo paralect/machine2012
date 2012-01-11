@@ -4,7 +4,7 @@ using System.Diagnostics;
 using NUnit.Framework;
 using Paralect.Machine.Utils;
 
-namespace Paralect.Machine.Tests.Performance
+namespace Paralect.Machine.Tests.Fixtures.Performance
 {
     [TestFixture]
     public class DictionaryTest

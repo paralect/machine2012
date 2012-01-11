@@ -21,7 +21,7 @@ namespace Paralect.Machine.Domain
         /// <summary>
         /// All registered Identity Types
         /// </summary>
-        public IEnumerable<Type> Types
+        public IEnumerable<Type> IdentityTypes
         {
             get { return _typeToTagMap.Keys; }
         }
@@ -63,21 +63,6 @@ namespace Paralect.Machine.Domain
                 _tagToTypeMap[tagAttribute.Tag] = type;
                 _typeToTagMap[type] = tagAttribute.Tag;
             }            
-        }
-
-        /// <summary>
-        /// Finds all types that have EntityTagAttribute attribute and registers it.
-        /// Uniquiness of tags are insured.
-        /// </summary>
-        public static void Init()
-        {
-            // MongoDB Identities serializers registration:
-            // Should NOT go here for sure... Maybe in some sorts of Configurators? 
-            foreach (var identityType in _typeToTagMap.Keys)
-            {
-                
-                BsonSerializer.RegisterSerializer(identityType, new IdentitySerializer()); // can we use single serializer? will it be thread safe?
-            }
         }
 
         /// <summary>

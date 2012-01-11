@@ -52,15 +52,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BinaryWriterAndReaderExtensionsTests.cs" />
-    <Compile Include="ByteArrayComparerTests.cs" />
-    <Compile Include="BytesTest.cs" />
-    <Compile Include="Mongo\IdentitySerializationTest.cs" />
-    <Compile Include="Performance\AllocationPerformanceTest.cs" />
-    <Compile Include="Performance\DictionaryTest.cs" />
+    <Compile Include="Fixtures\Binary\BinaryWriterAndReaderExtensionsTests.cs" />
+    <Compile Include="Fixtures\Binary\ByteArrayComparerTests.cs" />
+    <Compile Include="Fixtures\Binary\BytesTest.cs" />
+    <Compile Include="Fixtures\Mongo\IdentitySerializationTest.cs" />
+    <Compile Include="Fixtures\Performance\AllocationPerformanceTest.cs" />
+    <Compile Include="Fixtures\Performance\DictionaryTest.cs" />
+    <Compile Include="Fixtures\Protobuf\InheritanceTest.cs" />
+    <Compile Include="Helpers\Mongo\MongoSerializer.cs" />
+    <Compile Include="Helpers\ObjectComparer.cs" />
+    <Compile Include="Helpers\Protobuf\ProtobufSerializer.cs" />
     <Compile Include="Identities\SchoolId.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Protobuf\ProtoTest.cs" />
+    <Compile Include="Fixtures\Protobuf\IdentitySerializationTest.cs" />
+    <Compile Include="Fixtures\Protobuf\ProtoTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Paralect.Machine\Paralect.Machine.csproj">
@@ -68,6 +73,7 @@
       <Name>Paralect.Machine</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
