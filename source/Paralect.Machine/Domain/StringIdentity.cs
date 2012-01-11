@@ -1,4 +1,5 @@
 using System;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace Paralect.Machine.Domain
 {
@@ -9,13 +10,15 @@ namespace Paralect.Machine.Domain
     {
         public abstract String Value { get; protected set; }
 
-        public StringIdentity(string value)
+        protected StringIdentity(string value)
         {
+            // ReSharper disable DoNotCallOverridableMethodsInConstructor
             Value = value;
+            // ReSharper restore DoNotCallOverridableMethodsInConstructor
         }
 
         /// <summary>
-        /// Using hash code of the id
+        /// Using hash code of the string id
         /// </summary>
         public override int GetHashCode()
         {

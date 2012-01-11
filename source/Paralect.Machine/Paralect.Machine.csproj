@@ -48,6 +48,7 @@
   <ItemGroup>
     <Compile Include="Domain\EntityTagAttribute.cs" />
     <Compile Include="Domain\IdentityFactory.cs" />
+    <Compile Include="Domain\IdentityScanner.cs" />
     <Compile Include="Domain\IIdentity.cs" />
     <Compile Include="Domain\StringIdentity.cs" />
     <Compile Include="Engine\EngineHost.cs" />
@@ -57,6 +58,7 @@
     <Compile Include="Engine\Events\EngineStopped.cs" />
     <Compile Include="Engine\IEngineProcess.cs" />
     <Compile Include="ISystemEvent.cs" />
+    <Compile Include="Mongo\IdentitySerializer.cs" />
     <Compile Include="SystemInformer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utils\BinaryReaderExtensions.cs" />

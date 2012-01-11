@@ -55,6 +55,7 @@
     <Compile Include="BinaryWriterAndReaderExtensionsTests.cs" />
     <Compile Include="ByteArrayComparerTests.cs" />
     <Compile Include="BytesTest.cs" />
+    <Compile Include="Mongo\IdentitySerializationTest.cs" />
     <Compile Include="Performance\AllocationPerformanceTest.cs" />
     <Compile Include="Performance\DictionaryTest.cs" />
     <Compile Include="Identities\SchoolId.cs" />
