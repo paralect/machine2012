@@ -50,7 +50,7 @@ namespace Paralect.Machine.Mongo.Tests.Fixtures
 
     #region Helper classes
 
-    [EntityTag(1)]
+    [EntityTag("4b612ae7-a947-4fb6-8beb-c9a9a9045aa0")]
     public class SchoolId : StringIdentity
     {
         public override sealed string Value { get; protected set; }

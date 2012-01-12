@@ -19,7 +19,7 @@ namespace Paralect.Machine.Domain
         private int _version = 0;
 
         /// <summary>
-        /// List of changes (i.e. list os pending events)
+        /// List of changes (i.e. list of pending events)
         /// </summary>
         private readonly List<IEvent> _changes = new List<IEvent>();
 
@@ -40,15 +40,11 @@ namespace Paralect.Machine.Domain
             internal set { _version = value; }
         }
 
-        protected AggregateRoot()
-        {
-
-        }
+        protected AggregateRoot() { }
 
         /// <summary>
         /// Create changeset. Used to persist changes in aggregate
         /// </summary>
-        /// <returns></returns>
         public Transition CreateTransition(IDataTypeRegistry dataTypeRegistry)
         {
             if (String.IsNullOrEmpty(_id))
@@ -84,8 +80,6 @@ namespace Paralect.Machine.Domain
         /// <summary>
         /// Load aggregate from events
         /// </summary>
-        /// <param name="events"></param>
-        /// <param name="version"></param>
         public void LoadFromEvents(IEnumerable<IEvent> events, Int32 version = 1)
         {
             foreach (var evnt in events)

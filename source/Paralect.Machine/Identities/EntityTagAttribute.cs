@@ -5,11 +5,11 @@ namespace Paralect.Machine.Identities
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct, Inherited = false, AllowMultiple = false)]
     public class EntityTagAttribute : Attribute
     {
-        public Int32 Tag { get; set; }
+        public Guid Tag { get; set; }
 
-        public EntityTagAttribute(int tag)
+        public EntityTagAttribute(String guidInTextFormat)
         {
-            Tag = tag;
+            Tag = Guid.Parse(guidInTextFormat);
         }
     }
 }
