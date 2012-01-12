@@ -1,7 +1,5 @@
 
 
-using Paralect.Machine.Domain;
-
 namespace Paralect.Machine
 {
     /// <summary>

@@ -31,12 +31,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="MongoDB.Bson">
-      <HintPath>..\..\libs\MongoDriver\MongoDB.Bson.dll</HintPath>
-    </Reference>
-    <Reference Include="MongoDB.Driver">
-      <HintPath>..\..\libs\MongoDriver\MongoDB.Driver.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -46,11 +40,28 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Domain\EntityTagAttribute.cs" />
-    <Compile Include="Domain\IdentityFactory.cs" />
-    <Compile Include="Domain\IdentityScanner.cs" />
-    <Compile Include="Domain\IIdentity.cs" />
-    <Compile Include="Domain\StringIdentity.cs" />
+    <Compile Include="Domain\AggregateRoot.cs" />
+    <Compile Include="Domain\Command.cs" />
+    <Compile Include="Domain\CommandMetadata.cs" />
+    <Compile Include="Domain\Event.cs" />
+    <Compile Include="Domain\EventBus\IEventBus.cs" />
+    <Compile Include="Domain\EventBus\InMemoryEventBus.cs" />
+    <Compile Include="Domain\EventMetadata.cs" />
+    <Compile Include="Domain\Exceptions\AggregateNotFoundException.cs" />
+    <Compile Include="Domain\Exceptions\ConcurrencyException.cs" />
+    <Compile Include="Domain\ICommand.cs" />
+    <Compile Include="Domain\ICommandMetadata.cs" />
+    <Compile Include="Domain\IEvent.cs" />
+    <Compile Include="Domain\IEventMetadata.cs" />
+    <Compile Include="Domain\IRepository.cs" />
+    <Compile Include="Domain\Repository.cs" />
+    <Compile Include="Domain\Utilities\AggregateCreator.cs" />
+    <Compile Include="Domain\Utilities\Infrastructure.cs" />
+    <Compile Include="Identities\EntityTagAttribute.cs" />
+    <Compile Include="Identities\IdentityFactory.cs" />
+    <Compile Include="Identities\IdentityScanner.cs" />
+    <Compile Include="Identities\IIdentity.cs" />
+    <Compile Include="Identities\StringIdentity.cs" />
     <Compile Include="Engine\EngineHost.cs" />
     <Compile Include="Engine\Events\EngineInitializing.cs" />
     <Compile Include="Engine\Events\EngineInitialized.cs" />
@@ -58,13 +69,23 @@
     <Compile Include="Engine\Events\EngineStopped.cs" />
     <Compile Include="Engine\IEngineProcess.cs" />
     <Compile Include="ISystemEvent.cs" />
-    <Compile Include="Mongo\IdentitySerializer.cs" />
     <Compile Include="SystemInformer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Utils\BinaryReaderExtensions.cs" />
-    <Compile Include="Utils\ByteArrayComparer.cs" />
-    <Compile Include="Utils\BinaryWriterExtensions.cs" />
-    <Compile Include="Utils\ReflectionUtils.cs" />
+    <Compile Include="Transitions\AssemblyQualifiedDataTypeRegistry.cs" />
+    <Compile Include="Transitions\Exceptions\ConcurrencyException.cs" />
+    <Compile Include="Transitions\Exceptions\DuplicateTransitionException.cs" />
+    <Compile Include="Transitions\IDataTypeRegistry.cs" />
+    <Compile Include="Transitions\Exceptions\IncorrectOrderOfTransitionsException.cs" />
+    <Compile Include="Transitions\ITransitionRepository.cs" />
+    <Compile Include="Transitions\ITransitionStorage.cs" />
+    <Compile Include="Transitions\ITransitionStream.cs" />
+    <Compile Include="Transitions\Transition.cs" />
+    <Compile Include="Transitions\TransitionEvent.cs" />
+    <Compile Include="Transitions\TransitionId.cs" />
+    <Compile Include="Transitions\TransitionStorage.cs" />
+    <Compile Include="Transitions\TransitionStream.cs" />
+    <Compile Include="Utilities\ByteArrayComparer.cs" />
+    <Compile Include="Utilities\ReflectionUtilities.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

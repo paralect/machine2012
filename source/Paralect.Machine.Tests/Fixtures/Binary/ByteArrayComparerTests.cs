@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using NUnit.Framework;
-using Paralect.Machine.Utils;
+using Paralect.Machine.Utilities;
 
 namespace Paralect.Machine.Tests.Fixtures.Binary
 {

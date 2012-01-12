@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{828DA56A-C260-4E74-8CDF-E9D46830CC2A}</ProjectGuid>
+    <ProjectGuid>{B4403951-1413-4CCB-8216-8B14C8BCD8D1}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Paralect.Machine.Tests</RootNamespace>
-    <AssemblyName>Paralect.Machine.Tests</AssemblyName>
+    <RootNamespace>Paralect.Machine.Mongo.Tests</RootNamespace>
+    <AssemblyName>Paralect.Machine.Mongo.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -40,9 +40,6 @@
     <Reference Include="nunit.framework">
       <HintPath>..\..\libs\NUnit\nunit.framework.dll</HintPath>
     </Reference>
-    <Reference Include="protobuf-net">
-      <HintPath>..\..\libs\Protobuf.net\protobuf-net.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -52,26 +49,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Fixtures\Binary\ByteArrayComparerTests.cs" />
-    <Compile Include="Fixtures\Binary\BytesTest.cs" />
-    <Compile Include="Fixtures\Performance\AllocationPerformanceTest.cs" />
-    <Compile Include="Fixtures\Performance\DictionaryTest.cs" />
-    <Compile Include="Fixtures\Performance\SerializationPerformanceTest.cs" />
-    <Compile Include="Fixtures\Protobuf\InheritanceSerializationTest.cs" />
+    <Compile Include="Fixtures\IdentitySerializationTest.cs" />
     <Compile Include="Helpers\Mongo\MongoSerializer.cs" />
-    <Compile Include="Helpers\ObjectComparer.cs" />
-    <Compile Include="Helpers\Protobuf\ProtobufSerializer.cs" />
-    <Compile Include="Identities\SchoolId.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Fixtures\Protobuf\IdentitySerializationTest.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Paralect.Machine.Mongo\Paralect.Machine.Mongo.csproj">
+      <Project>{4E17A2E4-86F2-44AB-811D-C8FC295E2891}</Project>
+      <Name>Paralect.Machine.Mongo</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Paralect.Machine\Paralect.Machine.csproj">
       <Project>{8BB02D8B-D654-4054-AAA2-D16743CFB501}</Project>
       <Name>Paralect.Machine</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -1,6 +1,6 @@
 ﻿using System;
 using NUnit.Framework;
-using Paralect.Machine.Domain;
+using Paralect.Machine.Identities;
 using Paralect.Machine.Tests.Helpers.Protobuf;
 using ProtoBuf;
 using ProtoBuf.Meta;

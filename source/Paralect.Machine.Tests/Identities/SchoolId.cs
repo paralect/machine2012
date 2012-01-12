@@ -9,10 +9,8 @@ using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Bson.Serialization.Serializers;
 using NUnit.Framework;
-using Paralect.Machine.Domain;
 using ProtoBuf;
 using ProtoBuf.Meta;
-using Paralect.Machine.Utils;
 
 namespace Paralect.Machine.Tests.Identities
 {

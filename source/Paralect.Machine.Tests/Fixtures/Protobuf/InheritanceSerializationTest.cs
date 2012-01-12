@@ -1,5 +1,4 @@
 ﻿using NUnit.Framework;
-using Paralect.Machine.Domain;
 using Paralect.Machine.Tests.Helpers;
 using Paralect.Machine.Tests.Helpers.Protobuf;
 using ProtoBuf;

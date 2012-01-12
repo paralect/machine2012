@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using NUnit.Framework;
-using Paralect.Machine.Utils;
+using Paralect.Machine.Utilities;
 
 namespace Paralect.Machine.Tests.Fixtures.Performance
 {
