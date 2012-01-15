@@ -4,12 +4,12 @@ namespace Paralect.Machine.Domain
 {
     public interface IRepository 
     {
-        void Save(AggregateRoot aggregate);
+        void Save(MPowerAggregateRoot aggregate);
 
         /// <summary>
         /// Generic version
         /// </summary>
         TAggregate GetById<TAggregate>(String id)
-            where TAggregate : AggregateRoot;
+            where TAggregate : MPowerAggregateRoot;
     }
 }

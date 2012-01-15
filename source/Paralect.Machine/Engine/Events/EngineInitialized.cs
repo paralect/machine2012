@@ -1,4 +1,5 @@
 using System;
+using Paralect.Machine.Messages;
 
 namespace Paralect.Machine.Engine.Events
 {

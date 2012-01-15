@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using Paralect.Machine.Domain.EventBus;
 using Paralect.Machine.Domain.Utilities;
+using Paralect.Machine.Messages;
 using Paralect.Machine.Transitions;
 
 namespace Paralect.Machine.Domain
@@ -22,7 +23,7 @@ namespace Paralect.Machine.Domain
             this._dataTypeRegistry = _dataTypeRegistry;
         }
 
-        public void Save(AggregateRoot aggregate)
+        public void Save(MPowerAggregateRoot aggregate)
         {
             if (String.IsNullOrEmpty(aggregate.Id))
                 throw new ArgumentException("Aggregate id was not specified.");
@@ -39,7 +40,7 @@ namespace Paralect.Machine.Domain
         }
 
         public TAggregate GetById<TAggregate>(String id)
-            where TAggregate : AggregateRoot
+            where TAggregate : MPowerAggregateRoot
         {
             if (String.IsNullOrEmpty(id))
                 throw new ArgumentException("Aggregate id was not specified.");

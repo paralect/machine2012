@@ -53,9 +53,8 @@ namespace Paralect.Machine.Mongo.Tests.Fixtures
     [EntityTag("4b612ae7-a947-4fb6-8beb-c9a9a9045aa0")]
     public class SchoolId : StringIdentity
     {
-        public override sealed string Value { get; protected set; }
 
-        public SchoolId(string value) : base(value) { }
+        public SchoolId(string value) { Value = value; }
     }
 
     public class SchoolDocument

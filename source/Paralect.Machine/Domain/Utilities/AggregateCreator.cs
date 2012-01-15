@@ -5,9 +5,9 @@ namespace Paralect.Machine.Domain.Utilities
 {
     public static class AggregateCreator
     {
-        public static AggregateRoot CreateAggregateRoot(Type aggregateRootType)
+        public static IAggregateRoot CreateAggregateRoot(Type aggregateRootType)
         {
-            if (!aggregateRootType.IsSubclassOf(typeof(AggregateRoot)))
+            if (! typeof(IAggregateRoot).IsAssignableFrom(aggregateRootType))
             {
                 var msg = string.Format("Specified type {0} is not a subclass of AggregateRoot class.", aggregateRootType.FullName);
                 throw new ArgumentOutOfRangeException("aggregateRootType", msg);
@@ -28,12 +28,12 @@ namespace Paralect.Machine.Domain.Utilities
             }
 
             // There was a ctor found, so invoke it and return the instance.
-            var aggregateRoot = (AggregateRoot)ctor.Invoke(null);
+            var aggregateRoot = (IAggregateRoot) ctor.Invoke(null);
 
             return aggregateRoot;
         }
 
-        public static T CreateAggregateRoot<T>() where T : AggregateRoot
+        public static T CreateAggregateRoot<T>() where T : IAggregateRoot
         {
             return (T) CreateAggregateRoot(typeof (T));
         }

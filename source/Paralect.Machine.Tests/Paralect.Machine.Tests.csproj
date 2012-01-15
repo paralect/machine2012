@@ -52,18 +52,28 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Fixtures\Binary\ByteArrayComparerTests.cs" />
-    <Compile Include="Fixtures\Binary\BytesTest.cs" />
-    <Compile Include="Fixtures\Performance\AllocationPerformanceTest.cs" />
-    <Compile Include="Fixtures\Performance\DictionaryTest.cs" />
-    <Compile Include="Fixtures\Performance\SerializationPerformanceTest.cs" />
-    <Compile Include="Fixtures\Protobuf\InheritanceSerializationTest.cs" />
+    <Compile Include="Areas\Domain\Aggregates\User.cs" />
+    <Compile Include="Areas\Domain\Cleanupers\AggregateCleanuper.cs" />
+    <Compile Include="Areas\Domain\Events\UserClickedOnButtonEvent.cs" />
+    <Compile Include="Areas\Domain\Events\UserCreatedEvent.cs" />
+    <Compile Include="Areas\Domain\Events\UserEmailChangedEvent.cs" />
+    <Compile Include="Areas\Domain\Events\UserNameChangedEvent.cs" />
+    <Compile Include="Areas\Domain\Fixtures\DeveloperARTest.cs" />
+    <Compile Include="Areas\Domain\Fixtures\UserAggregateTest.cs" />
+    <Compile Include="Areas\Domain\Helpers\Helper.cs" />
+    <Compile Include="Areas\Performance\Fixtures\Binary\ByteArrayComparerTests.cs" />
+    <Compile Include="Areas\Performance\Fixtures\Binary\BytesTest.cs" />
+    <Compile Include="Areas\Performance\Fixtures\AllocationPerformanceTest.cs" />
+    <Compile Include="Areas\Performance\Fixtures\DictionaryTest.cs" />
+    <Compile Include="Areas\Performance\Fixtures\DynamicInvocationPerformanceTest.cs" />
+    <Compile Include="Areas\Performance\Fixtures\SerializationPerformanceTest.cs" />
+    <Compile Include="Areas\Serialization\Fixtures\Protobuf\InheritanceSerializationTest.cs" />
     <Compile Include="Helpers\Mongo\MongoSerializer.cs" />
     <Compile Include="Helpers\ObjectComparer.cs" />
     <Compile Include="Helpers\Protobuf\ProtobufSerializer.cs" />
     <Compile Include="Identities\SchoolId.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Fixtures\Protobuf\IdentitySerializationTest.cs" />
+    <Compile Include="Areas\Serialization\Fixtures\Protobuf\IdentitySerializationTest.cs" />
     <Compile Include="Referencies\TestReference.cs" />
   </ItemGroup>
   <ItemGroup>

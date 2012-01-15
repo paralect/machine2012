@@ -1,20 +1,17 @@
 using System;
+using ProtoBuf;
 
 namespace Paralect.Machine.Identities
 {
     /// <summary>
     /// Only String are supported for now because Abe uses Strings as identities.
+    /// For serialization compatibility, members tags are limited in range of [1, 5] inclusively.
     /// </summary>
+    [ProtoContract]
     public abstract class StringIdentity : IIdentity
     {
-        public abstract String Value { get; protected set; }
-
-        protected StringIdentity(string value)
-        {
-            // ReSharper disable DoNotCallOverridableMethodsInConstructor
-            Value = value;
-            // ReSharper restore DoNotCallOverridableMethodsInConstructor
-        }
+        [ProtoMember(1)]
+        public String Value { get; set; }
 
         /// <summary>
         /// Using hash code of the string id

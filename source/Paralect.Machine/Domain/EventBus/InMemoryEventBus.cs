@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Paralect.Machine.Messages;
 
 namespace Paralect.Machine.Domain.EventBus
 {

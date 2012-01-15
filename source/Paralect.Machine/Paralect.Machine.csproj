@@ -31,6 +31,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="protobuf-net">
+      <HintPath>..\..\libs\Protobuf.net\protobuf-net.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -40,19 +43,27 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Domain\AggregateFactory.cs" />
     <Compile Include="Domain\AggregateRoot.cs" />
-    <Compile Include="Domain\Command.cs" />
-    <Compile Include="Domain\CommandMetadata.cs" />
-    <Compile Include="Domain\Event.cs" />
+    <Compile Include="Domain\AggregateState.cs" />
+    <Compile Include="Domain\IAggregateRoot.cs" />
+    <Compile Include="Domain\IAggregateState.cs" />
+    <Compile Include="Domain\Results\ApplyResult.cs" />
+    <Compile Include="Domain\Results\ICompositeResult.cs" />
+    <Compile Include="Domain\Results\IResult.cs" />
+    <Compile Include="Domain\MPowerAggregateRoot.cs" />
     <Compile Include="Domain\EventBus\IEventBus.cs" />
     <Compile Include="Domain\EventBus\InMemoryEventBus.cs" />
-    <Compile Include="Domain\EventMetadata.cs" />
     <Compile Include="Domain\Exceptions\AggregateNotFoundException.cs" />
     <Compile Include="Domain\Exceptions\ConcurrencyException.cs" />
-    <Compile Include="Domain\ICommand.cs" />
-    <Compile Include="Domain\ICommandMetadata.cs" />
-    <Compile Include="Domain\IEvent.cs" />
-    <Compile Include="Domain\IEventMetadata.cs" />
+    <Compile Include="Domain\Results\ReplyResult.cs" />
+    <Compile Include="Domain\Results\ResultCollectionExtensions.cs" />
+    <Compile Include="Domain\Results\ResultCollection.cs" />
+    <Compile Include="Domain\Results\SendResult.cs" />
+    <Compile Include="Messages\Event.cs" />
+    <Compile Include="Messages\EventMetadata.cs" />
+    <Compile Include="Messages\ICommand.cs" />
+    <Compile Include="Messages\IEvent.cs" />
     <Compile Include="Domain\IRepository.cs" />
     <Compile Include="Domain\Repository.cs" />
     <Compile Include="Domain\Utilities\AggregateCreator.cs" />
@@ -68,7 +79,9 @@
     <Compile Include="Engine\Events\EngineStarted.cs" />
     <Compile Include="Engine\Events\EngineStopped.cs" />
     <Compile Include="Engine\IEngineProcess.cs" />
-    <Compile Include="ISystemEvent.cs" />
+    <Compile Include="Messages\IEventMetadata.cs" />
+    <Compile Include="Messages\ISystemEvent.cs" />
+    <Compile Include="Messages\IMessage.cs" />
     <Compile Include="Referencies\IReference.cs" />
     <Compile Include="SystemInformer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

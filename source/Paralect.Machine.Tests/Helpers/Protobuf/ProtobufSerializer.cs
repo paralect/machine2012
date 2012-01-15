@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using Paralect.Machine.Tests.Fixtures.Protobuf;
 using ProtoBuf.Meta;
 
 namespace Paralect.Machine.Tests.Helpers.Protobuf

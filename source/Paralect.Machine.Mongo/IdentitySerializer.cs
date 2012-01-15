@@ -42,6 +42,7 @@ namespace Paralect.Machine.Mongo
         public override object Deserialize(BsonReader bsonReader, Type nominalType, Type actualType, IBsonSerializationOptions options)
         {
             var val = bsonReader.ReadString();
+            // TODO: we should create ID via private/protected constructor and set ID value via IIdentity interface
             return Activator.CreateInstance(nominalType, val);
         }
 
