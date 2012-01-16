@@ -20,6 +20,12 @@ namespace Paralect.Machine.Engine.Events
         {
             return string.Format("Engine Stopped after {0} mins", Math.Round(Elapsed.TotalMinutes, 2));
         }
+
+        public IMessageMetadata Metadata
+        {
+            get { throw new NotImplementedException(); }
+            set { throw new NotImplementedException(); }
+        }
     }
 
 }

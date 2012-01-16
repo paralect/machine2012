@@ -14,4 +14,9 @@ namespace Paralect.Machine.Identities
         /// </summary>
         String Value { get; }
     }
+
+    public interface IIdentity<TType> : IIdentity
+    {
+        new TType Value { get; set; }
+    }
 }

@@ -18,17 +18,17 @@ namespace Paralect.Machine.Tests.Areas.Domain.Aggregates
     }
 
 
-    public class DeveloperCreated : Event<DeveloperId>
+    public class DeveloperCreated : Event<GuidId, DeveloperId, EventMetadata<GuidId, DeveloperId>>
     {
         public String Name { get; set; }
     }
 
-    public class DeveloperNameChanged : Event<DeveloperId>
+    public class DeveloperNameChanged : Event<GuidId, DeveloperId, EventMetadata<GuidId, DeveloperId>>
     {
         public String NewName { get; set; }
     }
 
-    public class DeveloperId : StringIdentity
+    public class DeveloperId : StringId
     {
         public DeveloperId(string value) { Value = value; }
     }
@@ -58,6 +58,11 @@ namespace Paralect.Machine.Tests.Areas.Domain.Aggregates
         public IResult Handle(ChangeDeveloperName change, DeveloperState state)
         {
             return Apply(new DeveloperNameChanged() { NewName = change.NewName });
+        }
+
+        public IResult Handle(ChangeDeveloperName change)
+        {
+            return Empty();
         }
     }
 

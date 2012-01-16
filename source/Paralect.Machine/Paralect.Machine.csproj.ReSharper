@@ -1,0 +1,5 @@
+<Configuration>
+  <NamespaceFolders>
+    <SkipFolder>8BB02D8B-D654-4054-AAA2-D16743CFB501/d:Domain/d:Results</SkipFolder>
+  </NamespaceFolders>
+</Configuration>

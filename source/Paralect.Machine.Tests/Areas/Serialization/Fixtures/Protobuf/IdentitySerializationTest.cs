@@ -22,7 +22,7 @@ namespace Paralect.Machine.Tests.Areas.Serialization.Fixtures.Protobuf
             };
 
             var model = TypeModel.Create();
-            model[typeof(StringIdentity)]
+            model[typeof(StringId)]
                 .AddSubType(6, typeof(SchoolId));
 
 //            model[typeof(SchoolId)].SetFactory()
@@ -39,7 +39,7 @@ namespace Paralect.Machine.Tests.Areas.Serialization.Fixtures.Protobuf
         }
     }
 
-    public class MyEvent : Event<SchoolId>
+    public class MyEvent : Event
     {
 
     }
@@ -48,7 +48,7 @@ namespace Paralect.Machine.Tests.Areas.Serialization.Fixtures.Protobuf
 
     [EntityTag("d9713c53-b87b-45e2-a669-403b65ca0590")]
     [ProtoContract]
-    public class SchoolId : StringIdentity
+    public class SchoolId : StringId
     {
         protected SchoolId() {}
         public SchoolId(string value) { Value = value; }

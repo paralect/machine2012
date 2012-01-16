@@ -6,24 +6,25 @@ namespace Paralect.Machine.Messages
     {
         private EventMetadata _metadata = new EventMetadata();
 
-        IEventMetadata IEvent.Metadata
+        public IEventMetadata Metadata
+        {
+            get { return _metadata; }
+            set { _metadata = (EventMetadata) value; }
+        }
+
+        IMessageMetadata IMessage.Metadata
         {
             get { return _metadata; }
             set { _metadata = (EventMetadata) value; }
         }
     }
 
-    public abstract class Event<TIdentity, TEventMetadata> : IEvent<TIdentity, TEventMetadata>
-        where TIdentity : IIdentity
-        where TEventMetadata : IEventMetadata<TIdentity>, new()
+    public abstract class Event<TMessageId, TSenderId, TEventMetadata> : IEvent<TMessageId, TSenderId, TEventMetadata>
+        where TSenderId : IIdentity
+        where TMessageId : IIdentity
+        where TEventMetadata : IEventMetadata<TMessageId, TSenderId>, new()
     {
         private TEventMetadata _metadata = new TEventMetadata();
-
-        IEventMetadata IEvent.Metadata
-        {
-            get { return _metadata; }
-            set { _metadata = (TEventMetadata)value; }
-        }
 
         public TEventMetadata Metadata
         {
@@ -31,18 +32,34 @@ namespace Paralect.Machine.Messages
             set { _metadata = value; }
         }
 
-        IEventMetadata<TIdentity> IEvent<TIdentity>.Metadata
+        #region Explicit implementation
+
+        IMessageMetadata IMessage.Metadata
         {
             get { return _metadata; }
-            set { _metadata = (TEventMetadata)value; }
+            set { _metadata = (TEventMetadata) value; }
         }
+
+        IEventMetadata IEvent.Metadata
+        {
+            get { return _metadata; }
+            set { _metadata = (TEventMetadata) value; }
+        }
+
+        IEventMetadata<TSenderId> IEvent<TSenderId>.Metadata
+        {
+            get { return _metadata; }
+            set { _metadata = (TEventMetadata) value; }
+        }
+
+        #endregion
     }
 
-    public abstract class Event<TIdentity> : Event<TIdentity, EventMetadata<TIdentity>>
+/*    public abstract class Event<TIdentity> : Event<GuidId, TIdentity, EventMetadata<GuidId, TIdentity>>
         where TIdentity : IIdentity
     {
 
     }
 
-
+*/
 }

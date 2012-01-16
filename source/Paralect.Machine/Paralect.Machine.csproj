@@ -49,6 +49,7 @@
     <Compile Include="Domain\IAggregateRoot.cs" />
     <Compile Include="Domain\IAggregateState.cs" />
     <Compile Include="Domain\Results\ApplyResult.cs" />
+    <Compile Include="Domain\Results\EmptyResult.cs" />
     <Compile Include="Domain\Results\ICompositeResult.cs" />
     <Compile Include="Domain\Results\IResult.cs" />
     <Compile Include="Domain\MPowerAggregateRoot.cs" />
@@ -60,6 +61,7 @@
     <Compile Include="Domain\Results\ResultCollectionExtensions.cs" />
     <Compile Include="Domain\Results\ResultCollection.cs" />
     <Compile Include="Domain\Results\SendResult.cs" />
+    <Compile Include="Identities\GuidId.cs" />
     <Compile Include="Messages\Event.cs" />
     <Compile Include="Messages\EventMetadata.cs" />
     <Compile Include="Messages\ICommand.cs" />
@@ -72,7 +74,7 @@
     <Compile Include="Identities\IdentityFactory.cs" />
     <Compile Include="Identities\IdentityScanner.cs" />
     <Compile Include="Identities\IIdentity.cs" />
-    <Compile Include="Identities\StringIdentity.cs" />
+    <Compile Include="Identities\StringId.cs" />
     <Compile Include="Engine\EngineHost.cs" />
     <Compile Include="Engine\Events\EngineInitializing.cs" />
     <Compile Include="Engine\Events\EngineInitialized.cs" />
@@ -80,6 +82,7 @@
     <Compile Include="Engine\Events\EngineStopped.cs" />
     <Compile Include="Engine\IEngineProcess.cs" />
     <Compile Include="Messages\IEventMetadata.cs" />
+    <Compile Include="Messages\IMessageMetadata.cs" />
     <Compile Include="Messages\ISystemEvent.cs" />
     <Compile Include="Messages\IMessage.cs" />
     <Compile Include="Referencies\IReference.cs" />

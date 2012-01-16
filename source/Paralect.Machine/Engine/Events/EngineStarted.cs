@@ -17,5 +17,11 @@ namespace Paralect.Machine.Engine.Events
         {
             return string.Format("Engine started: {0}", string.Join(",", EngineProcesses));
         }
+
+        public IMessageMetadata Metadata
+        {
+            get { throw new NotImplementedException(); }
+            set { throw new NotImplementedException(); }
+        }
     }
 }

@@ -3,7 +3,7 @@ using Paralect.Machine.Identities;
 
 namespace Paralect.Machine.Messages
 {
-    public interface IEventMetadata
+    public interface IEventMetadata : IMessageMetadata
     {
         /// <summary>
         /// Id of Aggregate Root, Service or Process that emits this events.
@@ -18,10 +18,21 @@ namespace Paralect.Machine.Messages
         Int32 SenderVersion { get; set; }        
     }
 
-    public interface IEventMetadata<TIdentity> : IEventMetadata
-        where TIdentity : IIdentity
+    public interface IEventMetadata<TSenderId> : IEventMetadata
     {
-        new TIdentity SenderId { get; set; }
+        /// <summary>
+        /// Id of Aggregate Root, Service or Process that emits this events.
+        /// </summary>
+        new TSenderId SenderId { get; set; }        
     }
 
+    /// <summary>
+    /// Strongly typed version of event metadata
+    /// </summary>
+    public interface IEventMetadata<TMessageId, TSenderId> : IEventMetadata<TSenderId>, IMessageMetadata<TMessageId>
+        where TSenderId : IIdentity
+        where TMessageId : IIdentity
+    {
+
+    }
 }

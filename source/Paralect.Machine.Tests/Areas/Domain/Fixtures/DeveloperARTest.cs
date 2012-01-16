@@ -94,10 +94,6 @@ namespace Paralect.Machine.Tests.Areas.Domain.Fixtures
             var result = agr.Execute(new ChangeDeveloperName() { NewName = "Cohen" }, state);
 
 
-
-
-
-
         }
     }
 }

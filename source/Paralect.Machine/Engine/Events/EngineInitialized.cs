@@ -10,5 +10,11 @@ namespace Paralect.Machine.Engine.Events
         {
             return "Engine initialized";
         }
+
+        public IMessageMetadata Metadata
+        {
+            get { throw new NotImplementedException(); }
+            set { throw new NotImplementedException(); }
+        }
     }
 }

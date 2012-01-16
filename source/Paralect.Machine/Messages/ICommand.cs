@@ -30,5 +30,11 @@ namespace Paralect.Machine.Messages
         }
 
         public TIdentity ReceiverId { get; set; }
+
+        public IMessageMetadata Metadata
+        {
+            get { throw new NotImplementedException(); }
+            set { throw new NotImplementedException(); }
+        }
     }
 }

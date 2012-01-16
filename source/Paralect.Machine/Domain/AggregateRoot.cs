@@ -38,6 +38,11 @@ namespace Paralect.Machine.Domain
         public ResultCollection<TIdentity> Send(params ICommand<TIdentity>[] commands)
         {
             return new ResultCollection<TIdentity>().Send(commands);
+        }        
+        
+        public IResult Empty()
+        {
+            return new EmptyResult();
         }
     }
 }

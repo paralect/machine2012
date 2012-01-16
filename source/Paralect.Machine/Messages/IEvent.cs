@@ -4,18 +4,18 @@ namespace Paralect.Machine.Messages
 {
     public interface IEvent : IMessage
     {
-        IEventMetadata Metadata { get; set; }
+        new IEventMetadata Metadata { get; set; }
     }
 
-    public interface IEvent<TIdentity> : IEvent
-        where TIdentity : IIdentity
+    public interface IEvent<TSenderId> : IEvent
     {
-        new IEventMetadata<TIdentity> Metadata { get; set; }
+        new IEventMetadata<TSenderId> Metadata { get; set; } 
     }
 
-    public interface IEvent<TIdentity, TEventMetadata> : IEvent<TIdentity>
-        where TIdentity : IIdentity
-        where TEventMetadata : IEventMetadata<TIdentity>
+    public interface IEvent<TMessageId, TSenderId, TEventMetadata> : IEvent<TSenderId>
+        where TMessageId : IIdentity
+        where TSenderId : IIdentity
+        where TEventMetadata : IEventMetadata<TMessageId, TSenderId>
     {
         new TEventMetadata Metadata { get; set; }
     }
