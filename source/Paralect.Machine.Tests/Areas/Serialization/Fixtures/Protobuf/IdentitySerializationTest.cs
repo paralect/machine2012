@@ -25,23 +25,13 @@ namespace Paralect.Machine.Tests.Areas.Serialization.Fixtures.Protobuf
             model[typeof(StringId)]
                 .AddSubType(6, typeof(SchoolId));
 
-//            model[typeof(SchoolId)].SetFactory()
-
             var bytes = ProtobufSerializer.SerializeProtocalBuffer(school, model);
             var back = ProtobufSerializer.DeserializeProtocalBuffer<School>(bytes, model);
 
             Assert.That(back.Id.Value, Is.EqualTo(school.Id.Value));
             Assert.That(back.Name, Is.EqualTo(school.Name));
             Assert.That(back.Year, Is.EqualTo(school.Year));
-
-            IEvent a = new MyEvent();
-
         }
-    }
-
-    public class MyEvent : Event
-    {
-
     }
 
     #region Helper classes

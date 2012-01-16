@@ -24,6 +24,16 @@ namespace Paralect.Machine.Tests.Helpers.Protobuf
             }
         }
 
+        public static Object DeepClone(Object obj, RuntimeTypeModel model)
+        {
+            return model.DeepClone(obj);
+        }
+
+        public static TType DeepClone<TType>(TType obj, RuntimeTypeModel model)
+        {
+            return (TType) model.DeepClone(obj);
+        }
+
         /// <summary>
         /// Overload.
         /// </summary>

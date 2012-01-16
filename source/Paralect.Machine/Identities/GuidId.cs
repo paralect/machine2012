@@ -28,6 +28,28 @@ namespace Paralect.Machine.Identities
         }
 
         /// <summary>
+        /// Factory method
+        /// </summary>
+        public static GuidId Create(String guidText)
+        {
+            return new GuidId { Value = Guid.Parse(guidText) };
+        }
+
+        /// <summary>
+        /// Factory method
+        /// </summary>
+        public static GuidId Create(Guid guid)
+        {
+            return new GuidId { Value = guid };
+        }
+
+        public static GuidId CreateNew()
+        {
+            return new GuidId { Value = Guid.NewGuid() };
+        }
+
+
+        /// <summary>
         /// Using hash code of the string id
         /// </summary>
         public override int GetHashCode()

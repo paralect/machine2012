@@ -14,9 +14,12 @@ namespace Paralect.Machine.Tests.Areas.Serialization.Fixtures.Protobuf
         {
             RuntimeTypeModel model = TypeModel.Create();
 
-            model[typeof (Guru)]
-                .AddSubType(10000, typeof (Developer))
-                .AddSubType(10001, typeof (Designer));
+            model[typeof(Guru)]
+                .AddSubType(10000, typeof(Developer))
+                .AddSubType(10001, typeof(Designer));
+
+            model[typeof (Developer)]
+                .AddSubType(10002, typeof (SkilledDeveloper));
 
             var guru = new Guru {Id = 67, Name = "Misha"};
             AssertSerializedAndDeserialized(guru, model);
@@ -28,6 +31,11 @@ namespace Paralect.Machine.Tests.Areas.Serialization.Fixtures.Protobuf
             var designer = new Designer {Id = 77, Name = "Dimon", FavoriteColor = "Oyaebu"};
             AssertSerializedAndDeserialized(designer, model);
             AssertSerializedAndDeserialized<Guru>(designer, model);
+
+            var skilled = new SkilledDeveloper { Id = 56, Name = "Tolyan", ProgrammingLanguage = "COBOL", Skills = ".net, c#, D2.0"};
+            AssertSerializedAndDeserialized(skilled, model);
+            AssertSerializedAndDeserialized<Guru>(skilled, model);
+            AssertSerializedAndDeserialized<Developer>(skilled, model);
         }
 
         /// <summary>
@@ -69,6 +77,13 @@ namespace Paralect.Machine.Tests.Areas.Serialization.Fixtures.Protobuf
     {
         [ProtoMember(1)]
         public string FavoriteColor { get; set; }
+    }
+
+    [ProtoContract]
+    public class SkilledDeveloper : Developer
+    {
+        [ProtoMember(1)]
+        public string Skills { get; set; }
     }
 
     #endregion
