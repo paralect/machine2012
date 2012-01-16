@@ -21,6 +21,19 @@ namespace Paralect.Machine.Identities
             return Value.GetHashCode();
         }
 
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+
+            var identity = obj as StringIdentity;
+
+            if (identity != null)
+                return identity.Value.Equals(Value);
+
+            return false;
+        }
+
         public override string ToString()
         {
             return Value;

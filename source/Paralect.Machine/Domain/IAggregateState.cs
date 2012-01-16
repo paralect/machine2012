@@ -22,9 +22,9 @@ namespace Paralect.Machine.Domain
         Int32 Version { get; }
 
         /// <summary>
-        /// Replay specified events to restore state of IAggregateState
+        /// Apply specified events to restore state of IAggregateState
         /// </summary>
-        void Replay(IEnumerable<IEvent> events);
+        void Apply(IEnumerable<IEvent> events);
         
     }
 
@@ -40,10 +40,8 @@ namespace Paralect.Machine.Domain
         new TIdentity Id { get; }
 
         /// <summary>
-        /// Replay specified events to restore state of IAggregateState
+        /// Apply specified events to restore state of IAggregateState
         /// </summary>
-        void Replay(IEnumerable<IEvent<TIdentity>> events);
-
         void Apply(IEnumerable<IEvent<TIdentity>> events);
     }
 }

@@ -11,7 +11,7 @@ namespace Paralect.Machine.Domain
     /// </summary>
     /// <typeparam name="TIdentity">Identity of Aggregate and Aggregate State</typeparam>
     public class AggregateState<TIdentity> : IAggregateState<TIdentity>
-        where TIdentity : IIdentity
+        where TIdentity : class, IIdentity
     {
         /// <summary>
         /// Aggregate ID
@@ -34,56 +34,41 @@ namespace Paralect.Machine.Domain
         /// Explicit implementation to prevent easy access from non-infrastructural code. In most cases
         /// strongly-typed version should be used.
         /// </summary>
-        void IAggregateState.Replay(IEnumerable<IEvent> events)
+        void IAggregateState.Apply(IEnumerable<IEvent> events)
         {
             IEvent last = null;
 
-            foreach (var @event in events)
+            foreach (var evnt in events)
             {
-                this.AsDynamic().When(@event);
-                last = @event;
+                if (Id == null)
+                    Id = (TIdentity) evnt.Metadata.SenderId;
+                else if (!Id.Equals(evnt.Metadata.SenderId))
+                    throw new Exception("State restoration failed because of different Aggregate ID in the events.");
+
+                this.AsDynamic().When(evnt);
+                
+                last = evnt;
             }
 
             // Set version of state to the version of latest event.
             // Version will be zero, if no events supplied
             Version = last == null ? 0 : last.Metadata.SenderVersion;
-            Id = (TIdentity) last.Metadata.SenderId;
         }
 
         /// <summary>
-        /// Replay specified events to restore state of IAggregateState.
+        /// Apply specified events to restore state of IAggregateState.
         /// Strongly-typed version.
         /// </summary>
-        public void Replay(IEnumerable<IEvent<TIdentity>> events)
-        {
-            // Redirect to explicit Replay
-            ((IAggregateState)this).Replay(events);
-        }
-
         public void Apply(IEnumerable<IEvent<TIdentity>> events)
         {
-            foreach (var @event in events)
-            {
-                this.AsDynamic().When(@event);
-                Version++;
-            }
-        }
-
-        /// <summary>
-        /// Replay specified events to restore state of IAggregateState.
-        /// Strongly-typed version with different syntax
-        /// </summary>
-        public void Replay(params IEvent<TIdentity>[] events)
-        {
             // Redirect to explicit Replay
-            ((IAggregateState)this).Replay(events);
+            ((IAggregateState)this).Apply(events);
         }
 
         public void Apply(params IEvent<TIdentity>[] events)
         {
-            // Redirect to another method
-            Apply((IEnumerable<IEvent<TIdentity>>) events);
+            // Redirect to explicit Replay
+            ((IAggregateState)this).Apply(events);
         }
-
     }
 }
