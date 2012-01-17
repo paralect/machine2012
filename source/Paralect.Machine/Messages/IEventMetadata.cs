@@ -25,14 +25,4 @@ namespace Paralect.Machine.Messages
         /// </summary>
         new TSenderId SenderId { get; set; }        
     }
-
-    /// <summary>
-    /// Strongly typed version of event metadata
-    /// </summary>
-    public interface IEventMetadata<TMessageId, TSenderId> : IEventMetadata<TSenderId>, IMessageMetadata<TMessageId>
-        where TSenderId : IIdentity
-        where TMessageId : IIdentity
-    {
-
-    }
 }

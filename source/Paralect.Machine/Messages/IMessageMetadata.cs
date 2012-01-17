@@ -8,14 +8,14 @@ namespace Paralect.Machine.Messages
         /// <summary>
         /// Unique Message identity
         /// </summary>
-        IIdentity MessageId { get; set; }
+        Guid MessageId { get; set; }
 
         /// <summary>
         /// ID of message that was a stimulus to produce this message.
         /// If there is no stimulus for this message, then TriggerMessageId should return Guid.Empty.
         /// TriggerMessageId allows partially to restore causality of messages.
         /// </summary>
-        IIdentity TriggerMessageId { get; set; }
+        Guid TriggerMessageId { get; set; }
 
         /// <summary>
         /// Lamport Timestamp allows partial ordering of messages in distributed computer system.
@@ -31,11 +31,5 @@ namespace Paralect.Machine.Messages
         /// http://en.wikipedia.org/wiki/Lamport_timestamps
         /// </summary>
         Int64 LamportTimestamp { get; set; }
-    }
-
-    public interface IMessageMetadata<TMessageId> : IMessageMetadata
-        where TMessageId : IIdentity
-    {
-        new TMessageId MessageId { get; set; }
     }
 }

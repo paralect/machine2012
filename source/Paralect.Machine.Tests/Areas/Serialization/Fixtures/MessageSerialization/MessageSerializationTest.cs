@@ -21,23 +21,21 @@ namespace Paralect.Machine.Tests.Areas.Serialization.Fixtures.MessageSerializati
                 Metadata = new MessageMetadata()
                 {
                     LamportTimestamp = 34,
-                    MessageId = GuidId.CreateNew(),
-                    TriggerMessageId = GuidId.CreateNew()
+                    MessageId = Guid.NewGuid(),
+                    TriggerMessageId = Guid.NewGuid()
                 }
             };
 
             var model = TypeModel.Create();
             model[typeof(IMessageMetadata)]
                 .AddSubType(10, typeof(MessageMetadata));
-            model[typeof(IIdentity)]
-                .AddSubType(10, typeof(GuidId));
 
             var bytes = ProtobufSerializer.SerializeProtocalBuffer(message, model);
             var back = ProtobufSerializer.DeserializeProtocalBuffer<Message>(bytes, model);
 
             Assert.That(back.Metadata.LamportTimestamp, Is.EqualTo(message.Metadata.LamportTimestamp));
-            Assert.That(back.Metadata.MessageId.Value, Is.EqualTo(message.Metadata.MessageId.Value));
-            Assert.That(back.Metadata.TriggerMessageId.Value, Is.EqualTo(message.Metadata.TriggerMessageId.Value));
+            Assert.That(back.Metadata.MessageId, Is.EqualTo(message.Metadata.MessageId));
+            Assert.That(back.Metadata.TriggerMessageId, Is.EqualTo(message.Metadata.TriggerMessageId));
         }
     }
 
@@ -45,10 +43,10 @@ namespace Paralect.Machine.Tests.Areas.Serialization.Fixtures.MessageSerializati
     public class MessageMetadata : IMessageMetadata
     {
         [ProtoMember(1)]
-        public IIdentity MessageId { get; set; }
+        public Guid MessageId { get; set; }
 
         [ProtoMember(2)]
-        public IIdentity TriggerMessageId { get; set; }
+        public Guid TriggerMessageId { get; set; }
 
         [ProtoMember(3)]
         public long LamportTimestamp { get; set; }

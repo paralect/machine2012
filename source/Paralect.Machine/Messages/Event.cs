@@ -19,10 +19,9 @@ namespace Paralect.Machine.Messages
         }
     }
 
-    public abstract class Event<TMessageId, TSenderId, TEventMetadata> : IEvent<TMessageId, TSenderId, TEventMetadata>
+    public abstract class Event<TSenderId, TEventMetadata> : IEvent<TSenderId, TEventMetadata>
         where TSenderId : IIdentity
-        where TMessageId : IIdentity
-        where TEventMetadata : IEventMetadata<TMessageId, TSenderId>, new()
+        where TEventMetadata : IEventMetadata<TSenderId>, new()
     {
         private TEventMetadata _metadata = new TEventMetadata();
 

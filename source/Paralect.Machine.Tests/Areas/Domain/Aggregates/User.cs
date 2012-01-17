@@ -18,12 +18,12 @@ namespace Paralect.Machine.Tests.Areas.Domain.Aggregates
     }
 
 
-    public class DeveloperCreated : Event<GuidId, DeveloperId, EventMetadata<GuidId, DeveloperId>>
+    public class DeveloperCreated : Event<DeveloperId, EventMetadata<DeveloperId>>
     {
         public String Name { get; set; }
     }
 
-    public class DeveloperNameChanged : Event<GuidId, DeveloperId, EventMetadata<GuidId, DeveloperId>>
+    public class DeveloperNameChanged : Event<DeveloperId, EventMetadata<DeveloperId>>
     {
         public String NewName { get; set; }
     }

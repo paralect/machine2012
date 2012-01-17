@@ -12,10 +12,9 @@ namespace Paralect.Machine.Messages
         new IEventMetadata<TSenderId> Metadata { get; set; } 
     }
 
-    public interface IEvent<TMessageId, TSenderId, TEventMetadata> : IEvent<TSenderId>
-        where TMessageId : IIdentity
+    public interface IEvent<TSenderId, TEventMetadata> : IEvent<TSenderId>
         where TSenderId : IIdentity
-        where TEventMetadata : IEventMetadata<TMessageId, TSenderId>
+        where TEventMetadata : IEventMetadata<TSenderId>
     {
         new TEventMetadata Metadata { get; set; }
     }

@@ -40,6 +40,17 @@ namespace Paralect.Machine.Domain
             return new ResultCollection<TIdentity>().Send(commands);
         }        
         
+        public ResultCollection<TIdentity> Subscribe<TEvent>(IIdentity id)
+//            where TEvent : IEvent<
+        {
+            return new ResultCollection<TIdentity>().Send(null);
+        }        
+        
+        public ResultCollection<TIdentity> Unsubscribe<TEvent>(IIdentity id)
+        {
+            return new ResultCollection<TIdentity>().Send(null);
+        }        
+        
         public IResult Empty()
         {
             return new EmptyResult();

@@ -1,3 +1,4 @@
+using System;
 using Paralect.Machine.Identities;
 
 namespace Paralect.Machine.Messages
@@ -7,13 +8,13 @@ namespace Paralect.Machine.Messages
         /// <summary>
         /// Unique Message identity
         /// </summary>
-        public IIdentity MessageId { get; set; }
+        public Guid MessageId { get; set; }
 
         /// <summary>
         /// ID of message that was a stimulus to produce this message.
         /// If there is no stimulus for this message, then TriggerMessageId should return Guid.Empty.
         /// </summary>
-        public IIdentity TriggerMessageId { get; set; }
+        public Guid TriggerMessageId { get; set; }
 
         /// <summary>
         /// http://en.wikipedia.org/wiki/Lamport_timestamps
@@ -35,21 +36,20 @@ namespace Paralect.Machine.Messages
 
 
 
-    public class EventMetadata<TMessageId, TSenderId> : IEventMetadata<TMessageId, TSenderId>
-        where TMessageId : IIdentity
+    public class EventMetadata<TSenderId> : IEventMetadata<TSenderId>
         where TSenderId : IIdentity
     {
         /// <summary>
         /// Message ID
         /// </summary>
-        public TMessageId MessageId { get; set; }
+        public Guid MessageId { get; set; }
 
         /// <summary>
         /// ID of message that was a stimulus to produce this message.
         /// If there is no stimulus for this message, then TriggerMessageId should return Guid.Empty.
         /// TriggerMessageId allows partially to restore causality of messages.
         /// </summary>
-        public IIdentity TriggerMessageId { get; set; }
+        public Guid TriggerMessageId { get; set; }
 
         /// <summary>
         /// http://en.wikipedia.org/wiki/Lamport_timestamps
@@ -74,10 +74,10 @@ namespace Paralect.Machine.Messages
         /// <summary>
         /// Unique Message identity
         /// </summary>
-        IIdentity IMessageMetadata.MessageId
+        Guid IMessageMetadata.MessageId
         {
             get { return MessageId; }
-            set { MessageId = (TMessageId)value; }
+            set { MessageId = value; }
         }
 
         /// <summary>
