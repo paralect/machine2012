@@ -6,12 +6,11 @@ namespace Paralect.Machine.Messages
     public class MessageFactory
     {
         /// <summary>
-        /// (MessageTag --> MessageType) and (MessageType --> MessageTag) maps
+        /// Different kinds of maps to insure uniqueness of Message Tag, Message Proto Hierarchy Tag and Message Type.
         /// </summary>
         private readonly Dictionary<Guid, MessageDefinition> _tagToMessageType = new Dictionary<Guid, MessageDefinition>(100);
         private readonly Dictionary<Type, MessageDefinition> _typeToMessageType = new Dictionary<Type, MessageDefinition>(100);
-
-        private readonly Dictionary<Int32, MessageDefinition> _protoHierarchyTags = new Dictionary<Int32, MessageDefinition>(100);
+        private readonly Dictionary<Int32, MessageDefinition> _protoHierarchyTagToMessageType = new Dictionary<Int32, MessageDefinition>(100);
 
         /// <summary>
         /// All registered Identity Types
@@ -52,7 +51,7 @@ namespace Paralect.Machine.Messages
                 var messageAttribute = GetSingleAttribute<MessageAttribute>(type);
 
                 if (messageAttribute == null)
-                    continue;
+                    throw new MessageTagNotSpecified(type);
 
                 if (_typeToMessageType.ContainsKey(type))
                     throw new MessageTypeAlreadyRegistered(type);
@@ -60,15 +59,15 @@ namespace Paralect.Machine.Messages
                 if (_tagToMessageType.ContainsKey(messageAttribute.Tag))
                     throw new MessageTagAlreadyRegistered(messageAttribute.Tag, type, _tagToMessageType[messageAttribute.Tag].Type);
 
-                if (_protoHierarchyTags.ContainsKey(messageAttribute.ProtoHierarchyTag))
+                if (_protoHierarchyTagToMessageType.ContainsKey(messageAttribute.ProtoHierarchyTag))
                     throw new MessageProtoHierarchyTagCollision(messageAttribute.ProtoHierarchyTag, type, 
-                        _protoHierarchyTags[messageAttribute.ProtoHierarchyTag].Type);
+                        _protoHierarchyTagToMessageType[messageAttribute.ProtoHierarchyTag].Type);
                     
                 var messageType = new MessageDefinition(type, messageAttribute.Tag, messageAttribute.ProtoHierarchyTag);
 
                 _tagToMessageType[messageAttribute.Tag] = messageType;
                 _typeToMessageType[type] = messageType;
-                _protoHierarchyTags[messageAttribute.ProtoHierarchyTag] = messageType;
+                _protoHierarchyTagToMessageType[messageAttribute.ProtoHierarchyTag] = messageType;
             }            
         }
 

@@ -89,6 +89,7 @@
     <Compile Include="Messages\Abstract\IMessage.cs" />
     <Compile Include="Messages\Registration\Exceptions\MessageProtoHierarchyTagCollision.cs" />
     <Compile Include="Messages\Registration\Exceptions\MessageTagAlreadyRegistered.cs" />
+    <Compile Include="Messages\Registration\Exceptions\MessageTagNotSpecified.cs" />
     <Compile Include="Messages\Registration\Exceptions\MessageTypeAlreadyRegistered.cs" />
     <Compile Include="Messages\Registration\MessageFactory.cs" />
     <Compile Include="Messages\Registration\MessageScanner.cs" />

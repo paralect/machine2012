@@ -34,17 +34,26 @@ namespace Paralect.Machine.Tests.Areas.Serialization.Fixtures
                 new MessageFactory(typeof(MessageFactoryProtoCollisionEvent), typeof(MessageFactoryProtoCollisionEvent2));
             });            
         }
+
+        [Test]
+        public void should_throw_if_no_message_attribute_for_message_type()
+        {
+            Assert.Throws<MessageTagNotSpecified>(() =>
+            {
+                new MessageFactory(typeof(MessageWithoutAttribute));
+            });                        
+        }
     }
 
 
     [ProtoContract]
-    public class SampleId : StringId { }
+    public class MessageFactoryProcessId : StringId { }
 
     #region Duplicate tag
 
     [ProtoContract]
     [Message("{509bc2f6-dc16-408d-a083-b4982e866034}")]
-    public class MessageFactoryEvent : Event<MessageSerialization.SampleId>
+    public class MessageFactoryEvent : Event<MessageFactoryProcessId>
     {
         [ProtoMember(1)]
         public string Name { get; set; }
@@ -52,7 +61,7 @@ namespace Paralect.Machine.Tests.Areas.Serialization.Fixtures
 
     [ProtoContract]
     [Message("{509bc2f6-dc16-408d-a083-b4982e866034}")]
-    public class MessageFactoryEvent2 : Event<MessageSerialization.SampleId>
+    public class MessageFactoryEvent2 : Event<MessageFactoryProcessId>
     {
         [ProtoMember(1)]
         public string ChildName { get; set; }
@@ -64,7 +73,7 @@ namespace Paralect.Machine.Tests.Areas.Serialization.Fixtures
 
     [ProtoContract]
     [Message("{c88b1ca7-a325-41f5-844f-105300124187}")]
-    public class MessageFactoryProtoCollisionEvent : Event<MessageSerialization.SampleId>
+    public class MessageFactoryProtoCollisionEvent : Event<MessageFactoryProcessId>
     {
         [ProtoMember(1)]
         public string Name { get; set; }
@@ -72,7 +81,18 @@ namespace Paralect.Machine.Tests.Areas.Serialization.Fixtures
 
     [ProtoContract]
     [Message("{d0631888-98cd-45d6-b603-64ca7245818b}")]
-    public class MessageFactoryProtoCollisionEvent2 : Event<MessageSerialization.SampleId>
+    public class MessageFactoryProtoCollisionEvent2 : Event<MessageFactoryProcessId>
+    {
+        [ProtoMember(1)]
+        public string ChildName { get; set; }
+    }
+
+    #endregion
+
+    #region Message not decorated with MessageAttribute
+
+    [ProtoContract]
+    public class MessageWithoutAttribute : Event<MessageFactoryProcessId>
     {
         [ProtoMember(1)]
         public string ChildName { get; set; }
