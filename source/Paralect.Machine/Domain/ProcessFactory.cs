@@ -3,10 +3,10 @@ using Paralect.Machine.Domain.Utilities;
 
 namespace Paralect.Machine.Domain
 {
-    public class AggregateFactory
+    public class ProcessFactory
     {
          public TAggregateRoot Create<TAggregateRoot>() 
-             where TAggregateRoot : IAggregateRoot
+             where TAggregateRoot : IProcess
          {
              var aggregate = AggregateCreator.CreateAggregateRoot<TAggregateRoot>();
 

@@ -20,7 +20,7 @@ namespace Paralect.Machine.Domain
             this.evnt = evnt;
         }
 
-        public IEnumerable<IMessage> BuildMessages(ICommand command, IAggregateState state)
+        public IEnumerable<IMessage> BuildMessages(ICommand command, IProcessState state)
         {
             yield return evnt;
         }

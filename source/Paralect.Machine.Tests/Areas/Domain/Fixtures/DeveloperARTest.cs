@@ -88,7 +88,7 @@ namespace Paralect.Machine.Tests.Areas.Domain.Fixtures
             state.Apply(e1);
 
 
-            var factory = new AggregateFactory();
+            var factory = new ProcessFactory();
             var agr = factory.Create<DeveloperAR>();
 
             var result = agr.Execute(new ChangeDeveloperName() { NewName = "Cohen" }, state);

@@ -67,7 +67,11 @@
     <Compile Include="Areas\Performance\Fixtures\DictionaryTest.cs" />
     <Compile Include="Areas\Performance\Fixtures\DynamicInvocationPerformanceTest.cs" />
     <Compile Include="Areas\Performance\Fixtures\SerializationPerformanceTest.cs" />
+    <Compile Include="Areas\Performance\Fixtures\TagFromGuidTest.cs" />
+    <Compile Include="Areas\Serialization\Fixtures\MessageFactoryTests.cs" />
+    <Compile Include="Areas\Serialization\Fixtures\MessageSerialization\MessageSerializationImproved.cs" />
     <Compile Include="Areas\Serialization\Fixtures\MessageSerialization\MessageSerializationTest.cs" />
+    <Compile Include="Areas\Serialization\Fixtures\MessageSerialization\MessageSupportedSerializationTest.cs" />
     <Compile Include="Areas\Serialization\Fixtures\Protobuf\InheritanceSerializationTest.cs" />
     <Compile Include="Helpers\Mongo\MongoSerializer.cs" />
     <Compile Include="Helpers\ObjectComparer.cs" />

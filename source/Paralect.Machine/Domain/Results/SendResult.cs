@@ -17,7 +17,7 @@ namespace Paralect.Machine.Domain
             this._command = command;
         }
 
-        public IEnumerable<IMessage> BuildMessages(ICommand command, IAggregateState state)
+        public IEnumerable<IMessage> BuildMessages(ICommand command, IProcessState state)
         {
             yield return _command;
         }

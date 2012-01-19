@@ -6,9 +6,9 @@ using Paralect.Machine.Messages;
 namespace Paralect.Machine.Domain
 {
     /// <summary>
-    /// Serializable object, that represent state of aggregate
+    /// Serializable object, that represent state of process
     /// </summary>
-    public interface IAggregateState
+    public interface IProcessState
     {
         /// <summary>
         /// Aggregate ID
@@ -29,9 +29,9 @@ namespace Paralect.Machine.Domain
     }
 
     /// <summary>
-    /// Strongly typed serializable object, that represent state of aggregate
+    /// Strongly typed serializable object, that represent state of process
     /// </summary>
-    public interface IAggregateState<TIdentity> : IAggregateState
+    public interface IProcessState<TIdentity> : IProcessState
         where TIdentity : IIdentity
     {
         /// <summary>
@@ -40,7 +40,7 @@ namespace Paralect.Machine.Domain
         new TIdentity Id { get; }
 
         /// <summary>
-        /// Apply specified events to restore state of IAggregateState
+        /// Apply specified events to restore state of IProcessState
         /// </summary>
         void Apply(IEnumerable<IEvent<TIdentity>> events);
     }

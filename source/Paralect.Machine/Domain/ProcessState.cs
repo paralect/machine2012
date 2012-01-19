@@ -9,19 +9,19 @@ namespace Paralect.Machine.Domain
     /// <summary>
     /// Strongly-typed aggregate state.
     /// </summary>
-    /// <typeparam name="TIdentity">Identity of Aggregate and Aggregate State</typeparam>
-    public class AggregateState<TIdentity> : IAggregateState<TIdentity>
-        where TIdentity : class, IIdentity
+    /// <typeparam name="TId">Identity of Aggregate and Aggregate State</typeparam>
+    public class ProcessState<TId> : IProcessState<TId>
+        where TId : class, IIdentity
     {
         /// <summary>
         /// Aggregate ID
         /// </summary>
-        public TIdentity Id { get; protected set; }
+        public TId Id { get; protected set; }
 
         /// <summary>
         /// Aggregate ID
         /// </summary>
-        IIdentity IAggregateState.Id { get { return Id; } }
+        IIdentity IProcessState.Id { get { return Id; } }
 
         /// <summary>
         /// Version of Aggregate Root.
@@ -34,14 +34,14 @@ namespace Paralect.Machine.Domain
         /// Explicit implementation to prevent easy access from non-infrastructural code. In most cases
         /// strongly-typed version should be used.
         /// </summary>
-        void IAggregateState.Apply(IEnumerable<IEvent> events)
+        void IProcessState.Apply(IEnumerable<IEvent> events)
         {
             IEvent last = null;
 
             foreach (var evnt in events)
             {
                 if (Id == null)
-                    Id = (TIdentity) evnt.Metadata.SenderId;
+                    Id = (TId) evnt.Metadata.SenderId;
                 else if (!Id.Equals(evnt.Metadata.SenderId))
                     throw new Exception("State restoration failed because of different Aggregate ID in the events.");
 
@@ -59,16 +59,16 @@ namespace Paralect.Machine.Domain
         /// Apply specified events to restore state of IAggregateState.
         /// Strongly-typed version.
         /// </summary>
-        public void Apply(IEnumerable<IEvent<TIdentity>> events)
+        public void Apply(IEnumerable<IEvent<TId>> events)
         {
             // Redirect to explicit Replay
-            ((IAggregateState)this).Apply(events);
+            ((IProcessState)this).Apply(events);
         }
 
-        public void Apply(params IEvent<TIdentity>[] events)
+        public void Apply(params IEvent<TId>[] events)
         {
             // Redirect to explicit Replay
-            ((IAggregateState)this).Apply(events);
+            ((IProcessState)this).Apply(events);
         }
     }
 }

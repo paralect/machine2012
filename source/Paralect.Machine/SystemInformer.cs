@@ -10,7 +10,7 @@ namespace Paralect.Machine
     public class SystemInformer
     {
         /// <summary>
-        /// All observers 
+        /// All observers4
         /// </summary>
         private static IObserver<ISystemEvent>[] _observers = new IObserver<ISystemEvent>[0];
 

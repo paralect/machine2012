@@ -4,6 +4,7 @@ using Paralect.Domain.Test.Events;
 using Paralect.Machine.Domain;
 using Paralect.Machine.Identities;
 using Paralect.Machine.Messages;
+using ProtoBuf;
 
 namespace Paralect.Machine.Tests.Areas.Domain.Aggregates
 {
@@ -12,18 +13,22 @@ namespace Paralect.Machine.Tests.Areas.Domain.Aggregates
         public String Name { get; set; }
     }
 
+//    [Message("adfasdfasdfadf", typeof(ChangeDeveloperName))]
+    [ProtoInclude(3, "hello")]
     public class ChangeDeveloperName : Command<DeveloperId>
     {
         public String NewName { get;set;}
     }
 
+    //[Message("adfasdfasdfadf")]
 
-    public class DeveloperCreated : Event<DeveloperId, EventMetadata<DeveloperId>>
+    public class DeveloperCreated : Event<DeveloperId>
     {
         public String Name { get; set; }
     }
 
-    public class DeveloperNameChanged : Event<DeveloperId, EventMetadata<DeveloperId>>
+//    [Message("adfasdfasdfadf")]
+    public class DeveloperNameChanged : Event<DeveloperId>
     {
         public String NewName { get; set; }
     }
@@ -33,8 +38,9 @@ namespace Paralect.Machine.Tests.Areas.Domain.Aggregates
         public DeveloperId(string value) { Value = value; }
     }
 
-    public class DeveloperState : AggregateState<DeveloperId>
+    public class DeveloperState : ProcessState<DeveloperId>
     {
+        //[ProtoBuf.ProtoMember(1, ]
         public string Name { get; set; }
 
         protected void When(DeveloperCreated created)
@@ -48,7 +54,7 @@ namespace Paralect.Machine.Tests.Areas.Domain.Aggregates
         }
     }
 
-    public class DeveloperAR : AggregateRoot<DeveloperId, DeveloperState>
+    public class DeveloperAR : Process<DeveloperId, DeveloperState>
     {
         public IResult Handle(CreateDeveloper create, DeveloperState state)
         {
@@ -57,6 +63,8 @@ namespace Paralect.Machine.Tests.Areas.Domain.Aggregates
 
         public IResult Handle(ChangeDeveloperName change, DeveloperState state)
         {
+            return Subscribe<DeveloperId, DeveloperNameChanged>(new DeveloperId("dfdf"));
+
             return Apply(new DeveloperNameChanged() { NewName = change.NewName });
         }
 

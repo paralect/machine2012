@@ -58,7 +58,7 @@ namespace Paralect.Machine.Tests.Areas.Serialization.Fixtures.Protobuf
     [ProtoContract]
     public class Guru
     {
-        [ProtoMember(1)]
+        [ProtoMember(-500000000)]
         public int Id { get; set; }
 
         [ProtoMember(2)]

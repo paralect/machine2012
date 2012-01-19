@@ -7,7 +7,7 @@ using Paralect.Machine.Transitions;
 
 namespace Paralect.Machine.Domain
 {
-    public abstract class MPowerAggregateRoot : IAggregateRoot
+    public abstract class MPowerAggregateRoot : IProcess
     {
         /// <summary>
         /// Unique identifier of Aggregate Root
@@ -108,27 +108,15 @@ namespace Paralect.Machine.Domain
                 _changes.Add(evnt);
         }
 
-        public IEnumerable<IMessage> Execute(IAggregateState state, IEnumerable<ICommand> commands)
+        public IEnumerable<IMessage> Execute(ICommand command, IProcessState state)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<IMessage> Outbox
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        public void Initialize(IAggregateState state)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Execute(IEnumerable<ICommand> commands)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IEnumerable<IMessage> Execute(ICommand command, IAggregateState state)
+        /// <summary>
+        /// Notify about event
+        /// </summary>
+        public IEnumerable<IMessage> Notify(IEvent evnt, IProcessState state)
         {
             throw new NotImplementedException();
         }

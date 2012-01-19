@@ -20,7 +20,7 @@ namespace Paralect.Machine.Domain
             _responses.Add(result);
         }
 
-        public IEnumerable<IMessage> BuildMessages(ICommand command, IAggregateState state)
+        public IEnumerable<IMessage> BuildMessages(ICommand command, IProcessState state)
         {
             foreach (var response in _responses)
             {

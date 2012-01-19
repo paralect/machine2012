@@ -18,6 +18,7 @@ namespace Paralect.Machine.Messages
         Guid TriggerMessageId { get; set; }
 
         /// <summary>
+        /// TODO: Out-of-band information?
         /// Lamport Timestamp allows partial ordering of messages in distributed computer system.
         /// 
         /// Here is a simple rules that allows to achieve partial ordering:
@@ -31,5 +32,12 @@ namespace Paralect.Machine.Messages
         /// http://en.wikipedia.org/wiki/Lamport_timestamps
         /// </summary>
         Int64 LamportTimestamp { get; set; }
+
+        /// <summary>
+        /// TODO: Out-of-band information?
+        /// UTC time on when to deliver this message to 
+        /// </summary>
+        //DateTime DeliverOnUtc { get; set; }
+        //DateTime CreatedOnUtc { get; set; }
     }
 }
