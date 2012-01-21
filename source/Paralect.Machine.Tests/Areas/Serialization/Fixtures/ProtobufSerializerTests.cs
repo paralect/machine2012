@@ -118,6 +118,53 @@ namespace Paralect.Machine.Tests.Areas.Serialization.Fixtures
             );
         }
 
+        [Test]
+        public void should_throw_on_collision()
+        {
+            Assert.Throws<ProtoHierarchyTagCollision>(() =>
+            {
+                Test(
+                    new[] { typeof(ProtobufSerializer_CollisionEvent), typeof(ProtobufSerializer_CollisionEvent2) },
+                    new[] { typeof(ProtobufSerializer_Id) },
+                    new ProtobufSerializer_CollisionEvent()
+                    {
+                        Metadata = new EventMetadata<ProtobufSerializer_Id>()
+                        {
+                            LamportTimestamp = 567,
+                            MessageId = Guid.NewGuid(),
+                            SenderId = new ProtobufSerializer_Id() { Value = "som_id" },
+                            SenderVersion = 45,
+                            TriggerMessageId = Guid.NewGuid()
+                        }
+                    }
+                );
+            });
+        }
+
+        [Test]
+        public void should_not_throw_on_collision()
+        {
+            //
+            // this should work because messages have different parent types (thus types are in different hierarchy)
+            //
+
+            Test(
+                new[] { typeof(ProtobufSerializer_NoCollisionEvent), typeof(ProtobufSerializer_NoCollisionEvent2) },
+                new[] { typeof(ProtobufSerializer_Id) },
+                new ProtobufSerializer_NoCollisionEvent()
+                {
+                    Metadata = new EventMetadata<ProtobufSerializer_Id>()
+                    {
+                        LamportTimestamp = 567,
+                        MessageId = Guid.NewGuid(),
+                        SenderId = new ProtobufSerializer_Id() { Value = "som_id" },
+                        SenderVersion = 45,
+                        TriggerMessageId = Guid.NewGuid()
+                    }
+                }
+            );            
+        }
+
 
 
         [Test]
@@ -267,4 +314,46 @@ namespace Paralect.Machine.Tests.Areas.Serialization.Fixtures
     }
 
     #endregion
+
+    #region Protobuf tags collision
+
+    [ProtoContract]
+    [Message("{c88b1ca7-a325-41f5-844f-105300124187}")]
+    public class ProtobufSerializer_CollisionEvent : Event<ProtobufSerializer_Id>
+    {
+        [ProtoMember(1)]
+        public string Name { get; set; }
+    }
+
+    [ProtoContract]
+    [Message("{d0631888-98cd-45d6-b603-64ca7245818b}")]
+    public class ProtobufSerializer_CollisionEvent2 : Event<ProtobufSerializer_Id>
+    {
+        [ProtoMember(1)]
+        public string ChildName { get; set; }
+    }
+
+    #endregion
+
+    #region Protobuf no collision (because different hierarchy)
+
+    [ProtoContract]
+    [Message("{c88b1ca7-a325-41f5-844f-105300124187}")]
+    public class ProtobufSerializer_NoCollisionEvent : Event<ProtobufSerializer_Id>
+    {
+        [ProtoMember(1)]
+        public string Name { get; set; }
+    }
+
+    [ProtoContract]
+    [Message("{d0631888-98cd-45d6-b603-64ca7245818b}")]
+    public class ProtobufSerializer_NoCollisionEvent2 : ProtobufSerializer_Child2_Event
+    {
+        [ProtoMember(1)]
+        public string ChildName { get; set; }
+    }
+
+    #endregion
+
+
 }

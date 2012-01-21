@@ -62,7 +62,7 @@ namespace Paralect.Machine.Serialization
                 var tagToChild = _map[baseType];
 
                 if (tagToChild.ContainsKey(tag))
-                    throw new Exception("Collision");
+                    throw new ProtoHierarchyTagCollision(tag, tagToChild[tag], type);
 
                 tagToChild[tag] = type;
 
