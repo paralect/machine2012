@@ -3,13 +3,15 @@
 namespace Paralect.Machine.Identities
 {
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct, Inherited = false, AllowMultiple = false)]
-    public class EntityTagAttribute : Attribute
+    public class IdentityAttribute : Attribute
     {
         public Guid Tag { get; set; }
+        public Boolean Abstract { get; set; }
 
-        public EntityTagAttribute(String guidInTextFormat)
+        public IdentityAttribute(String guidInTextFormat)
         {
             Tag = Guid.Parse(guidInTextFormat);
+            Abstract = false;
         }
     }
 }

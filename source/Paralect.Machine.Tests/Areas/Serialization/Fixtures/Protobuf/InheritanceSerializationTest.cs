@@ -53,12 +53,12 @@ namespace Paralect.Machine.Tests.Areas.Serialization.Fixtures.Protobuf
     }
 
 
-    #region Helper classes
+    #region Normal classes
 
     [ProtoContract]
     public class Guru
     {
-        [ProtoMember(-500000000)]
+        [ProtoMember(1)]
         public int Id { get; set; }
 
         [ProtoMember(2)]

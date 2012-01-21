@@ -36,7 +36,7 @@ namespace Paralect.Machine.Tests.Areas.Serialization.Fixtures.Protobuf
 
     #region Helper classes
 
-    [EntityTag("d9713c53-b87b-45e2-a669-403b65ca0590")]
+    [Identity("d9713c53-b87b-45e2-a669-403b65ca0590")]
     [ProtoContract]
     public class SchoolId : StringId
     {

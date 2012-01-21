@@ -44,31 +44,45 @@ namespace Paralect.Machine.Messages
         /// <summary>
         /// Initializes Factory state. Checks that Message tags are unique.
         /// </summary>
-        private void Initialize(IEnumerable<Type> identityTypes)
+        private void Initialize(IEnumerable<Type> messageTypes)
         {
-            foreach (var type in identityTypes)
+            foreach (var type in messageTypes)
             {
-                var messageAttribute = GetSingleAttribute<MessageAttribute>(type);
+                var currentType = type;
+                var baseType = type.BaseType;
 
-                if (messageAttribute == null)
-                    throw new MessageTagNotSpecified(type);
+                while (baseType != typeof(object) && baseType != null)
+                {
+                    ProcessMessageType(currentType);
 
-                if (_typeToMessageType.ContainsKey(type))
-                    throw new MessageTypeAlreadyRegistered(type);
-
-                if (_tagToMessageType.ContainsKey(messageAttribute.Tag))
-                    throw new MessageTagAlreadyRegistered(messageAttribute.Tag, type, _tagToMessageType[messageAttribute.Tag].Type);
-
-                if (_protoHierarchyTagToMessageType.ContainsKey(messageAttribute.ProtoHierarchyTag))
-                    throw new MessageProtoHierarchyTagCollision(messageAttribute.ProtoHierarchyTag, type, 
-                        _protoHierarchyTagToMessageType[messageAttribute.ProtoHierarchyTag].Type);
-                    
-                var messageType = new MessageDefinition(type, messageAttribute.Tag, messageAttribute.ProtoHierarchyTag);
-
-                _tagToMessageType[messageAttribute.Tag] = messageType;
-                _typeToMessageType[type] = messageType;
-                _protoHierarchyTagToMessageType[messageAttribute.ProtoHierarchyTag] = messageType;
+                    currentType = baseType;
+                    baseType = baseType.BaseType;
+                }
             }            
+        }
+
+        private void ProcessMessageType(Type type)
+        {
+            var messageAttribute = GetSingleAttribute<MessageAttribute>(type);
+
+            if (messageAttribute == null)
+                throw new MessageTagNotSpecified(type);
+
+            if (_typeToMessageType.ContainsKey(type))
+                return; // throw new MessageTypeAlreadyRegistered(type);
+
+            if (_tagToMessageType.ContainsKey(messageAttribute.Tag))
+                throw new MessageTagAlreadyRegistered(messageAttribute.Tag, type, _tagToMessageType[messageAttribute.Tag].Type);
+
+            //                if (_protoHierarchyTagToMessageType.ContainsKey(messageAttribute.ProtoHierarchyTag))
+            //                  throw new MessageProtoHierarchyTagCollision(messageAttribute.ProtoHierarchyTag, type, 
+            //                    _protoHierarchyTagToMessageType[messageAttribute.ProtoHierarchyTag].Type);
+
+            var messageType = new MessageDefinition(type, messageAttribute.Tag/*, messageAttribute.ProtoHierarchyTag*/);
+
+            _tagToMessageType[messageAttribute.Tag] = messageType;
+            _typeToMessageType[type] = messageType;
+            //                _protoHierarchyTagToMessageType[messageAttribute.ProtoHierarchyTag] = messageType;            
         }
 
         /// <summary>

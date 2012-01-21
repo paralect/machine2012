@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Paralect.Machine.Messages;
 
 namespace Paralect.Machine.Identities
 {
@@ -12,15 +13,15 @@ namespace Paralect.Machine.Identities
         /// <summary>
         /// (Entity Tag --> Entity Type) and (Entity Type --> Entity Tag) maps
         /// </summary>
-        private static readonly Dictionary<Guid, Type> _tagToTypeMap = new Dictionary<Guid, Type>(100);
-        private static readonly Dictionary<Type, Guid> _typeToTagMap = new Dictionary<Type, Guid>(100);
+        private static readonly Dictionary<Guid, IdentityDefinition> _tagToTypeMap = new Dictionary<Guid, IdentityDefinition>(100);
+        private static readonly Dictionary<Type, IdentityDefinition> _typeToTagMap = new Dictionary<Type, IdentityDefinition>(100);
 
         /// <summary>
         /// All registered Identity Types
         /// </summary>
-        public IEnumerable<Type> IdentityTypes
+        public IEnumerable<IdentityDefinition> IdentityDefinitions
         {
-            get { return _typeToTagMap.Keys; }
+            get { return _tagToTypeMap.Values; }
         }
 
         /// <summary>
@@ -40,26 +41,45 @@ namespace Paralect.Machine.Identities
         }
 
         /// <summary>
-        /// Initializes Factory state. Checks that EntityTags are unique.
+        /// Initializes Factory state
         /// </summary>
         private void Initialize(IEnumerable<Type> identityTypes)
         {
             foreach (var type in identityTypes)
             {
-                var tagAttribute = GetSingleAttribute<EntityTagAttribute>(type);
+                var currentType = type;
+                var baseType = type.BaseType;
 
-                if (tagAttribute == null)
-                    continue;
+                while (baseType != typeof(object) && baseType != null)
+                {
+                    ProcessIdentityType(currentType);
 
-                if (_tagToTypeMap.ContainsKey(tagAttribute.Tag))
-                    throw new Exception(String.Format((string)"Tag {0} already registered.", (object)tagAttribute.Tag));
-
-                if (_typeToTagMap.ContainsKey(type))
-                    throw new Exception(String.Format((string)"Identity type {0} already registered.", (object)tagAttribute.Tag)); // hope this is just impossible
-
-                _tagToTypeMap[tagAttribute.Tag] = type;
-                _typeToTagMap[type] = tagAttribute.Tag;
+                    currentType = baseType;
+                    baseType = baseType.BaseType;
+                }
             }            
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private void ProcessIdentityType(Type type)
+        {
+            var tagAttribute = GetSingleAttribute<IdentityAttribute>(type);
+
+            if (tagAttribute == null)
+                throw new IdentityTagNotSpecified(type);
+
+            if (_typeToTagMap.ContainsKey(type))
+                return;
+
+            if (_tagToTypeMap.ContainsKey(tagAttribute.Tag))
+                throw new IdentityTagAlreadyRegistered(tagAttribute.Tag, _tagToTypeMap[tagAttribute.Tag].Type, type);
+
+            var definition = new IdentityDefinition(type, tagAttribute.Tag);
+
+            _tagToTypeMap[tagAttribute.Tag] = definition;
+            _typeToTagMap[type] = definition;
         }
 
         /// <summary>
@@ -67,7 +87,7 @@ namespace Paralect.Machine.Identities
         /// </summary>
         public static Guid GetTag(Type identityType)
         {
-            return _typeToTagMap[identityType];
+            return _typeToTagMap[identityType].Tag;
         }
 
         /// <summary>
@@ -75,7 +95,7 @@ namespace Paralect.Machine.Identities
         /// </summary>
         public static Type GetIdentityType(Guid tag)
         {
-            return _tagToTypeMap[tag];
+            return _tagToTypeMap[tag].Type;
         }
 
 

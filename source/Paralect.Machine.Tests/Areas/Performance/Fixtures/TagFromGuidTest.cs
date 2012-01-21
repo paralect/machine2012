@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using NUnit.Framework;
+using Paralect.Machine.Serialization;
 
 namespace Paralect.Machine.Tests.Areas.Performance.Fixtures
 {
@@ -21,7 +22,7 @@ namespace Paralect.Machine.Tests.Areas.Performance.Fixtures
         /// In 10000 iterations, 4 duplicated tags. Percent 0.0004
         /// In 10000 iterations, 1 duplicated tags. Percent 0.0001
         /// </summary>
-        [Ignore]
+        [Ignore("Test takes time, run this test manually")]
         public void test_probability_of_collisions_in_tag_produced_by_taking_3_lowest_bytes_from_hashcode_of_guid()
         {
             var dic = new Dictionary<Int32, Guid>();
@@ -36,17 +37,8 @@ namespace Paralect.Machine.Tests.Areas.Performance.Fixtures
                     Console.WriteLine(".");
 
                 var guid = Guid.NewGuid();
-                var hashcode = guid.GetHashCode();
-                var tag = hashcode;
+                var tag = ProtobufSerializer.GenerateHierarchyTag(guid);
                 
-                if (tag <= 0)
-                    tag = -tag;
-
-                const int mask = 0x00ffffff;
-
-
-                tag = tag & mask;
-
                 try
                 {
                     dic.Add(tag, guid);
@@ -58,8 +50,8 @@ namespace Paralect.Machine.Tests.Areas.Performance.Fixtures
                     dup.Add(tag);
                 }
                 
-                Assert.That(tag > 0, Is.True, "Failed on {0}", tag);
-                Assert.That(tag <= 16777216, Is.True, "Failed on {0}", tag);
+                Assert.That(tag >= 0, Is.True, "Failed on comparing with 0 - {0}", tag);
+                Assert.That(tag <= 16777215, Is.True, "Failed on {0}", tag);
             }
             var percent = (double)duplicates / iterations;
             Console.WriteLine("In {0} iterations, {1} duplicated tags. Percent {2}", iterations, duplicates, percent);
@@ -81,6 +73,19 @@ namespace Paralect.Machine.Tests.Areas.Performance.Fixtures
 
             //percent = (double)failes / iterations;
             Console.WriteLine("In {0} duplicated tags, {1} can be easely fixed by +1.", dup.Count, dup.Count - failes);
+        }
+
+        [Ignore("Test takes time, run this test manually")]
+        public void should_be_in_valid_range()
+        {
+            for (int i = 0; i < 100000000; i++)
+            {
+                var guid = Guid.NewGuid();
+                var tag = ProtobufSerializer.GenerateHierarchyTag(guid);
+
+                Assert.That(tag >= 0, Is.True, "Should be greater or equal to 0, but was {0}", tag);
+                Assert.That(tag <= 16777215, Is.True, "Should be lower or equal to 16777215, but was {0}", tag);
+            }
         }
     }
 }

@@ -10,15 +10,10 @@ namespace Paralect.Machine.Tests.Areas.Serialization.Fixtures.MessageSerializati
     [TestFixture]
     public class MessageSerializationImproved
     {
-        public void should_throw_on_duplicated_tag()
-        {
-            
-        }
-
         [Test]
         public void test_serialization()
         {
-            var messFactory = new MessageFactory(typeof(SampleEvent), typeof(ChildSampleEvent), typeof(Child2SampleEvent));
+            var messFactory = new MessageFactory(typeof(ChildSampleEvent), typeof(Child2SampleEvent));
             var protoSerializer = new ProtobufSerializer();
             protoSerializer.RegisterMessages(messFactory.MessageDefinitions);
 
@@ -43,7 +38,8 @@ namespace Paralect.Machine.Tests.Areas.Serialization.Fixtures.MessageSerializati
 
     [ProtoContract]
     [Message("{450e5ef4-e623-4775-b8f4-129698e19e22}")]
-    public class SampleEvent : Event<SampleId>
+    public class SampleEvent<TID> : Event<TID>
+        where TID : IIdentity
     {
         [ProtoMember(1)]
         public string Name { get; set; }
@@ -53,7 +49,7 @@ namespace Paralect.Machine.Tests.Areas.Serialization.Fixtures.MessageSerializati
 
     [ProtoContract]
     [Message("{8099fc8d-bccd-44c9-a641-0af70c2b27a1}")]
-    public class ChildSampleEvent : SampleEvent
+    public class ChildSampleEvent : SampleEvent<SampleId>
     {
         [ProtoMember(1)]
         public string ChildName { get; set; }
@@ -62,8 +58,8 @@ namespace Paralect.Machine.Tests.Areas.Serialization.Fixtures.MessageSerializati
     }
 
     [ProtoContract]
-    [Message("{8099fc8d-bccd-44c9-a641-0af70c2b27a1}")]
-    public class Child2SampleEvent : SampleEvent
+    [Message("{8099fc8d-bccd-44c9-a641-0af70c2b27a2}")]
+    public class Child2SampleEvent : SampleEvent<SampleId>
     {
         [ProtoMember(1)]
         public string Child2Name { get; set; }

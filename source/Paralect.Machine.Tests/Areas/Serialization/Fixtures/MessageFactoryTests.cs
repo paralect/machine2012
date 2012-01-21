@@ -1,4 +1,6 @@
-﻿using NUnit.Framework;
+﻿using System;
+using System.Linq;
+using NUnit.Framework;
 using Paralect.Machine.Identities;
 using Paralect.Machine.Messages;
 using ProtoBuf;
@@ -9,7 +11,7 @@ namespace Paralect.Machine.Tests.Areas.Serialization.Fixtures
     public class MessageFactoryTests
     {
         [Test]
-        public void should_throw_on_duplicated_tag()
+        public void should_throw_on_two_messages_with_the_same_message_tag()
         {
             Assert.Throws<MessageTagAlreadyRegistered>(() =>
             {
@@ -18,21 +20,13 @@ namespace Paralect.Machine.Tests.Areas.Serialization.Fixtures
         }
 
         [Test]
-        public void should_throw_on_duplicated_registration_of_the_same_message()
+        public void should_correctly_handle_duplicate_registration_of_the_same_message()
         {
-            Assert.Throws<MessageTypeAlreadyRegistered>(() =>
-            {
-                new MessageFactory(typeof(MessageFactoryEvent), typeof(MessageFactoryEvent));
-            });
-        }
+            var factory = new MessageFactory(typeof(MessageFactoryEvent), typeof(MessageFactoryEvent));
 
-        [Test]
-        public void should_throw_if_protobuf_hierarchy_tag_collision_found()
-        {
-            Assert.Throws<MessageProtoHierarchyTagCollision>(() =>
-            {
-                new MessageFactory(typeof(MessageFactoryProtoCollisionEvent), typeof(MessageFactoryProtoCollisionEvent2));
-            });            
+            Assert.That(factory.MessageDefinitions.Count(), Is.EqualTo(1));
+            Assert.That(factory.MessageDefinitions.First().Type, Is.EqualTo(typeof(MessageFactoryEvent)));
+            Assert.That(factory.MessageDefinitions.First().Tag, Is.EqualTo(Guid.Parse("509bc2f6-dc16-408d-a083-b4982e866034")));
         }
 
         [Test]
@@ -40,7 +34,7 @@ namespace Paralect.Machine.Tests.Areas.Serialization.Fixtures
         {
             Assert.Throws<MessageTagNotSpecified>(() =>
             {
-                new MessageFactory(typeof(MessageWithoutAttribute));
+                new MessageFactory(typeof(MessageFactoryMessageWithoutAttribute));
             });                        
         }
     }
@@ -92,7 +86,7 @@ namespace Paralect.Machine.Tests.Areas.Serialization.Fixtures
     #region Message not decorated with MessageAttribute
 
     [ProtoContract]
-    public class MessageWithoutAttribute : Event<MessageFactoryProcessId>
+    public class MessageFactoryMessageWithoutAttribute : Event<MessageFactoryProcessId>
     {
         [ProtoMember(1)]
         public string ChildName { get; set; }
