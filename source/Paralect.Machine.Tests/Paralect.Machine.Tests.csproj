@@ -70,7 +70,6 @@
     <Compile Include="Areas\Performance\Fixtures\TagFromGuidTest.cs" />
     <Compile Include="Areas\Serialization\Fixtures\IdentityFactoryTests.cs" />
     <Compile Include="Areas\Serialization\Fixtures\MessageFactoryTests.cs" />
-    <Compile Include="Areas\Serialization\Fixtures\MessageSerialization\MessageSerializationImproved.cs" />
     <Compile Include="Areas\Serialization\Fixtures\MessageSerialization\MessageSerializationTest.cs" />
     <Compile Include="Areas\Serialization\Fixtures\MessageSerialization\MessageSupportedSerializationTest.cs" />
     <Compile Include="Areas\Serialization\Fixtures\ProtobufSerializerTests.cs" />

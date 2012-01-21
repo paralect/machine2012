@@ -94,6 +94,33 @@ namespace Paralect.Machine.Tests.Areas.Serialization.Fixtures
         }
 
         [Test]
+        public void should_serialize_basic_list_and_dictionary_in_event()
+        {
+            Test(
+                new[] { typeof(ProtobufSerializer_ListAndDictionaryEvent)},
+                new[] { typeof(ProtobufSerializer_Id) },
+                new ProtobufSerializer_ListAndDictionaryEvent()
+                {
+                    Rate = 56.6,
+                    Title = "Hello",
+                    Child2 = "Child data",
+                    Dictionary = new Dictionary<string, int>() { {"hello", 1}, {"bye", 2} },
+                    List = new List<string>() { "minsk", "moscow", "paris" },
+                    Metadata = new EventMetadata<ProtobufSerializer_Id>()
+                    {
+                        LamportTimestamp = 567,
+                        MessageId = Guid.NewGuid(),
+                        SenderId = new ProtobufSerializer_Id() { Value = "som_id" },
+                        SenderVersion = 45,
+                        TriggerMessageId = Guid.NewGuid()
+                    }
+                }
+            );
+        }
+
+
+
+        [Test]
         public void should_serialize_two_childrens_of_the_same_base_event()
         {
             Test(
@@ -179,14 +206,10 @@ namespace Paralect.Machine.Tests.Areas.Serialization.Fixtures
                 var result = ObjectComparer.AreObjectsEqual(obj, back);
                 Assert.That(result, Is.True);
             }
-                
-
         }
 
-
-
         [Test]
-        public void should_be_calculated_correctly()
+        public void hierarchy_tag_should_be_calculated_correctly()
         {
             Action<String, Int32> test = (guidText, tag) =>
             {
@@ -203,6 +226,8 @@ namespace Paralect.Machine.Tests.Areas.Serialization.Fixtures
         }
     }
 
+
+    #region Identities and messages
 
     [ProtoContract, Identity("{7a0e638e-4d91-4216-aeb0-3bb4584e64d4}")]
     public class ProtobufSerializer_Id : StringId { }
@@ -230,4 +255,16 @@ namespace Paralect.Machine.Tests.Areas.Serialization.Fixtures
         [ProtoMember(1)]
         public String Child2 { get; set; }
     }
+
+    [ProtoContract, Message("{9abb67d4-b83d-42c1-8bbc-c20ffaff9fa5}")]
+    public class ProtobufSerializer_ListAndDictionaryEvent : ProtobufSerializer_Child2_Event
+    {
+        [ProtoMember(1)]
+        public List<String> List { get; set; }
+
+        [ProtoMember(2)]
+        public Dictionary<String, Int32> Dictionary { get; set; }
+    }
+
+    #endregion
 }
