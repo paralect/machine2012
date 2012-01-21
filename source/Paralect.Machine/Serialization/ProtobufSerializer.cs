@@ -82,9 +82,14 @@ namespace Paralect.Machine.Serialization
 
         public TObject Deserialize<TObject>(byte[] data)
         {
+            return (TObject) Deserialize(data, typeof(TObject));
+        }
+
+        public Object Deserialize(byte[] data, Type objType)
+        {
             using (MemoryStream memoryStream = new MemoryStream(data))
             {
-                TObject obj = (TObject)(_model.Deserialize(memoryStream, null, typeof(TObject)));
+                Object obj = _model.Deserialize(memoryStream, null, objType);
                 return obj;
             }
         }
@@ -93,6 +98,12 @@ namespace Paralect.Machine.Serialization
         {
             var bytes = Serialize(obj);
             return Deserialize<TObject>(bytes);
+        }
+
+        public Object SerializeAndDeserialize(Object obj, Type objType)
+        {
+            var bytes = Serialize(obj);
+            return Deserialize(bytes, objType);
         }
 
         /// <summary>
