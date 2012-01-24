@@ -60,7 +60,7 @@ namespace Paralect.Machine.Domain
                 transitionEvents.Add(new TransitionEvent(dataTypeRegistry.GetTypeId(e.GetType()), e, null));
             }
 
-            return new Transition(new TransitionId(_id, _version + 1), DateTime.UtcNow, transitionEvents, null);
+            return new Transition(new TransitionId(_id, _version + 1), DateTime.UtcNow, /*transitionEvents*/ null, null);
         }
 
         /// <summary>
@@ -72,7 +72,7 @@ namespace Paralect.Machine.Domain
             {
                 foreach (var evnt in transition.Events)
                 {
-                    Apply((IEvent) evnt.Data, false);
+                    Apply((IEvent) null /*evnt.Data*/, false);
                 }
 
                 _version = transition.Id.Version;

@@ -20,6 +20,15 @@ namespace Paralect.Machine.Serialization
         /// </summary>
         private readonly Dictionary<Type, Dictionary<Int32, Type>> _map = new Dictionary<Type, Dictionary<int, Type>>(100);
 
+
+        /// <summary>
+        /// Protobuf .net model of types that should be serialized and deserialized
+        /// </summary>
+        public RuntimeTypeModel Model
+        {
+            get { return _model; }
+        }
+
         /// <summary>
         /// Register message definitions
         /// </summary>

@@ -35,8 +35,8 @@ namespace Paralect.Machine.Domain
                 stream.Write(transition);
             }
 
-            if (_eventBus != null)
-                _eventBus.Publish(transition.Events.Select(e => (IEvent)e.Data).ToList<IEvent>());
+//            if (_eventBus != null)
+//                _eventBus.Publish(transition.Events.Select(e => (IEvent)e.Data).ToList<IEvent>());
         }
 
         public TAggregate GetById<TAggregate>(String id)

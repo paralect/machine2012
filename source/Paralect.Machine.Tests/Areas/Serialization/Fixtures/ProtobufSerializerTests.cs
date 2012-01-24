@@ -14,6 +14,23 @@ namespace Paralect.Machine.Tests.Areas.Serialization.Fixtures
     public class ProtobufSerializerTests
     {
         [Test]
+        public void hierarchy_tag_should_be_calculated_correctly()
+        {
+            Action<String, Int32> test = (guidText, tag) =>
+            {
+                var guid = Guid.Parse(guidText);
+                var calculatedTag = ProtobufSerializer.GenerateHierarchyTag(guid);
+                Assert.That(calculatedTag, Is.EqualTo(tag));
+            };
+
+            test("{66047c12-32c5-4842-8023-70d1658a836e}", 12661822);
+            test("{ea1dbd75-bf2b-4ed9-be6a-ce32c6b3e505}", 13175895);
+            test("{decde923-ff46-4c20-a6f6-ac7645e5325b}", 7625384);
+            test("{5c69c886-76ef-4458-8afb-dc7cc40501a2}", 7959428);
+            test("{628f6c9b-99bb-4bda-90e5-7b406ca0271a}", 13359269);
+        }
+
+        [Test]
         public void should_serialize_simple_event()
         {
             Test(
@@ -253,23 +270,6 @@ namespace Paralect.Machine.Tests.Areas.Serialization.Fixtures
                 var result = ObjectComparer.AreObjectsEqual(obj, back);
                 Assert.That(result, Is.True);
             }
-        }
-
-        [Test]
-        public void hierarchy_tag_should_be_calculated_correctly()
-        {
-            Action<String, Int32> test = (guidText, tag) =>
-            {
-                var guid = Guid.Parse(guidText);
-                var calculatedTag = ProtobufSerializer.GenerateHierarchyTag(guid);
-                Assert.That(calculatedTag, Is.EqualTo(tag));
-            };
-
-            test("{66047c12-32c5-4842-8023-70d1658a836e}", 12661822);
-            test("{ea1dbd75-bf2b-4ed9-be6a-ce32c6b3e505}", 13175895);
-            test("{decde923-ff46-4c20-a6f6-ac7645e5325b}",  7625384);
-            test("{5c69c886-76ef-4458-8afb-dc7cc40501a2}",  7959428);
-            test("{628f6c9b-99bb-4bda-90e5-7b406ca0271a}", 13359269);
         }
     }
 

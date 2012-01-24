@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Paralect.Machine.Messages;
 
 namespace Paralect.Machine.Transitions
 {
@@ -24,7 +25,7 @@ namespace Paralect.Machine.Transitions
         /// <summary>
         /// Events in commit
         /// </summary>
-        public List<TransitionEvent> Events { get; private set; }
+        public List<IEvent> Events { get; private set; }
 
         /// <summary>
         /// Metadata of commit
@@ -34,7 +35,7 @@ namespace Paralect.Machine.Transitions
         /// <summary>
         /// Initializes a new instance of the <see cref="T:System.Object"/> class.
         /// </summary>
-        public Transition(TransitionId transitionId, DateTime timestamp, List<TransitionEvent> events, Dictionary<string, object> metadata)
+        public Transition(TransitionId transitionId, DateTime timestamp, List<IEvent> events, Dictionary<string, object> metadata)
         {
             Id = transitionId;
             Events = events;

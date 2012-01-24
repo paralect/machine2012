@@ -26,7 +26,7 @@ namespace Paralect.Machine.Mongo.Transitions
             {
                 { "_id", SerializeTransitionId(transition.Id) },
                 { "Timestamp", transition.Timestamp },
-                { "Events", SerializeTransitionEvents(transition.Events) },
+                { "Events", SerializeTransitionEvents(null /*transition.Events*/) },
                 { "Metadata", SerializeMetadata(transition.Metadata) },
             };
         }
@@ -40,7 +40,7 @@ namespace Paralect.Machine.Mongo.Transitions
             var datetime = doc["Timestamp"].AsDateTime;
             var events = DeserializeTransitionEvents(doc["Events"]);
             var metadata = DeserializeMetadata(doc["Metadata"]);
-            return new Transition(transitionId, datetime, events, metadata);
+            return new Transition(transitionId, datetime, null /*events*/, metadata);
         }
 
 
@@ -93,6 +93,8 @@ namespace Paralect.Machine.Mongo.Transitions
         private BsonArray SerializeTransitionEvents(List<TransitionEvent> events)
         {
             BsonArray array = new BsonArray();
+
+            //array.Add(new BsonBinaryData())
 
             foreach (var e in events)
             {

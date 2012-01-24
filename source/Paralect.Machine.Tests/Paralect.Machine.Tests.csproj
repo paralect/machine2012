@@ -31,6 +31,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="clrzmq, Version=2.2.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\libs\clrzmq\x86\clrzmq.dll</HintPath>
+    </Reference>
+    <Reference Include="clrzmq-ext, Version=2.2.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\libs\clrzmq\x86\clrzmq-ext.dll</HintPath>
+    </Reference>
     <Reference Include="MongoDB.Bson">
       <HintPath>..\..\libs\MongoDriver\MongoDB.Bson.dll</HintPath>
     </Reference>
@@ -68,12 +76,14 @@
     <Compile Include="Areas\Performance\Fixtures\DynamicInvocationPerformanceTest.cs" />
     <Compile Include="Areas\Performance\Fixtures\SerializationPerformanceTest.cs" />
     <Compile Include="Areas\Performance\Fixtures\TagFromGuidTest.cs" />
+    <Compile Include="Areas\Serialization\Fixtures\EnvelopeSerializerTests.cs" />
     <Compile Include="Areas\Serialization\Fixtures\IdentityFactoryTests.cs" />
     <Compile Include="Areas\Serialization\Fixtures\MessageFactoryTests.cs" />
     <Compile Include="Areas\Serialization\Fixtures\MessageSerialization\MessageSerializationTest.cs" />
     <Compile Include="Areas\Serialization\Fixtures\MessageSerialization\MessageSupportedSerializationTest.cs" />
     <Compile Include="Areas\Serialization\Fixtures\ProtobufSerializerTests.cs" />
     <Compile Include="Areas\Serialization\Fixtures\Protobuf\InheritanceSerializationTest.cs" />
+    <Compile Include="Areas\Zeromq\SimpleTest.cs" />
     <Compile Include="Helpers\Mongo\MongoSerializer.cs" />
     <Compile Include="Helpers\ObjectComparer.cs" />
     <Compile Include="Helpers\Protobuf\ProtobufSerializer.cs" />
