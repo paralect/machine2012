@@ -9,14 +9,13 @@ namespace Paralect.Machine.Tests.Areas.Zeromq
     [TestFixture]
     public class SimpleTest
     {
-
         private const string Address = "inproc://test";
         private const uint MessageSize = 10;
         private const int RoundtripCount = 100;
 
         private static Context ctx;
 
-        [Test]
+        [Ignore]
         public void Should()
         {
             using (ctx = new Context(1))
@@ -43,6 +42,8 @@ namespace Paralect.Machine.Tests.Areas.Zeromq
                     skt.Bind(Address);
 
                     Console.WriteLine("Server has bound");
+
+                    
 
                     //  Bounce the messages.
                     for (var i = 0; i < RoundtripCount; i++)

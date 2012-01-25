@@ -48,6 +48,9 @@ namespace Paralect.Machine.Engine
             // Register disposables
             foreach (var process in _processes)
                 _disposables.Push(process);
+
+            // Initialize Processes
+            Initialize();
         }
 
         /// <summary>
