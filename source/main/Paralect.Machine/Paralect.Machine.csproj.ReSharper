@@ -14,5 +14,6 @@
     <SkipFolder>8BB02D8B-D654-4054-AAA2-D16743CFB501/d:Serialization/d:Exceptions</SkipFolder>
     <SkipFolder>8BB02D8B-D654-4054-AAA2-D16743CFB501/d:Transitions/d:Abstract</SkipFolder>
     <SkipFolder>8BB02D8B-D654-4054-AAA2-D16743CFB501/d:Transitions/d:Envelopes</SkipFolder>
+    <SkipFolder>8BB02D8B-D654-4054-AAA2-D16743CFB501/d:Transitions/d:InMemory</SkipFolder>
   </NamespaceFolders>
 </Configuration>

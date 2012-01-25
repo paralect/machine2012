@@ -13,8 +13,8 @@ namespace Paralect.Machine.Identities
         /// <summary>
         /// (Entity Tag --> Entity Type) and (Entity Type --> Entity Tag) maps
         /// </summary>
-        private static readonly Dictionary<Guid, IdentityDefinition> _tagToTypeMap = new Dictionary<Guid, IdentityDefinition>(100);
-        private static readonly Dictionary<Type, IdentityDefinition> _typeToTagMap = new Dictionary<Type, IdentityDefinition>(100);
+        private readonly Dictionary<Guid, IdentityDefinition> _tagToTypeMap = new Dictionary<Guid, IdentityDefinition>(100);
+        private readonly Dictionary<Type, IdentityDefinition> _typeToTagMap = new Dictionary<Type, IdentityDefinition>(100);
 
         /// <summary>
         /// All registered Identity Types
@@ -85,7 +85,7 @@ namespace Paralect.Machine.Identities
         /// <summary>
         /// Returns entity tag by Identity type
         /// </summary>
-        public static Guid GetTag(Type identityType)
+        public Guid GetTag(Type identityType)
         {
             return _typeToTagMap[identityType].Tag;
         }
@@ -93,7 +93,7 @@ namespace Paralect.Machine.Identities
         /// <summary>
         /// Returns Identity Type by enitity tag value
         /// </summary>
-        public static Type GetIdentityType(Guid tag)
+        public Type GetIdentityType(Guid tag)
         {
             return _tagToTypeMap[tag].Type;
         }

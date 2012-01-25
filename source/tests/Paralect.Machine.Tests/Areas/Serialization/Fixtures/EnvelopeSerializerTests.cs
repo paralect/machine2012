@@ -55,7 +55,7 @@ namespace Paralect.Machine.Tests.Areas.Serialization.Fixtures
 
         private const int _iterations = 100000;
 
-        [Test]
+        [Ignore("Takes time. Run this test manually")]
         public void tra_ta_ta()
         {
             var messageFactory = new MessageFactory(typeof(EnvelopeSerializer_Event), typeof(EnvelopeSerializer_Child_Event));
@@ -93,7 +93,7 @@ namespace Paralect.Machine.Tests.Areas.Serialization.Fixtures
 
         }
 
-        [Test]
+        [Ignore("Takes time. Run this test manually")]
         public void mongo_rongo()
         {
             var message1 = new EnvelopeSerializer_Event()

@@ -94,7 +94,7 @@
     <Compile Include="Referencies\TestReference.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Paralect.Machine\Paralect.Machine.csproj">
+    <ProjectReference Include="..\..\main\Paralect.Machine\Paralect.Machine.csproj">
       <Project>{8BB02D8B-D654-4054-AAA2-D16743CFB501}</Project>
       <Name>Paralect.Machine</Name>
     </ProjectReference>
