@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using NUnit.Framework;
 using Paralect.Machine.Identities;
 using Paralect.Machine.Messages;
@@ -34,17 +35,10 @@ namespace Paralect.Machine.Tests.Areas.Serialization.Fixtures
             var bytes = envelopeSerializer.Serialize(serializer, envelope);
             var back = envelopeSerializer.Deserialize(messageFactory.TagToTypeResolver, serializer, bytes);
 
+            var evnt = (EnvelopeSerializer_Event) back.Items.First().Message;
 
-
-            /*var memory = new MemoryStream();
-            serializer.Model.SerializeWithLengthPrefix(memory, header, header.GetType(), PrefixStyle.Base128, 0);
-            serializer.Model.SerializeWithLengthPrefix(memory, message1, message1.GetType(), PrefixStyle.Fixed32, 0);
-
-            memory.Position = 0;
-
-            var back = serializer.Model.DeserializeWithLengthPrefix(memory, null, header.GetType(), PrefixStyle.Base128, 0, null);
-            var backMessage1 = serializer.Model.DeserializeWithLengthPrefix(memory, null, typeof(TransitionEnvelopeSerializer_Event), PrefixStyle.Fixed32, 0, null);
-            */
+            Assert.That(evnt.Rate, Is.EqualTo(message1.Rate));
+            Assert.That(evnt.Title, Is.EqualTo(message1.Title));
         }
     }
 
