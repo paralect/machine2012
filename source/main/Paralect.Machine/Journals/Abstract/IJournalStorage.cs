@@ -2,6 +2,6 @@
 {
     public interface IJournalStorage
     {
-        //long Save()
+        long Save();
     }
 }

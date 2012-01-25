@@ -15,13 +15,13 @@ using ProtoBuf;
 namespace Paralect.Machine.Tests.Areas.Serialization.Fixtures
 {
     [TestFixture]
-    public class EnvelopeSerializerTests
+    public class TransitionEnvelopeSerializerTests
     {
         [Test]
         public void Teststtt()
         {
-            var messageFactory = new MessageFactory(typeof(EnvelopeSerializer_Event), typeof(EnvelopeSerializer_Child_Event));
-            var identityFactory = new IdentityFactory(typeof(EnvelopeSerializer_Id));
+            var messageFactory = new MessageFactory(typeof(TransitionEnvelopeSerializer_Event), typeof(TransitionEnvelopeSerializer_Child_Event));
+            var identityFactory = new IdentityFactory(typeof(TransitionEnvelopeSerializer_Id));
 
             var serializer = new ProtobufSerializer();
             serializer.RegisterMessages(messageFactory.MessageDefinitions);
@@ -36,7 +36,7 @@ namespace Paralect.Machine.Tests.Areas.Serialization.Fixtures
                 }
             };
 
-            var message1 = new EnvelopeSerializer_Event()
+            var message1 = new TransitionEnvelopeSerializer_Event()
             {
                 Rate = 0.7,
                 Title = "Muahaha!"
@@ -49,7 +49,7 @@ namespace Paralect.Machine.Tests.Areas.Serialization.Fixtures
             memory.Position = 0;
 
             var back = serializer.Model.DeserializeWithLengthPrefix(memory, null, header.GetType(), PrefixStyle.Base128, 0, null);
-            var backMessage1 = serializer.Model.DeserializeWithLengthPrefix(memory, null, typeof(EnvelopeSerializer_Event), PrefixStyle.Fixed32, 0, null);
+            var backMessage1 = serializer.Model.DeserializeWithLengthPrefix(memory, null, typeof(TransitionEnvelopeSerializer_Event), PrefixStyle.Fixed32, 0, null);
 
         }
 
@@ -58,14 +58,14 @@ namespace Paralect.Machine.Tests.Areas.Serialization.Fixtures
         [Ignore("Takes time. Run this test manually")]
         public void tra_ta_ta()
         {
-            var messageFactory = new MessageFactory(typeof(EnvelopeSerializer_Event), typeof(EnvelopeSerializer_Child_Event));
-            var identityFactory = new IdentityFactory(typeof(EnvelopeSerializer_Id));
+            var messageFactory = new MessageFactory(typeof(TransitionEnvelopeSerializer_Event), typeof(TransitionEnvelopeSerializer_Child_Event));
+            var identityFactory = new IdentityFactory(typeof(TransitionEnvelopeSerializer_Id));
 
             var serializer = new ProtobufSerializer();
             serializer.RegisterMessages(messageFactory.MessageDefinitions);
             serializer.RegisterIdentities(identityFactory.IdentityDefinitions);
 
-            var message1 = new EnvelopeSerializer_Event()
+            var message1 = new TransitionEnvelopeSerializer_Event()
             {
                 Rate = 0.7,
                 Title = "Muahaha!"
@@ -96,7 +96,7 @@ namespace Paralect.Machine.Tests.Areas.Serialization.Fixtures
         [Ignore("Takes time. Run this test manually")]
         public void mongo_rongo()
         {
-            var message1 = new EnvelopeSerializer_Event()
+            var message1 = new TransitionEnvelopeSerializer_Event()
             {
                 Rate = 0.7,
                 Title = "Muahaha!"
@@ -138,10 +138,10 @@ namespace Paralect.Machine.Tests.Areas.Serialization.Fixtures
     #region helpers
 
     [ProtoContract, Identity("{803b41b9-b566-4baf-a5ea-9744959fbac7}")]
-    public class EnvelopeSerializer_Id : StringId { }
+    public class TransitionEnvelopeSerializer_Id : StringId { }
 
     [ProtoContract, Message("{74467730-33c0-418a-bd83-963258ce6fa9}")]
-    public class EnvelopeSerializer_Event : Event<ProtobufSerializer_Id>
+    public class TransitionEnvelopeSerializer_Event : Event<ProtobufSerializer_Id>
     {
         [ProtoMember(1)]
         public String Title { get; set; }
@@ -151,7 +151,7 @@ namespace Paralect.Machine.Tests.Areas.Serialization.Fixtures
     }
 
     [ProtoContract, Message("{f55856e9-66b3-4fd4-9f6a-de9c2606a692}")]
-    public class EnvelopeSerializer_Child_Event : ProtobufSerializer_Event
+    public class TransitionEnvelopeSerializer_Child_Event : ProtobufSerializer_Event
     {
         [ProtoMember(1)]
         public String Child { get; set; }

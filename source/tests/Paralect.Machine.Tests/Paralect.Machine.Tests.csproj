@@ -77,7 +77,8 @@
     <Compile Include="Areas\Performance\Fixtures\DynamicInvocationPerformanceTest.cs" />
     <Compile Include="Areas\Performance\Fixtures\SerializationPerformanceTest.cs" />
     <Compile Include="Areas\Performance\Fixtures\TagFromGuidTest.cs" />
-    <Compile Include="Areas\Serialization\Fixtures\EnvelopeSerializerTests.cs" />
+    <Compile Include="Areas\Serialization\Fixtures\EnvelopeSerializerTest.cs" />
+    <Compile Include="Areas\Serialization\Fixtures\TransitionEnvelopeSerializerTests.cs" />
     <Compile Include="Areas\Serialization\Fixtures\IdentityFactoryTests.cs" />
     <Compile Include="Areas\Serialization\Fixtures\MessageFactoryTests.cs" />
     <Compile Include="Areas\Serialization\Fixtures\MessageSerialization\MessageSerializationTest.cs" />

@@ -25,6 +25,16 @@ namespace Paralect.Machine.Messages
             get { return _typeToMessageType.Values; }
         }
 
+        public Func<Guid, Type> TagToTypeResolver
+        {
+            get { return tag => GetMessageType(tag); }
+        }
+
+        public Func<Type, Guid> TypeToTagResolver
+        {
+            get { return type => GetMessageTag(type); }
+        }
+
         /// <summary>
         /// Creates MessageFactory with specified set of message types.
         /// </summary>

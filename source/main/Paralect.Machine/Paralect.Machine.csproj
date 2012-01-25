@@ -75,6 +75,11 @@
     <Compile Include="Journals\JournalStorage.cs" />
     <Compile Include="Journals\Processes\JournalEngineProcess.cs" />
     <Compile Include="Messages\Attributes\MessageAttribute.cs" />
+    <Compile Include="Messages\Envelopes\Envelope.cs" />
+    <Compile Include="Messages\Envelopes\EnvelopeBuilder.cs" />
+    <Compile Include="Messages\Envelopes\EnvelopeHeader.cs" />
+    <Compile Include="Messages\Envelopes\EnvelopeItem.cs" />
+    <Compile Include="Messages\Envelopes\EnvelopeSerializer.cs" />
     <Compile Include="Messages\Event.cs" />
     <Compile Include="Messages\EventMetadata.cs" />
     <Compile Include="Messages\Abstract\ICommand.cs" />
@@ -132,7 +137,7 @@
     <Compile Include="Utilities\ReflectionUtilities.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Envelopes\" />
+    <Folder Include="Journals\InMemory\" />
     <Folder Include="Partitions\" />
     <Folder Include="Projections\" />
     <Folder Include="Views\" />

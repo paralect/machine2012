@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using ProtoBuf;
 
 namespace Paralect.Machine.Messages
 {
     /// <summary>
-    /// 
-    /// Individual message header. 
-    /// 
+    /// Transport envelope of set of messages. 
+    /// </summary>
+    /// <remarks>
     ///   ------------------------------
     ///   |  Envelope                  |
     ///   |                            |
@@ -39,35 +38,44 @@ namespace Paralect.Machine.Messages
     ///   |                            |
     ///   |                            |
     ///   ------------------------------
-    ///
-    /// </summary>
-    [ProtoContract]
-    public class MessageHeader
+    /// </remarks>
+    public class Envelope
     {
-        [ProtoMember(1)]
-        public Guid MessageTag { get; set; }
+        /// <summary>
+        /// Messages in the envelope
+        /// </summary>
+        private readonly List<EnvelopeItem> _items = new List<EnvelopeItem>();
 
-        private Dictionary<string, string> _metadata = new Dictionary<string, string>();
+        /// <summary>
+        /// Envelope header
+        /// </summary>
+        public EnvelopeHeader Header { get; set; }
 
-        [ProtoMember(2)]
-        public Dictionary<String, String> Metadata
+        /// <summary>
+        /// Messages in the envelope
+        /// </summary>
+        public IEnumerable<EnvelopeItem> Items
         {
-            get { return _metadata; }
-            set { _metadata = value; }
+            get { return _items; }
         }
 
-        public MessageHeader()
+        /// <summary>
+        /// Number of messages in envelope
+        /// </summary>
+        public Int32 ItemsCount
         {
+            get { return _items.Count;  }
         }
 
-        public MessageHeader(Guid messageTag)
+        /// <summary>
+        /// Add item to envelope
+        /// </summary>
+        public void AddItem(EnvelopeItem item)
         {
-            MessageTag = messageTag;
-        }
+            if (item == null)
+                throw new ArgumentNullException("item");
 
-        public void AddMetadata(String key, String value)
-        {
-            _metadata.Add(key, value);
+            _items.Add(item);
         }
     }
 }
