@@ -2,12 +2,12 @@
 
 namespace Paralect.Machine.Messages
 {
-    public class EnvelopeItem
+    public class MessageEnvelope
     {
         public MessageHeader Header { get; set; }
         public IMessage Message { get; set; }
 
-        public EnvelopeItem(MessageHeader header, IMessage message)
+        public MessageEnvelope(MessageHeader header, IMessage message)
         {
             if (header == null)
                 throw new ArgumentNullException("header");

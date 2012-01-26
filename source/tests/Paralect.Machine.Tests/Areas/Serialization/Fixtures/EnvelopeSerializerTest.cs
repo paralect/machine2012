@@ -31,9 +31,9 @@ namespace Paralect.Machine.Tests.Areas.Serialization.Fixtures
                 .AddMessage(message1)
                 .Build();
 
-            var envelopeSerializer = new EnvelopeSerializer();
-            var bytes = envelopeSerializer.Serialize(serializer, envelope);
-            var back = envelopeSerializer.Deserialize(messageFactory.TagToTypeResolver, serializer, bytes);
+            var envelopeSerializer = new EnvelopeSerializer(serializer, messageFactory.TagToTypeResolver);
+            var bytes = envelopeSerializer.Serialize(envelope);
+            var back = envelopeSerializer.Deserialize(bytes);
 
             var evnt = (EnvelopeSerializer_Event) back.Items.First().Message;
 

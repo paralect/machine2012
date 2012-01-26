@@ -7,23 +7,21 @@ using Paralect.Machine.Messages;
 using Paralect.Machine.Serialization;
 using ZMQ;
 
-namespace Paralect.Machine.Journals.Processes
+namespace Paralect.Machine.Routers
 {
-    public class JournalEngineProcess : IEngineProcess
+    public class RouterEngineProcess : IEngineProcess
     {
         private readonly MessageFactory _messageFactory;
         private readonly ProtobufSerializer _serializer;
         private readonly Context _context;
-        private readonly IJournalStorage _storage;
         private readonly String _address;
 
-        public JournalEngineProcess(MessageFactory messageFactory, ProtobufSerializer serializer, Context context, String address, IJournalStorage storage)
+        public RouterEngineProcess(MessageFactory messageFactory, ProtobufSerializer serializer, Context context, String address)
         {
             _messageFactory = messageFactory;
             _serializer = serializer;
             _context = context;
             _address = address;
-            _storage = storage;
         }
 
         public void Initialize()
@@ -41,11 +39,10 @@ namespace Paralect.Machine.Journals.Processes
 
                     using (var socket = _context.Socket(SocketType.REP))
                     {
-                        Thread.Sleep(200); // simulate late bind
-                        socket.Bind(_address);
+                        socket.Connect(_address);
 
                         Console.WriteLine();
-                        Console.WriteLine("Journal Server has bound");
+                        Console.WriteLine("Router process has connected");
 
                         while (!token.IsCancellationRequested)
                         {
@@ -54,17 +51,13 @@ namespace Paralect.Machine.Journals.Processes
                             if (bytes == null)
                                 continue;
 
-                            // Journal messages
-                            Envelope envelope = envelopeSerializer.Deserialize(bytes);
-                            var seq = _storage.Save(envelope.Items);
-
-                            // Answer that messages journaled successfully
+/*                            // Answer that messages journaled successfully
                             var message = new MessagesJournaledSuccessfully {Sequence = seq};
                             var answerBytes = new EnvelopeBuilder(_messageFactory.TypeToTagResolver)
                                 .AddMessage(message)
-                                .BuildAndSerialize(envelopeSerializer);
+                                .BuildAndSerialize(envelopeSerializer);*/
 
-                            socket.Send(answerBytes);
+                          //  socket.Send(answerBytes);
                         }
 
                         Console.WriteLine("Done with server");

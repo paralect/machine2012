@@ -15,11 +15,13 @@ namespace Paralect.Machine.Tests.Areas.Engine
         [Ignore("Test takes time, run this test manually")]
         public void simple_test()
         {
-            var context = new Context(0);
+            var context = new Context(2);
             var engine = new EngineHost(new System.Collections.Generic.List<IEngineProcess>()
             {
-                new ServerEngineProcess(context, "inproc://test"),
-                new ClientEngineProcess(context, "inproc://test", 1000000),
+                //new ServerEngineProcess(context, "inproc://test"),
+                //new ClientEngineProcess(context, "inproc://test", 10000),
+                new ServerEngineProcess(context, "tcp://*:5567"),
+                new ClientEngineProcess(context, "tcp://localhost:5567", 10000),
             });
 
             using (var token = new CancellationTokenSource())
@@ -61,7 +63,7 @@ namespace Paralect.Machine.Tests.Areas.Engine
                 {
                     using (var skt = _context.Socket(SocketType.REP))
                     {
-                        Thread.Sleep(2000); // simulate late bind
+                        Thread.Sleep(200); // simulate late bind
                         skt.Bind(_address);
 
                         Console.WriteLine();
@@ -133,14 +135,18 @@ namespace Paralect.Machine.Tests.Areas.Engine
                             }
                             catch(ZMQ.Exception ex)
                             {
-                                Console.Write("*");
                                 // Connection refused
                                 if (ex.Errno == 107)
                                 {
+                                    Console.Write("*");
                                     Func<Boolean> f = () => token.IsCancellationRequested;
                                     SpinWait.SpinUntil(f, 100);
 //                                    Thread.Sleep(300);
                                     continue;
+                                }
+                                else
+                                {
+                                    Console.WriteLine(ex);
                                 }
                             }
                         }

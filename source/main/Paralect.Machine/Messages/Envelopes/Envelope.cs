@@ -44,7 +44,7 @@ namespace Paralect.Machine.Messages
         /// <summary>
         /// Messages in the envelope
         /// </summary>
-        private readonly List<EnvelopeItem> _items = new List<EnvelopeItem>();
+        private readonly List<MessageEnvelope> _items = new List<MessageEnvelope>();
 
         /// <summary>
         /// Envelope header
@@ -54,7 +54,7 @@ namespace Paralect.Machine.Messages
         /// <summary>
         /// Messages in the envelope
         /// </summary>
-        public IEnumerable<EnvelopeItem> Items
+        public IEnumerable<MessageEnvelope> Items
         {
             get { return _items; }
         }
@@ -70,7 +70,7 @@ namespace Paralect.Machine.Messages
         /// <summary>
         /// Add item to envelope
         /// </summary>
-        public void AddItem(EnvelopeItem item)
+        public void AddItem(MessageEnvelope item)
         {
             if (item == null)
                 throw new ArgumentNullException("item");

@@ -1,7 +1,11 @@
-﻿namespace Paralect.Machine.Journals.Abstract
+﻿using System;
+using System.Collections.Generic;
+using Paralect.Machine.Messages;
+
+namespace Paralect.Machine.Journals.Abstract
 {
     public interface IJournalStorage
     {
-        long Save();
+        Int64 Save(IEnumerable<MessageEnvelope> messageEnvelope);
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using Paralect.Machine.Serialization;
 
 namespace Paralect.Machine.Messages
 {
@@ -20,15 +21,15 @@ namespace Paralect.Machine.Messages
             
             messageHeader.AddMetadata("Description", message.ToString());
 
-            var envelopeItem = new EnvelopeItem(messageHeader, message);
+            var envelopeItem = new MessageEnvelope(messageHeader, message);
             _envelope.AddItem(envelopeItem);
             
             return this;
         }
 
-        public EnvelopeBuilder AddEnvelopeItem(EnvelopeItem envelopeItem)
+        public EnvelopeBuilder AddMessageEnvelope(MessageEnvelope messageEnvelope)
         {
-            _envelope.AddItem(envelopeItem);
+            _envelope.AddItem(messageEnvelope);
             return this;
         }
 
@@ -41,6 +42,13 @@ namespace Paralect.Machine.Messages
         public Envelope Build()
         {
             return _envelope;
+        }
+
+        public byte[] BuildAndSerialize(EnvelopeSerializer serializer)
+        {
+            var envelope = Build();
+            var answerBytes = serializer.Serialize(envelope);
+            return answerBytes;
         }
     }
 }
