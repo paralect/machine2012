@@ -78,6 +78,7 @@
     <Compile Include="Areas\Performance\Fixtures\SerializationPerformanceTest.cs" />
     <Compile Include="Areas\Performance\Fixtures\TagFromGuidTest.cs" />
     <Compile Include="Areas\Serialization\Fixtures\EnvelopeSerializerTest.cs" />
+    <Compile Include="Areas\Serialization\Fixtures\HeaderTests.cs" />
     <Compile Include="Areas\Serialization\Fixtures\TransitionEnvelopeSerializerTests.cs" />
     <Compile Include="Areas\Serialization\Fixtures\IdentityFactoryTests.cs" />
     <Compile Include="Areas\Serialization\Fixtures\MessageFactoryTests.cs" />
@@ -85,6 +86,7 @@
     <Compile Include="Areas\Serialization\Fixtures\MessageSerialization\MessageSupportedSerializationTest.cs" />
     <Compile Include="Areas\Serialization\Fixtures\ProtobufSerializerTests.cs" />
     <Compile Include="Areas\Serialization\Fixtures\Protobuf\InheritanceSerializationTest.cs" />
+    <Compile Include="Areas\Zeromq\MultipartSimpleTest.cs" />
     <Compile Include="Areas\Zeromq\SimpleTest.cs" />
     <Compile Include="Helpers\Mongo\MongoSerializer.cs" />
     <Compile Include="Helpers\ObjectComparer.cs" />

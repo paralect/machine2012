@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Text;
 using System.Threading;
 using NUnit.Framework;
 using ZMQ;
@@ -7,9 +8,9 @@ using ZMQ;
 namespace Paralect.Machine.Tests.Areas.Zeromq
 {
     [TestFixture]
-    public class SimpleTest
+    public class MultipartSimpleTest
     {
-        private const string Address = "inproc://Paralect.Machine.Tests.Areas.Zeromq.SimpleTest";
+        private const string Address = "inproc://Paralect.Machine.Tests.Areas.Zeromq.MultipartSimpleTest";
         private const uint MessageSize = 10;
         private const int RoundtripCount = 100;
 
@@ -48,9 +49,12 @@ namespace Paralect.Machine.Tests.Areas.Zeromq
                     //  Bounce the messages.
                     for (var i = 0; i < RoundtripCount; i++)
                     {
-                        var msg = skt.Recv();
-                        Debug.Assert(msg.Length == MessageSize);
-                        skt.Send(msg);
+                        var msg = skt.RecvAll(Encoding.UTF8);
+
+                        Console.WriteLine("Part 1: {0}, Part 2: {1}", msg.Dequeue(), msg.Dequeue());
+                        
+
+                        skt.Send("thanks!", Encoding.UTF8);
                     }
                     Thread.Sleep(1000);
                 }
@@ -69,7 +73,7 @@ namespace Paralect.Machine.Tests.Areas.Zeromq
 
             try
             {
-                
+                //  Initialise 0MQ
                 using (var skt = ctx.Socket(SocketType.REQ))
                 {
                     skt.Connect(Address);
@@ -79,21 +83,22 @@ namespace Paralect.Machine.Tests.Areas.Zeromq
                     //  Create a message to send.
                     var msg = new byte[MessageSize];
 
-                    
+                    //  Start measuring the time.
                     var watch = new Stopwatch();
                     watch.Start();
 
                     //  Start sending messages.
                     for (var i = 0; i < RoundtripCount; i++)
                     {
-                        skt.Send(msg);
+                        skt.SendMore("Duncan", Encoding.UTF8);
+                        skt.Send("MacLeod", Encoding.UTF8);
                         msg = skt.Recv();
-                        Debug.Assert(msg.Length == MessageSize);
+                        //Debug.Assert(msg.Length == MessageSize);
 
                         Console.Write(".");
                     }
 
-                    
+                    //  Stop measuring the time.
                     watch.Stop();
                     var elapsedTime = watch.ElapsedTicks;
 

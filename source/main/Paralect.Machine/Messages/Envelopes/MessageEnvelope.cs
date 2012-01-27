@@ -4,9 +4,19 @@ namespace Paralect.Machine.Messages
 {
     public class MessageEnvelope
     {
+        /// <summary>
+        /// Message tag and key-value information
+        /// </summary>
         public MessageHeader Header { get; set; }
+
+        /// <summary>
+        /// Actual single message in the envelope
+        /// </summary>
         public IMessage Message { get; set; }
 
+        /// <summary>
+        /// Constructs MessageEnvelope
+        /// </summary>
         public MessageEnvelope(MessageHeader header, IMessage message)
         {
             if (header == null)

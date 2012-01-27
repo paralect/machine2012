@@ -5,12 +5,12 @@ using Paralect.Machine.Messages;
 
 namespace Paralect.Machine.Journals.InMemory
 {
-    public class InMemoryJournalStorage : IJournalStorage
+    public class InMemoryJournalStorage// : IJournalStorage
     {
-        private List<MessageEnvelope> _storage = new List<MessageEnvelope>();
+        private readonly List<BinaryMessageEnvelope> _storage = new List<BinaryMessageEnvelope>();
         private Int64 _sequance = 0;
 
-        public long Save(IEnumerable<MessageEnvelope> messageEnvelope)
+        public long Save(MessageHeader header, IEnumerable<BinaryMessageEnvelope> messageEnvelope)
         {
             foreach (var envelope in messageEnvelope)
             {

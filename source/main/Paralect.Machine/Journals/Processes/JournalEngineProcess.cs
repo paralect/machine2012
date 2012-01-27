@@ -49,14 +49,14 @@ namespace Paralect.Machine.Journals.Processes
 
                         while (!token.IsCancellationRequested)
                         {
-                            var bytes = socket.Recv(200);
+                            var bytes = socket.RecvAll();
 
                             if (bytes == null)
                                 continue;
 
                             // Journal messages
-                            Envelope envelope = envelopeSerializer.Deserialize(bytes);
-                            var seq = _storage.Save(envelope.Items);
+                            Envelope envelope = envelopeSerializer.Deserialize(new BinaryEnvelope()); //TODO: wooops!
+                            var seq = 242; //_storage.Save(envelope.Items);
 
                             // Answer that messages journaled successfully
                             var message = new MessagesJournaledSuccessfully {Sequence = seq};
@@ -64,7 +64,7 @@ namespace Paralect.Machine.Journals.Processes
                                 .AddMessage(message)
                                 .BuildAndSerialize(envelopeSerializer);
 
-                            socket.Send(answerBytes);
+//                            socket.Send(answerBytes);
                         }
 
                         Console.WriteLine("Done with server");

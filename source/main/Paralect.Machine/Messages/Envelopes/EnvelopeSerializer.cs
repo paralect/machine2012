@@ -16,71 +16,88 @@ namespace Paralect.Machine.Messages
             _tagToTypeResolver = tagToTypeResolver;
         }
 
-        public byte[] Serialize(Envelope transition)
+        public BinaryEnvelope Serialize(Envelope envelope)
         {
+            var binaryEnvelope = new BinaryEnvelope();
             var memory = new MemoryStream();
-            _serializer.Model.SerializeWithLengthPrefix(memory, transition.Header, typeof(EnvelopeHeader), PrefixStyle.Base128, 0);
+            _serializer.Model.SerializeWithLengthPrefix(memory, envelope.Header, typeof(EnvelopeHeader), PrefixStyle.Base128, 0);
+            binaryEnvelope.Header = memory.ToArray();
 
-            foreach (var item in transition.Items)
+            foreach (var item in envelope.Items)
             {
-                WriteMessageEnvelope(memory, item);
+                var binaryMessageEnvelope = WriteMessageEnvelope(item);
+                binaryEnvelope.AddBinaryMessageEnvelope(binaryMessageEnvelope);
             }
 
-            // TODO: ToArray() is inefficient because of copy
-            return memory.ToArray();
+            return binaryEnvelope;
         }
 
-        private void WriteMessageEnvelope(MemoryStream memory, MessageEnvelope messageEnvelope)
+        private BinaryMessageEnvelope WriteMessageEnvelope(MessageEnvelope messageEnvelope)
         {
-            _serializer.Model.SerializeWithLengthPrefix(memory, messageEnvelope.Header, typeof(MessageHeader), PrefixStyle.Base128, 0);
-            _serializer.Model.SerializeWithLengthPrefix(memory, messageEnvelope.Message, messageEnvelope.Message.GetType(), PrefixStyle.Base128, 0);
+            var binaryMessageEnvelope = new BinaryMessageEnvelope();
+
+            using (var headerMemory = new MemoryStream())
+            {
+                _serializer.Model.SerializeWithLengthPrefix(headerMemory, messageEnvelope.Header, typeof(MessageHeader), PrefixStyle.Base128, 0);
+                binaryMessageEnvelope.Header = headerMemory.ToArray();
+            }
+
+            using (var messageMemory = new MemoryStream())
+            {
+                _serializer.Model.SerializeWithLengthPrefix(messageMemory, messageEnvelope.Message, messageEnvelope.Message.GetType(), PrefixStyle.Base128, 0);
+                binaryMessageEnvelope.Message = messageMemory.ToArray();
+            }
+
+            return binaryMessageEnvelope;
         }
 
-        public byte[] Serialize(MessageEnvelope messageEnvelope)
+        public BinaryMessageEnvelope Serialize(MessageEnvelope messageEnvelope)
         {
-            var memory = new MemoryStream();
-            WriteMessageEnvelope(memory, messageEnvelope);
-            return memory.ToArray();
+            return WriteMessageEnvelope(messageEnvelope);
         }
 
-        public Envelope Deserialize(byte[] bytes)
+        public Envelope Deserialize(BinaryEnvelope binaryEnvelope)
         {
-            var memory = new MemoryStream(bytes);
-
             var envelope = new Envelope();
 
-            envelope.Header = (EnvelopeHeader) _serializer.Model.DeserializeWithLengthPrefix(memory, null, typeof(EnvelopeHeader), PrefixStyle.Base128, 0, null);
-            while (true)
+
+            using (var memory = new MemoryStream(binaryEnvelope.Header))
             {
-                var item = ReadMessageEnvelope(memory, bytes);
-
-                if (item == null) // we are reached the end
-                    break;
-
+                envelope.Header = (EnvelopeHeader)_serializer.Model.DeserializeWithLengthPrefix(memory, null, typeof(EnvelopeHeader), PrefixStyle.Base128, 0, null);
+            }
+            
+            foreach (var binaryMessageEnvelope in binaryEnvelope.MessageEnvelopes)
+            {
+                var item = ReadMessageEnvelope(binaryMessageEnvelope);
                 envelope.AddItem(item);
             }
 
             return envelope;
         }
 
-        private MessageEnvelope ReadMessageEnvelope(MemoryStream memory, byte[] bytes)
+        private MessageEnvelope ReadMessageEnvelope(BinaryMessageEnvelope binaryMessageEnvelope)
         {
-            var messageHeader = (MessageHeader) _serializer.Model.DeserializeWithLengthPrefix(memory, null, typeof(MessageHeader), PrefixStyle.Base128, 0, null);
+            MessageHeader messageHeader = null;
+            IMessage message = null;
 
-            if (messageHeader == null) // we are reached the end
-                return null;
+            using(var headerMemory = new MemoryStream(binaryMessageEnvelope.Header))
+            {
+                messageHeader = (MessageHeader)_serializer.Model.DeserializeWithLengthPrefix(headerMemory, null, typeof(MessageHeader), PrefixStyle.Base128, 0, null);    
+            }
 
             var messageType = _tagToTypeResolver(messageHeader.MessageTag);
-            var message = (IMessage) _serializer.Model.DeserializeWithLengthPrefix(memory, null, messageType, PrefixStyle.Base128, 0, null);
 
+            using (var messageMemory = new MemoryStream(binaryMessageEnvelope.Message))
+            {
+                message = (IMessage)_serializer.Model.DeserializeWithLengthPrefix(messageMemory, null, messageType, PrefixStyle.Base128, 0, null);
+            }
+            
             return new MessageEnvelope(messageHeader, message);
         }
 
-        public MessageEnvelope DeserializeMessageEnvelope(Func<Guid, Type> tagToTypeResolver , ProtobufSerializer serializer, byte[] bytes)
+        public MessageEnvelope DeserializeMessageEnvelope(BinaryMessageEnvelope binaryMessageEnvelope)
         {
-            var memory = new MemoryStream(bytes);
-            var item = ReadMessageEnvelope(memory, bytes);
-            return item;
+            return ReadMessageEnvelope(binaryMessageEnvelope);
         }
     }
 }

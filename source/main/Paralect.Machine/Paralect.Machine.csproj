@@ -73,19 +73,23 @@
     <Compile Include="Domain\Results\ResultCollectionExtensions.cs" />
     <Compile Include="Domain\Results\ResultCollection.cs" />
     <Compile Include="Domain\Results\SendResult.cs" />
+    <Compile Include="Header.cs" />
     <Compile Include="Identities\Exceptions\IdentityTagNotSpecified.cs" />
     <Compile Include="Identities\Exceptions\IdentityTagAlreadyRegistered.cs" />
     <Compile Include="Identities\GuidId.cs" />
     <Compile Include="Identities\IdentityDefinition.cs" />
     <Compile Include="Journals\Abstract\IJournalStorage.cs" />
     <Compile Include="Journals\InMemory\InMemoryJournalStorage.cs" />
+    <Compile Include="Journals\JournalEntry.cs" />
     <Compile Include="Journals\JournalStorage.cs" />
     <Compile Include="Journals\Messages\MessagesJournaledSuccessfully.cs" />
     <Compile Include="Journals\Processes\JournalEngineProcess.cs" />
     <Compile Include="Messages\Attributes\MessageAttribute.cs" />
+    <Compile Include="Messages\Envelopes\BinaryEnvelope.cs" />
     <Compile Include="Messages\Envelopes\Envelope.cs" />
     <Compile Include="Messages\Envelopes\EnvelopeBuilder.cs" />
     <Compile Include="Messages\Envelopes\EnvelopeHeader.cs" />
+    <Compile Include="Messages\Envelopes\BinaryMessageEnvelope.cs" />
     <Compile Include="Messages\Envelopes\MessageEnvelope.cs" />
     <Compile Include="Messages\Envelopes\EnvelopeSerializer.cs" />
     <Compile Include="Messages\Event.cs" />
@@ -113,7 +117,7 @@
     <Compile Include="Messages\Abstract\ISystemEvent.cs" />
     <Compile Include="Messages\Abstract\IMessage.cs" />
     <Compile Include="Messages\Envelopes\MessageHeader.cs" />
-    <Compile Include="Routers\Processes\JournalEngineProcess.cs" />
+    <Compile Include="Routers\Processes\RouterEngineProcess.cs" />
     <Compile Include="Serialization\Exceptions\ProtoHierarchyTagCollision.cs" />
     <Compile Include="Messages\Registration\Exceptions\MessageTagAlreadyRegistered.cs" />
     <Compile Include="Messages\Registration\Exceptions\MessageTagNotSpecified.cs" />
@@ -143,11 +147,14 @@
     <Compile Include="Transitions\TransitionStorage.cs" />
     <Compile Include="Transitions\TransitionStream.cs" />
     <Compile Include="Utilities\ByteArrayComparer.cs" />
+    <Compile Include="Utilities\ClrzmqExtensions.cs" />
     <Compile Include="Utilities\ReflectionUtilities.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Messages\Metadata\" />
     <Folder Include="Partitions\" />
     <Folder Include="Projections\" />
+    <Folder Include="TODO\" />
     <Folder Include="Views\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

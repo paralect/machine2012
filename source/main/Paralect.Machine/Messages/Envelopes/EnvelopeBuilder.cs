@@ -44,7 +44,7 @@ namespace Paralect.Machine.Messages
             return _envelope;
         }
 
-        public byte[] BuildAndSerialize(EnvelopeSerializer serializer)
+        public BinaryEnvelope BuildAndSerialize(EnvelopeSerializer serializer)
         {
             var envelope = Build();
             var answerBytes = serializer.Serialize(envelope);
