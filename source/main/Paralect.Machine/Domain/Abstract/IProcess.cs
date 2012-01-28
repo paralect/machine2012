@@ -5,8 +5,18 @@ using Paralect.Machine.Messages;
 
 namespace Paralect.Machine.Domain
 {
+    public class OperationContext
+    {
+        public Header Headers { get; set; }
+        public IProcessState State { get; set; }
+
+        // .. to be continued
+    }
+
     public interface IProcess
     {
+        //void Initialize(OperationContext context);
+
         /// <summary>
         /// Execute command 
         /// </summary>

@@ -4,7 +4,14 @@ using ProtoBuf;
 
 namespace Paralect.Machine
 {
-
+    /// <summary>
+    /// Header is simply a key-value collection designed to be:
+    ///   1) Well serialized by ProtoBuf (size of empty Header is 0 (zero) bytes)
+    ///   2) To eliminate boxing/unboxing in runtime, for supported value types (comparing with single Dictionary(String, Object))
+    ///   3) To eliminate parsing in runtime (comparing with single Dictionary(String, String)
+    /// 
+    /// Value type can be one of the following: String, Int32, Int64, Guid, Boolean and DateTime.
+    /// </summary>
     [ProtoContract]
     public class Header
     {
@@ -17,7 +24,7 @@ namespace Paralect.Machine
         }
 
         /*
-        ** "Set" methods. All "Set" methods overwriting previous value, if such exist.
+        ** "Set" methods. All "Set" methods overwriting previous value, if it already exists.
         */
 
         public void Set(String key, String value)

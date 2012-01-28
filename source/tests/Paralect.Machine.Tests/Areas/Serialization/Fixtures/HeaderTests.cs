@@ -37,7 +37,7 @@ namespace Paralect.Machine.Tests.Areas.Serialization.Fixtures
         }
 
         [Test]
-        public void should_correctly_perform_with_string_values()
+        public void should_correctly_performs_with_string_values()
         {
             var header = new Header();
 
@@ -63,11 +63,31 @@ namespace Paralect.Machine.Tests.Areas.Serialization.Fixtures
             Assert.Throws<InvalidCastException>(() => { header.GetBoolean("Test"); });
             Assert.Throws<InvalidCastException>(() => { header.GetGuid("Test"); });
             Assert.Throws<InvalidCastException>(() => { header.GetDateTime("Test"); });
+
+            String value;
+            Boolean result;
+
+            result = header.TryGetString("Test", out value);
+            Assert.That(result, Is.EqualTo(true));
+            Assert.That(value, Is.EqualTo("Value"));
+
+            result = header.TryGetString("Test2", out value);
+            Assert.That(result, Is.EqualTo(true));
+            Assert.That(value, Is.EqualTo("Value2"));
+
+            result = header.TryGetString("Test3", out value);
+            Assert.That(result, Is.EqualTo(false));
+            Assert.That(value, Is.EqualTo(null));
+
+            Int32 intValue;
+            result = header.TryGetInt32("Test3", out intValue);
+            Assert.That(result, Is.EqualTo(false));
+            Assert.That(intValue, Is.EqualTo(0));
         }
 
 
         [Test]
-        public void should_correctly_perform_with_int32_values()
+        public void should_correctly_performs_with_int32_values()
         {
             var header = new Header();
 
@@ -93,6 +113,21 @@ namespace Paralect.Machine.Tests.Areas.Serialization.Fixtures
             Assert.Throws<InvalidCastException>(() => { header.GetBoolean("Test"); });
             Assert.Throws<InvalidCastException>(() => { header.GetGuid("Test"); });
             Assert.Throws<InvalidCastException>(() => { header.GetDateTime("Test"); });
+
+            Int32 value;
+            Boolean result;
+
+            result = header.TryGetInt32("Test", out value);
+            Assert.That(result, Is.EqualTo(true));
+            Assert.That(value, Is.EqualTo(35));
+
+            result = header.TryGetInt32("Test2", out value);
+            Assert.That(result, Is.EqualTo(true));
+            Assert.That(value, Is.EqualTo(67));
+
+            result = header.TryGetInt32("Test3", out value);
+            Assert.That(result, Is.EqualTo(false));
+            Assert.That(value, Is.EqualTo(0));
         }
 
         [Test]
