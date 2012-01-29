@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using NUnit.Framework;
-using Paralect.Machine.Domain;
 using Paralect.Machine.Messages;
+using Paralect.Machine.Processes;
 using Paralect.Machine.Tests.Areas.Domain.Aggregates;
 
 namespace Paralect.Machine.Tests.Areas.Domain.Fixtures

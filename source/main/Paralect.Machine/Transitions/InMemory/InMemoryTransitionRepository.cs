@@ -1,9 +1,8 @@
 using System;
 using System.Linq;
 using System.Collections.Generic;
-using Paralect.Machine.Transitions;
 
-namespace Paralect.Machine.InMemory.Transitions
+namespace Paralect.Machine.Transitions
 {
     public class InMemoryTransitionRepository : ITransitionRepository
     {

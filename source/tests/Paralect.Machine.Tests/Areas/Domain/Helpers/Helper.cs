@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Paralect.Machine.Domain;
+using Paralect.Machine.Processes.Trash;
 using Paralect.Machine.Transitions;
 
 namespace Paralect.Domain.Test

@@ -101,12 +101,12 @@ namespace Paralect.Machine.Tests.Areas.Serialization.Fixtures
             Assert.That(header.GetInt32("Test"), Is.EqualTo(35));
             Assert.That(header.GetInt32("Test2"), Is.EqualTo(67));
 
-            Assert.Throws<KeyNotFoundException>(() => { header.GetString("Muhahaha"); });
-            Assert.Throws<KeyNotFoundException>(() => { header.GetInt32("Muhahaha"); });
-            Assert.Throws<KeyNotFoundException>(() => { header.GetInt64("Muhahaha"); });
-            Assert.Throws<KeyNotFoundException>(() => { header.GetBoolean("Muhahaha"); });
-            Assert.Throws<KeyNotFoundException>(() => { header.GetDateTime("Muhahaha"); });
-            Assert.Throws<KeyNotFoundException>(() => { header.GetGuid("Muhahaha"); });
+            Assert.Throws<KeyNotFoundException>(() => { header.GetString("Muahahaha"); });
+            Assert.Throws<KeyNotFoundException>(() => { header.GetInt32("Muahahaha"); });
+            Assert.Throws<KeyNotFoundException>(() => { header.GetInt64("Muahahaha"); });
+            Assert.Throws<KeyNotFoundException>(() => { header.GetBoolean("Muahahaha"); });
+            Assert.Throws<KeyNotFoundException>(() => { header.GetDateTime("Muahahaha"); });
+            Assert.Throws<KeyNotFoundException>(() => { header.GetGuid("Muahahaha"); });
 
             Assert.Throws<InvalidCastException>(() => { header.GetString("Test"); });
             Assert.Throws<InvalidCastException>(() => { header.GetInt64("Test"); });

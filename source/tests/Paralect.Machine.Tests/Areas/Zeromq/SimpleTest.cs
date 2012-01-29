@@ -40,6 +40,7 @@ namespace Paralect.Machine.Tests.Areas.Zeromq
                 using (var skt = ctx.Socket(SocketType.REP))
                 {
                     skt.Bind(Address);
+                    
 
                     Console.WriteLine("Server has bound");
 

@@ -5,10 +5,10 @@ using ProtoBuf;
 namespace Paralect.Machine
 {
     /// <summary>
-    /// Header is simply a key-value collection designed to be:
+    /// Header is a key-value collection designed to be:
     ///   1) Well serialized by ProtoBuf (size of empty Header is 0 (zero) bytes)
-    ///   2) To eliminate boxing/unboxing in runtime, for supported value types (comparing with single Dictionary(String, Object))
-    ///   3) To eliminate parsing in runtime (comparing with single Dictionary(String, String)
+    ///   2) To be free of boxing/unboxing at runtime, for supported value types (compare with single Dictionary(String, Object))
+    ///   3) To be free of string parsing at runtime, for supported value types (compare with single Dictionary(String, String)
     /// 
     /// Value type can be one of the following: String, Int32, Int64, Guid, Boolean and DateTime.
     /// </summary>

@@ -1,9 +1,10 @@
 using System;
 using System.Collections.Generic;
 using Paralect.Domain.Test.Events;
-using Paralect.Machine.Domain;
 using Paralect.Machine.Identities;
 using Paralect.Machine.Messages;
+using Paralect.Machine.Processes;
+using Paralect.Machine.Processes.Trash;
 using ProtoBuf;
 
 namespace Paralect.Machine.Tests.Areas.Domain.Aggregates

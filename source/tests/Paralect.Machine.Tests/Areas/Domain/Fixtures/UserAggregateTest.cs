@@ -6,8 +6,6 @@ using System.Diagnostics;
 using Paralect.Domain.Test;
 using Paralect.Domain.Test.Cleanupers;
 using Paralect.Domain.Test.Events;
-using Paralect.Machine.Domain;
-using Paralect.Machine.Domain.Utilities;
 using Paralect.Machine.Tests.Areas.Domain.Aggregates;
 
 namespace Paralect.Machine.Tests.Areas.Domain.Fixtures
