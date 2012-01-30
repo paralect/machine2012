@@ -23,10 +23,9 @@ namespace Paralect.Machine.Tests.Areas.Domain.Fixtures
             var journalStorage = new InMemoryJournalStorage();
 
             var context = new Context(2);
-            var engine = new Host(new System.Collections.Generic.List<INode>()
-            {
+            var engine = new Host(
                 new RouterNode(context, "inproc://rep", "inproc://pub", "inproc://domain", journalStorage)
-            });
+            );
 
             using (var token = new CancellationTokenSource())
             {

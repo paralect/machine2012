@@ -52,6 +52,14 @@ namespace Paralect.Machine.Nodes
         }
 
         /// <summary>
+        /// Constructor overload 
+        /// </summary>
+        public Host(params INode[] nodes) : this((ICollection<INode>)nodes)
+        {
+            
+        }
+
+        /// <summary>
         /// Start engine host.
         /// This will start each process.
         /// </summary>

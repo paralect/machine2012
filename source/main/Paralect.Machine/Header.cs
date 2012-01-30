@@ -23,6 +23,18 @@ namespace Paralect.Machine
             Fields = new Dictionary<string, IHeaderFieldValue>();
         }
 
+        public Dictionary<String, object> GetFields()
+        {
+            var dic = new Dictionary<String, object>(Fields.Count);
+
+            foreach (var headerFieldValue in Fields)
+            {
+                dic.Add(headerFieldValue.Key, headerFieldValue.Value.GetValue());
+            }
+
+            return dic;
+        }
+
         /*
         ** "Set" methods. All "Set" methods overwriting previous value, if it already exists.
         */
@@ -366,7 +378,10 @@ namespace Paralect.Machine
     [ProtoInclude(4, typeof(HeaderFieldValue<Guid>))]
     [ProtoInclude(5, typeof(HeaderFieldValue<Boolean>))]
     [ProtoInclude(6, typeof(HeaderFieldValue<DateTime>))]
-    public interface IHeaderFieldValue { }
+    public interface IHeaderFieldValue
+    {
+        Object GetValue();
+    }
 
     [ProtoContract]
     public class HeaderFieldValue<TValueType> : IHeaderFieldValue
@@ -399,6 +414,11 @@ namespace Paralect.Machine
         public override string ToString()
         {
             return Value.ToString();
+        }
+
+        public Object GetValue()
+        {
+            return Value;
         }
     }
 
