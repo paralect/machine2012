@@ -39,14 +39,6 @@ namespace Paralect.Machine.Tests.Areas.Serialization.Fixtures
                 new ProtobufSerializer_Event()
                 {
                     Rate = 56.6, Title = "Hello",
-                    Metadata = new EventMetadata<ProtobufSerializer_Id>()
-                    {
-                        LamportTimestamp = 567,
-                        MessageId = Guid.NewGuid(),
-                        SenderId = new ProtobufSerializer_Id() { Value = "som_id" },
-                        SenderVersion = 45,
-                        TriggerMessageId = Guid.NewGuid()
-                    }
                 }
             );
         }
@@ -62,14 +54,6 @@ namespace Paralect.Machine.Tests.Areas.Serialization.Fixtures
                     Rate = 56.6,
                     Title = "Hello",
                     Child = "Child data",
-                    Metadata = new EventMetadata<ProtobufSerializer_Id>()
-                    {
-                        LamportTimestamp = 567,
-                        MessageId = Guid.NewGuid(),
-                        SenderId = new ProtobufSerializer_Id() { Value = "som_id" },
-                        SenderVersion = 45,
-                        TriggerMessageId = Guid.NewGuid()
-                    }
                 }
             );
         }
@@ -85,27 +69,11 @@ namespace Paralect.Machine.Tests.Areas.Serialization.Fixtures
                     Rate = 56.6,
                     Title = "Hello",
                     Child = "Child data",
-                    Metadata = new EventMetadata<ProtobufSerializer_Id>()
-                    {
-                        LamportTimestamp = 567,
-                        MessageId = Guid.NewGuid(),
-                        SenderId = new ProtobufSerializer_Id() { Value = "som_id" },
-                        SenderVersion = 45,
-                        TriggerMessageId = Guid.NewGuid()
-                    }
                 },
                 new ProtobufSerializer_Event()
                 {
                     Rate = 56.6,
                     Title = "Hello",
-                    Metadata = new EventMetadata<ProtobufSerializer_Id>()
-                    {
-                        LamportTimestamp = 567,
-                        MessageId = Guid.NewGuid(),
-                        SenderId = new ProtobufSerializer_Id() { Value = "som_id" },
-                        SenderVersion = 45,
-                        TriggerMessageId = Guid.NewGuid()
-                    }
                 }
             );
         }
@@ -123,14 +91,6 @@ namespace Paralect.Machine.Tests.Areas.Serialization.Fixtures
                     Child2 = "Child data",
                     Dictionary = new Dictionary<string, int>() { {"hello", 1}, {"bye", 2} },
                     List = new List<string>() { "minsk", "moscow", "paris" },
-                    Metadata = new EventMetadata<ProtobufSerializer_Id>()
-                    {
-                        LamportTimestamp = 567,
-                        MessageId = Guid.NewGuid(),
-                        SenderId = new ProtobufSerializer_Id() { Value = "som_id" },
-                        SenderVersion = 45,
-                        TriggerMessageId = Guid.NewGuid()
-                    }
                 }
             );
         }
@@ -145,14 +105,7 @@ namespace Paralect.Machine.Tests.Areas.Serialization.Fixtures
                     new[] { typeof(ProtobufSerializer_Id) },
                     new ProtobufSerializer_CollisionEvent()
                     {
-                        Metadata = new EventMetadata<ProtobufSerializer_Id>()
-                        {
-                            LamportTimestamp = 567,
-                            MessageId = Guid.NewGuid(),
-                            SenderId = new ProtobufSerializer_Id() { Value = "som_id" },
-                            SenderVersion = 45,
-                            TriggerMessageId = Guid.NewGuid()
-                        }
+                        //Name = "zzzz", 
                     }
                 );
             });
@@ -170,14 +123,7 @@ namespace Paralect.Machine.Tests.Areas.Serialization.Fixtures
                 new[] { typeof(ProtobufSerializer_Id) },
                 new ProtobufSerializer_NoCollisionEvent()
                 {
-                    Metadata = new EventMetadata<ProtobufSerializer_Id>()
-                    {
-                        LamportTimestamp = 567,
-                        MessageId = Guid.NewGuid(),
-                        SenderId = new ProtobufSerializer_Id() { Value = "som_id" },
-                        SenderVersion = 45,
-                        TriggerMessageId = Guid.NewGuid()
-                    }
+                    Name = "zzzz", 
                 }
             );            
         }
@@ -195,41 +141,17 @@ namespace Paralect.Machine.Tests.Areas.Serialization.Fixtures
                     Rate = 56.6,
                     Title = "Hello",
                     Child = "Child data",
-                    Metadata = new EventMetadata<ProtobufSerializer_Id>()
-                    {
-                        LamportTimestamp = 567,
-                        MessageId = Guid.NewGuid(),
-                        SenderId = new ProtobufSerializer_Id() { Value = "some_id" },
-                        SenderVersion = 45,
-                        TriggerMessageId = Guid.NewGuid()
-                    }
                 },                
                 new ProtobufSerializer_Child2_Event()
                 {
                     Rate = 56.6,
                     Title = "Hello",
                     Child2 = "Child2 data",
-                    Metadata = new EventMetadata<ProtobufSerializer_Id>()
-                    {
-                        LamportTimestamp = 567,
-                        MessageId = Guid.NewGuid(),
-                        SenderId = new ProtobufSerializer_Id() { Value = "some_id" },
-                        SenderVersion = 45,
-                        TriggerMessageId = Guid.NewGuid()
-                    }
                 },
                 new ProtobufSerializer_Event()
                 {
                     Rate = 56.6,
                     Title = "Hello",
-                    Metadata = new EventMetadata<ProtobufSerializer_Id>()
-                    {
-                        LamportTimestamp = 567,
-                        MessageId = Guid.NewGuid(),
-                        SenderId = new ProtobufSerializer_Id() { Value = "someee_id" },
-                        SenderVersion = 45,
-                        TriggerMessageId = Guid.NewGuid()
-                    }
                 }
             );
         }
@@ -280,7 +202,7 @@ namespace Paralect.Machine.Tests.Areas.Serialization.Fixtures
     public class ProtobufSerializer_Id : StringId { }
 
     [ProtoContract, Message("{31cbf70a-5449-4aae-b086-e41b0fa69acc}")]
-    public class ProtobufSerializer_Event : Event<ProtobufSerializer_Id>
+    public class ProtobufSerializer_Event : IEvent<ProtobufSerializer_Id>
     {
         [ProtoMember(1)]
         public String Title { get; set; }
@@ -319,7 +241,7 @@ namespace Paralect.Machine.Tests.Areas.Serialization.Fixtures
 
     [ProtoContract]
     [Message("{c88b1ca7-a325-41f5-844f-105300124187}")]
-    public class ProtobufSerializer_CollisionEvent : Event<ProtobufSerializer_Id>
+    public class ProtobufSerializer_CollisionEvent : ProtobufSerializer_Child2_Event
     {
         [ProtoMember(1)]
         public string Name { get; set; }
@@ -327,7 +249,7 @@ namespace Paralect.Machine.Tests.Areas.Serialization.Fixtures
 
     [ProtoContract]
     [Message("{d0631888-98cd-45d6-b603-64ca7245818b}")]
-    public class ProtobufSerializer_CollisionEvent2 : Event<ProtobufSerializer_Id>
+    public class ProtobufSerializer_CollisionEvent2 : ProtobufSerializer_Child2_Event
     {
         [ProtoMember(1)]
         public string ChildName { get; set; }
@@ -339,7 +261,7 @@ namespace Paralect.Machine.Tests.Areas.Serialization.Fixtures
 
     [ProtoContract]
     [Message("{c88b1ca7-a325-41f5-844f-105300124187}")]
-    public class ProtobufSerializer_NoCollisionEvent : Event<ProtobufSerializer_Id>
+    public class ProtobufSerializer_NoCollisionEvent : IEvent<ProtobufSerializer_Id>
     {
         [ProtoMember(1)]
         public string Name { get; set; }

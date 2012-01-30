@@ -7,7 +7,7 @@ using Paralect.Machine.Messages;
 
 namespace Paralect.Domain.Test.Events
 {
-    public class UserCreatedEvent : Event
+    public class UserCreatedEvent : IEvent
     {
         public String UserId { get; set; }
         public Int32 Year { get; set; }

@@ -47,7 +47,7 @@ namespace Paralect.Machine.Tests.Areas.Serialization.Fixtures
 
     [ProtoContract]
     [Message("{509bc2f6-dc16-408d-a083-b4982e866034}")]
-    public class MessageFactoryEvent : Event<MessageFactoryProcessId>
+    public class MessageFactoryEvent : IEvent<MessageFactoryProcessId>
     {
         [ProtoMember(1)]
         public string Name { get; set; }
@@ -55,7 +55,7 @@ namespace Paralect.Machine.Tests.Areas.Serialization.Fixtures
 
     [ProtoContract]
     [Message("{509bc2f6-dc16-408d-a083-b4982e866034}")]
-    public class MessageFactoryEvent2 : Event<MessageFactoryProcessId>
+    public class MessageFactoryEvent2 : IEvent<MessageFactoryProcessId>
     {
         [ProtoMember(1)]
         public string ChildName { get; set; }
@@ -67,7 +67,7 @@ namespace Paralect.Machine.Tests.Areas.Serialization.Fixtures
 
     [ProtoContract]
     [Message("{c88b1ca7-a325-41f5-844f-105300124187}")]
-    public class MessageFactoryProtoCollisionEvent : Event<MessageFactoryProcessId>
+    public class MessageFactoryProtoCollisionEvent : IEvent<MessageFactoryProcessId>
     {
         [ProtoMember(1)]
         public string Name { get; set; }
@@ -75,7 +75,7 @@ namespace Paralect.Machine.Tests.Areas.Serialization.Fixtures
 
     [ProtoContract]
     [Message("{d0631888-98cd-45d6-b603-64ca7245818b}")]
-    public class MessageFactoryProtoCollisionEvent2 : Event<MessageFactoryProcessId>
+    public class MessageFactoryProtoCollisionEvent2 : IEvent<MessageFactoryProcessId>
     {
         [ProtoMember(1)]
         public string ChildName { get; set; }
@@ -86,7 +86,7 @@ namespace Paralect.Machine.Tests.Areas.Serialization.Fixtures
     #region Message not decorated with MessageAttribute
 
     [ProtoContract]
-    public class MessageFactoryMessageWithoutAttribute : Event<MessageFactoryProcessId>
+    public class MessageFactoryMessageWithoutAttribute : IEvent<MessageFactoryProcessId>
     {
         [ProtoMember(1)]
         public string ChildName { get; set; }

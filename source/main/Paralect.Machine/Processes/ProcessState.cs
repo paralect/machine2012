@@ -40,11 +40,11 @@ namespace Paralect.Machine.Processes
 
             foreach (var evnt in events)
             {
-                if (Id == null)
-                    Id = (TId) evnt.Metadata.SenderId;
+/*                if (Id == null)
+                    Id = (TId) evnt.SenderId;
                 else if (!Id.Equals(evnt.Metadata.SenderId))
                     throw new Exception("State restoration failed because of different Aggregate ID in the events.");
-
+                */
                 this.AsDynamic().When(evnt);
                 
                 last = evnt;
@@ -52,7 +52,7 @@ namespace Paralect.Machine.Processes
 
             // Set version of state to the version of latest event.
             // Version will be zero, if no events supplied
-            Version = last == null ? 0 : last.Metadata.SenderVersion;
+            //Version = last == null ? 0 : last.Metadata.SenderVersion;
         }
 
         /// <summary>

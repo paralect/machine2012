@@ -141,7 +141,7 @@ namespace Paralect.Machine.Tests.Areas.Serialization.Fixtures
     public class TransitionEnvelopeSerializer_Id : StringId { }
 
     [ProtoContract, Message("{74467730-33c0-418a-bd83-963258ce6fa9}")]
-    public class TransitionEnvelopeSerializer_Event : Event<ProtobufSerializer_Id>
+    public class TransitionEnvelopeSerializer_Event : IEvent<ProtobufSerializer_Id>
     {
         [ProtoMember(1)]
         public String Title { get; set; }

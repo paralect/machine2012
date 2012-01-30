@@ -61,7 +61,7 @@ namespace Paralect.Machine.Messages
                 var currentType = type;
                 var baseType = type.BaseType;
 
-                while (baseType != typeof(object) && baseType != null)
+                while (currentType != typeof(object) && currentType != null)
                 {
                     ProcessMessageType(currentType);
 

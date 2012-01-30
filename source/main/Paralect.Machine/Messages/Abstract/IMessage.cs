@@ -4,6 +4,5 @@ namespace Paralect.Machine.Messages
 {
     public interface IMessage
     {
-        IMessageMetadata Metadata { get; set; }
     }
 }

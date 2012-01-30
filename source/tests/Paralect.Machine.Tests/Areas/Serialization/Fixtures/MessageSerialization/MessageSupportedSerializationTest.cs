@@ -16,7 +16,7 @@ namespace Paralect.Machine.Tests.Areas.Serialization.Fixtures.MessageSerializati
         public void test_serialization()
         {
             var evnt = new MyEvent() { Name = "Dima", Year = "2012" };
-            evnt.Metadata = new EventMetadata<MyProcessId>() { MessageId = Guid.NewGuid(), SenderVersion = 45 };
+            //evnt.Metadata = new EventMetadata<MyProcessId>() { MessageId = Guid.NewGuid(), SenderVersion = 45 };
 
             
             var model = TypeModel.Create();
@@ -52,7 +52,7 @@ namespace Paralect.Machine.Tests.Areas.Serialization.Fixtures.MessageSerializati
                 .AddSubType(100, typeof(Event<MyProcessId>));
 */
 
-            model[typeof(Event<MyProcessId>)]
+            model[typeof(IEvent<MyProcessId>)]
                 .AddSubType(100, typeof(MyEvent));
 
             //model.Add(typeof(Event<MyProcessId>), true);
@@ -74,7 +74,7 @@ namespace Paralect.Machine.Tests.Areas.Serialization.Fixtures.MessageSerializati
 
     [Message("{450e5ef4-e623-4775-b8f4-129698e19e22}")]
     [ProtoContract]
-    public class MyEvent : Event<MyProcessId>
+    public class MyEvent : IEvent<MyProcessId>
     {
         [ProtoMember(1)] public string Name { get; set; }
         [ProtoMember(2)] public string Year { get; set; }
