@@ -57,6 +57,22 @@ namespace Paralect.Machine.Tests.Areas.Domain.Fixtures
 
         private BinaryEnvelope muhaha()
         {
+            var context = MachineContext.Create(b => b
+                .RegisterMessages(typeof(EnvelopeSerializer_Event), typeof(EnvelopeSerializer_Child_Event))
+                .RegisterIdentities(typeof(EnvelopeSerializer_Id))
+            );
+
+            var message1 = new EnvelopeSerializer_Event()
+            {
+                Rate = 0.7,
+                Title = "Muahaha!"
+            };
+
+            return context.CreateBinaryEnvelope(b => b
+                .AddMessage(message1)
+            );
+
+/*
             var messageFactory = new MessageFactory(typeof(EnvelopeSerializer_Event), typeof(EnvelopeSerializer_Child_Event));
             var identityFactory = new IdentityFactory(typeof(EnvelopeSerializer_Id));
 
@@ -76,7 +92,7 @@ namespace Paralect.Machine.Tests.Areas.Domain.Fixtures
                 .AddMessage(message1)
                 .BuildAndSerialize(envelopeSerializer);
 
-            return envelope;
+            return envelope;*/
         }
     }
 }

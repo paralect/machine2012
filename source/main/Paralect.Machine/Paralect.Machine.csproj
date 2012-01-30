@@ -55,6 +55,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MachineContext.cs" />
     <Compile Include="Processes\ProcessFactory.cs" />
     <Compile Include="Processes\Process.cs" />
     <Compile Include="Processes\ProcessState.cs" />
