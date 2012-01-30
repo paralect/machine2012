@@ -22,77 +22,34 @@ namespace Paralect.Machine.Tests.Areas.Domain.Fixtures
         {
             var journalStorage = new InMemoryJournalStorage();
 
-            var context = new Context(2);
-            var engine = new Host(
-                new RouterNode(context, "inproc://rep", "inproc://pub", "inproc://domain", journalStorage)
-            );
-
-            using (var token = new CancellationTokenSource())
-            {
-                var task1 = engine.Start(token.Token);
-
-                
-                using (var input = context.Socket(SocketType.PUSH))
-                {
-                    input.EstablishConnect("inproc://rep", token.Token);
-
-                    input.SendBinaryEnvelope(muhaha());
-                    input.SendBinaryEnvelope(muhaha());
-                    input.SendBinaryEnvelope(muhaha());
-                    input.SendBinaryEnvelope(muhaha());
-                    input.SendBinaryEnvelope(muhaha());
-                    
-                }
-
-                if (!task1.Wait(50))
-                    Console.WriteLine("\r\nRequesting to cancel...");
-
-                token.Cancel();
-            }
-
-            var seq = journalStorage.GetPrivateFieldValue<Int64>("_sequance");
-
-            Assert.That(seq, Is.EqualTo(5));
-        }
-
-        private BinaryEnvelope muhaha()
-        {
             var context = MachineContext.Create(b => b
                 .RegisterMessages(typeof(EnvelopeSerializer_Event), typeof(EnvelopeSerializer_Child_Event))
                 .RegisterIdentities(typeof(EnvelopeSerializer_Id))
             );
 
-            var message1 = new EnvelopeSerializer_Event()
-            {
-                Rate = 0.7,
-                Title = "Muahaha!"
-            };
+            var message = new EnvelopeSerializer_Event() { Rate = 0.7, Title = "Muahaha!" };
 
-            return context.CreateBinaryEnvelope(b => b
-                .AddMessage(message1)
+            context.RunHost(h => h
+                .AddNode(new RouterNode(context.ZeromqContext, "inproc://rep", "inproc://pub", "inproc://domain", journalStorage))
+                .Execute(token =>
+                {
+                    using (var input = context.ZeromqContext.Socket(SocketType.PUSH))
+                    {
+                        input.EstablishConnect("inproc://rep", token);
+
+                        input.SendBinaryEnvelope(context.CreateBinaryEnvelope(message));
+                        input.SendBinaryEnvelope(context.CreateBinaryEnvelope(message));
+                        input.SendBinaryEnvelope(context.CreateBinaryEnvelope(message));
+                        input.SendBinaryEnvelope(context.CreateBinaryEnvelope(message));
+                        input.SendBinaryEnvelope(context.CreateBinaryEnvelope(message));
+
+                    }                    
+                })
             );
 
-/*
-            var messageFactory = new MessageFactory(typeof(EnvelopeSerializer_Event), typeof(EnvelopeSerializer_Child_Event));
-            var identityFactory = new IdentityFactory(typeof(EnvelopeSerializer_Id));
+            var seq = journalStorage.GetPrivateFieldValue<Int64>("_sequance");
 
-            var serializer = new ProtobufSerializer();
-            serializer.RegisterMessages(messageFactory.MessageDefinitions);
-            serializer.RegisterIdentities(identityFactory.IdentityDefinitions);
-
-            var message1 = new EnvelopeSerializer_Event()
-            {
-                Rate = 0.7,
-                Title = "Muahaha!"
-            };
-
-            var envelopeSerializer = new EnvelopeSerializer(serializer, messageFactory.TagToTypeResolver);
-
-            var envelope = new EnvelopeBuilder(messageFactory.TypeToTagResolver)
-                .AddMessage(message1)
-                .BuildAndSerialize(envelopeSerializer);
-
-            return envelope;*/
+            Assert.That(seq, Is.EqualTo(5));
         }
     }
 }

@@ -31,6 +31,13 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="clrzmq, Version=2.2.0.0, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\libs\clrzmq\x86\clrzmq.dll</HintPath>
+    </Reference>
+    <Reference Include="clrzmq-ext">
+      <HintPath>..\..\..\libs\clrzmq\x86\clrzmq-ext.dll</HintPath>
+    </Reference>
     <Reference Include="MongoDB.Bson">
       <HintPath>..\..\libs\MongoDriver\MongoDB.Bson.dll</HintPath>
     </Reference>
@@ -39,6 +46,10 @@
     </Reference>
     <Reference Include="nunit.framework">
       <HintPath>..\..\libs\NUnit\nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="protobuf-net, Version=2.0.0.480, Culture=neutral, PublicKeyToken=257b51d87d2e4d67, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\libs\Protobuf.net\protobuf-net.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -50,7 +61,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Fixtures\IdentitySerializationTest.cs" />
+    <Compile Include="Fixtures\RouterNodeTest.cs" />
     <Compile Include="Helpers\Mongo\MongoSerializer.cs" />
+    <Compile Include="Messages\Messages.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

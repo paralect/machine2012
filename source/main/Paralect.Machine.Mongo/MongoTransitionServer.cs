@@ -77,7 +77,7 @@ namespace Paralect.Machine.Mongo
 
         public Int64 GetCurrentSequence()
         {
-            var doc = Messages
+            var doc = Heads
                 .FindOneAs<BsonDocument>(Query.EQ("_id", "head"));
 
             if (doc == null)
@@ -88,7 +88,7 @@ namespace Paralect.Machine.Mongo
 
         public void SaveCurrentSequence(Int64 seq)
         {
-            Messages.Update(
+            Heads.Update(
                 Query.EQ("_id", "head"), Update.Set("Seq", seq),
                 UpdateFlags.Upsert, SafeMode.True);
         }

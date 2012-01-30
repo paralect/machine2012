@@ -8,7 +8,7 @@ namespace Paralect.Machine.Processes
     /// <summary>
     /// Machine Process is a single-threaded, operation-oriented reactive message handler.
     /// 
-    /// Rules and desires on implementation of your Process:
+    /// Rules and guidelines on implementation of your Process:
     ///     1) I/O operations are forbidden to be used in Process.
     ///     2) Generally, any blocking operations are forbidden.
     ///     3) Idempotence of operation is a MUST, all operations have to be idempotent. If you cannot
