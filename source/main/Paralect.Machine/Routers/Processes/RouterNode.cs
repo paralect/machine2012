@@ -6,26 +6,21 @@ using Paralect.Machine.Journals.Abstract;
 using Paralect.Machine.Messages;
 using Paralect.Machine.Nodes;
 using Paralect.Machine.Serialization;
+using Paralect.Machine.Utilities;
 using ZMQ;
 
 namespace Paralect.Machine.Routers
 {
     public class RouterNode : INode
     {
-        private readonly MessageFactory _messageFactory;
-        private readonly ProtobufSerializer _serializer;
         private readonly Context _context;
         private readonly String _routerRepAddress;
         private readonly String _routerPubAddress;
         private readonly String _domainReqAddress;
         private readonly IJournalStorage _storage;
 
-        public RouterNode(MessageFactory messageFactory, ProtobufSerializer serializer, Context context,
-            String routerRepAddress, String routerPubAddress, String domainReqAddress, 
-            IJournalStorage storage)
+        public RouterNode(Context context, String routerRepAddress, String routerPubAddress, String domainReqAddress, IJournalStorage storage)
         {
-            _messageFactory = messageFactory;
-            _serializer = serializer;
             _context = context;
             _routerRepAddress = routerRepAddress;
             _routerPubAddress = routerPubAddress;
@@ -33,119 +28,50 @@ namespace Paralect.Machine.Routers
             _storage = storage;
         }
 
-        public void Initialize()
+        public void Init()
         {
             
         }
 
-        public void Start(CancellationToken token)
+        public void Run(CancellationToken token)
         {
-            Socket routerRepSocket = _context.Socket(SocketType.REP);
-            Socket routerPubSocket = _context.Socket(SocketType.PUB);
-            Socket domainReqSocket = _context.Socket(SocketType.REQ);
-                
-            try
+            using (Socket routerRepSocket = _context.Socket(SocketType.PULL))
+            using (Socket routerPubSocket = _context.Socket(SocketType.PUB))
+            using (Socket domainReqSocket = _context.Socket(SocketType.REQ))
             {
-                var envelopeSerializer = new EnvelopeSerializer(_serializer, _messageFactory.TagToTypeResolver);
-
+                // Bind and connect to sockets
                 routerRepSocket.Bind(_routerRepAddress);
                 routerPubSocket.Bind(_routerPubAddress);
+                //domainReqSocket.EstablishConnect(_domainReqAddress, token);
 
-                #region Fancy way to connect to domain process
+                // Process while canellation not requested
                 while (!token.IsCancellationRequested)
                 {
-                    try
+                    // Waits for binary envelopes (with timeout)
+                    var binaryEnvelope = routerRepSocket.RecvBinaryEnvelope(200);
+                    if (binaryEnvelope == null) continue;
+
+                    // Journal all messages
+                    var seq = _storage.Save(binaryEnvelope.MessageEnvelopes);
+
+                    for (int i = 0; i < binaryEnvelope.MessageEnvelopes.Count; i++)
                     {
-                        domainReqSocket.Connect(_domainReqAddress);
-                        break;
-                    }
-                    catch (ZMQ.Exception ex)
-                    {
-                        // Connection refused
-                        if (ex.Errno == 107)
-                        {
-                            SpinWait.SpinUntil(() => token.IsCancellationRequested, 200);
-                            continue;
-                        }
+                        var currentIndex = i;
+                        var binaryMessageEnvelope = binaryEnvelope.MessageEnvelopes[i];
 
-                        throw;
-                    }
-                }
-                #endregion
+                        var outboxEnvelope = new BinaryEnvelope()
+                            .AddBinaryMessageEnvelope(binaryMessageEnvelope, header =>
+                            {
+                                header.Set("Journal-Stream-Sequence", seq - binaryEnvelope.MessageEnvelopes.Count + currentIndex + 1);
+                            });
+                                
 
-
-                while (!token.IsCancellationRequested)
-                {
-                    var bytes = routerRepSocket.Recv(200);
-
-                    if (bytes == null)
-                        continue;
-
-                    var queue = new Queue<byte[]>();
-                    queue.Enqueue(bytes);
-
-                    while (routerRepSocket.RcvMore)
-                    {
-                        queue.Enqueue(routerRepSocket.Recv());
-                    }
-
-                    // Journal messages
-                    Envelope envelope = envelopeSerializer.Deserialize(BinaryEnvelope.FromQueue(queue));
-                    //var seq = _storage.Save(envelope.Items);
-
-                    var index = 0;
-                    foreach (var messageEnvelope in envelope.Items)
-                    {
-                        var messageSequence = /*seq */ 242 - envelope.ItemsCount + index + 1;
-                        messageEnvelope.Header.AddMetadata("Sequence", messageSequence.ToString());
-                        index++;
-                    }
-
-
-                    foreach (var messageEnvelope in envelope.Items)
-                    {
-                        var messageBytes = new EnvelopeBuilder(_messageFactory.TypeToTagResolver)
-                            .AddMessageEnvelope(messageEnvelope)
-                            .BuildAndSerialize(envelopeSerializer);
-
-                        var parts = messageBytes.ToQueue();
-
-
-                        // send BinaryEnvelope as multipart message
-                        while (parts.Count != 1)
-                            routerPubSocket.SendMore(parts.Dequeue());
-
-                        routerPubSocket.Send(parts.Dequeue());
+                        routerPubSocket.SendBinaryEnvelope(outboxEnvelope);
                     }
                 }
-
-                Console.WriteLine("Done with server");
-            }
-            catch (ObjectDisposedException)
-            {
-                // suppress
-            }
-            catch (System.Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
-            finally
-            {
-                if (routerRepSocket != null)
-                    routerRepSocket.Dispose();
-
-                if (routerPubSocket != null)
-                    routerPubSocket.Dispose();
-
-                if (domainReqSocket != null)
-                    domainReqSocket.Dispose();
             }
         }
 
-        /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
-        /// <filterpriority>2</filterpriority>
         public void Dispose()
         {
             

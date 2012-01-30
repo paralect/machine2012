@@ -26,12 +26,12 @@ namespace Paralect.Machine.Journals.Processes
             _storage = storage;
         }
 
-        public void Initialize()
+        public void Init()
         {
             
         }
 
-        public void Start(CancellationToken token)
+        public void Run(CancellationToken token)
         {
             try
             {

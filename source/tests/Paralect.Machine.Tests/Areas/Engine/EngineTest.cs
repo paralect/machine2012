@@ -50,8 +50,8 @@ namespace Paralect.Machine.Tests.Areas.Engine
         }
 
         public void Dispose() { }
-        public void Initialize() { }
-        public void Start(CancellationToken token)
+        public void Init() { }
+        public void Run(CancellationToken token)
         {
             try
             {
@@ -104,8 +104,8 @@ namespace Paralect.Machine.Tests.Areas.Engine
         }
 
         public void Dispose() { }
-        public void Initialize() { }
-        public void Start(CancellationToken token)
+        public void Init() { }
+        public void Run(CancellationToken token)
         {
             try
             {

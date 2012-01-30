@@ -4,6 +4,7 @@ using System.Text;
 using System.Threading;
 using NUnit.Framework;
 using ZMQ;
+using Paralect.Machine.Utilities;
 
 namespace Paralect.Machine.Tests.Areas.Zeromq
 {
@@ -12,7 +13,7 @@ namespace Paralect.Machine.Tests.Areas.Zeromq
     {
         private const string Address = "inproc://Paralect.Machine.Tests.Areas.Zeromq.MultipartSimpleTest";
         private const uint MessageSize = 10;
-        private const int RoundtripCount = 100;
+        private const int RoundtripCount = 20;
 
         private static Context ctx;
 
@@ -50,6 +51,8 @@ namespace Paralect.Machine.Tests.Areas.Zeromq
                     for (var i = 0; i < RoundtripCount; i++)
                     {
                         var msg = skt.RecvAll(Encoding.UTF8);
+                        if (msg == null)
+                            continue;
 
                         Console.WriteLine("Part 1: {0}, Part 2: {1}", msg.Dequeue(), msg.Dequeue());
                         
@@ -63,7 +66,7 @@ namespace Paralect.Machine.Tests.Areas.Zeromq
             }
             catch (System.Exception e)
             {
-                Console.WriteLine(e.Message);
+                Console.WriteLine(e);
             }
         }
 
@@ -92,6 +95,9 @@ namespace Paralect.Machine.Tests.Areas.Zeromq
                     {
                         skt.SendMore("Duncan", Encoding.UTF8);
                         skt.Send("MacLeod", Encoding.UTF8);
+                        msg = skt.Recv();
+                        skt.SendMore("Duncan II", Encoding.UTF8);
+                        skt.Send("MacLeod II", Encoding.UTF8);
                         msg = skt.Recv();
                         //Debug.Assert(msg.Length == MessageSize);
 

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace Paralect.Machine.Nodes
 {
     /// <summary>
-    /// Engine host that starts, waits or cancells processes
+    /// Engine host that starts, waits or cancells execution of Nodes
     /// </summary>
     public class Host : IDisposable
     {
@@ -63,7 +63,7 @@ namespace Paralect.Machine.Nodes
 
                 // Try to start all tasks
                 var tasks = _processes
-                    .Select(p => Task.Factory.StartNew(() => p.Start(token)))
+                    .Select(p => Task.Factory.StartNew(() => p.Run(token)))
                     .ToArray();
 
                 // Engine started
@@ -94,7 +94,7 @@ namespace Paralect.Machine.Nodes
 
             // Initialize all processes
             foreach (var process in _processes)
-                process.Initialize();
+                process.Init();
 
             // All process initialized
             SystemInformer.Notify(new EngineInitialized());
@@ -113,7 +113,7 @@ namespace Paralect.Machine.Nodes
                 }
                 catch
                 {
-                    // Suppressing all exception because we unable 
+                    // Suppressing all exceptions because we unable 
                     // to handle them correctly when engine is shutdowning  
                 }
             }            

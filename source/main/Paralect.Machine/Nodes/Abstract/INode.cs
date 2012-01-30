@@ -6,8 +6,7 @@ namespace Paralect.Machine.Nodes
 {
     public interface INode : IDisposable
     {
-        void Initialize();
-//        Task Start(CancellationToken token);
-        void Start(CancellationToken token);
+        void Init();
+        void Run(CancellationToken token);
     }
 }
