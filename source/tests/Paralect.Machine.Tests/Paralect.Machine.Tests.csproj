@@ -70,7 +70,7 @@
     <Compile Include="Areas\Domain\Fixtures\RouterNodeTest.cs" />
     <Compile Include="Areas\Domain\Fixtures\UserAggregateTest.cs" />
     <Compile Include="Areas\Domain\Helpers\Helper.cs" />
-    <Compile Include="Areas\Engine\EngineTest.cs" />
+    <Compile Include="Areas\Engine\HostTest.cs" />
     <Compile Include="Areas\Performance\Fixtures\Binary\ByteArrayComparerTests.cs" />
     <Compile Include="Areas\Performance\Fixtures\Binary\BytesTest.cs" />
     <Compile Include="Areas\Performance\Fixtures\AllocationPerformanceTest.cs" />

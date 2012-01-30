@@ -17,7 +17,7 @@ namespace Paralect.Machine.Tests.Areas.Domain.Fixtures
     [TestFixture]
     public class RouterNodeTest
     {
-        [Ignore]
+        [Test]
         public void simple_pum_para_pum()
         {
             var journalStorage = new InMemoryJournalStorage();
@@ -37,21 +37,22 @@ namespace Paralect.Machine.Tests.Areas.Domain.Fixtures
                     input.EstablishConnect("inproc://rep", token.Token);
 
                     input.SendBinaryEnvelope(muhaha());
-                    //input.SendBinaryEnvelope(muhaha());
-                    //input.SendBinaryEnvelope(muhaha());
+                    input.SendBinaryEnvelope(muhaha());
+                    input.SendBinaryEnvelope(muhaha());
+                    input.SendBinaryEnvelope(muhaha());
+                    input.SendBinaryEnvelope(muhaha());
                     
                 }
 
-                //task1.Wait(100000);
-
-                if (task1.Wait(2000))
-                    Console.WriteLine("Done without forced cancelation"); // This line shouldn't be reached
-                else
+                if (!task1.Wait(50))
                     Console.WriteLine("\r\nRequesting to cancel...");
 
-                var z = journalStorage;
                 token.Cancel();
             }
+
+            var seq = journalStorage.GetPrivateFieldValue<Int64>("_sequance");
+
+            Assert.That(seq, Is.EqualTo(5));
         }
 
         private BinaryEnvelope muhaha()

@@ -10,19 +10,18 @@ using Exception = System.Exception;
 namespace Paralect.Machine.Tests.Areas.Engine
 {
     [TestFixture]
-    public class EngineTest
+    public class HostTest
     {
         [Ignore("Test takes time, run this test manually")]
         public void simple_test()
         {
             var context = new Context(2);
-            var engine = new Host(new System.Collections.Generic.List<INode>()
-            {
+            var engine = new Host(
                 //new ServerEngineProcess(context, "inproc://test"),
                 //new ClientEngineProcess(context, "inproc://test", 10000),
                 new ServerNode(context, "tcp://*:5567"),
-                new ClientNode(context, "tcp://localhost:5567", 10000),
-            });
+                new ClientNode(context, "tcp://localhost:5567", 10000)
+            );
 
             using (var token = new CancellationTokenSource())
             {
