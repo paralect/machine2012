@@ -8,6 +8,6 @@ namespace Paralect.Machine.Processes
     /// </summary>
     public interface IResult
     {
-        IEnumerable<IMessage> BuildMessages(ICommand command, IProcessState state);
+        IEnumerable<IMessage> BuildMessages(IMessage command, IProcessState state);
     }
 }

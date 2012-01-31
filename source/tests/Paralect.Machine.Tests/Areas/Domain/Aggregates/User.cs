@@ -57,21 +57,15 @@ namespace Paralect.Machine.Tests.Areas.Domain.Aggregates
 
     public class DeveloperAR : Process<DeveloperId, DeveloperState>
     {
-        public IResult Handle(CreateDeveloper create, DeveloperState state)
+        public IResult Handle(CreateDeveloper create)
         {
             return Apply(new DeveloperCreated() { Name = create.Name, });
         }
 
-        public IResult Handle(ChangeDeveloperName change, DeveloperState state)
-        {
-            return Subscribe<DeveloperId, DeveloperNameChanged>(new DeveloperId("dfdf"));
-
-            return Apply(new DeveloperNameChanged() { NewName = change.NewName });
-        }
-
         public IResult Handle(ChangeDeveloperName change)
         {
-            return Empty();
+            return Apply(new DeveloperNameChanged() { NewName = change.NewName });
+            //return Subscribe<DeveloperId, DeveloperNameChanged>(new DeveloperId("dfdf"));
         }
     }
 

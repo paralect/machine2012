@@ -28,44 +28,70 @@ namespace Paralect.Machine.Processes
     ///          Phase 2: Handle message by some external handler, and send result of computation back to the Process.
     ///          Phase 3: Handle result.
     /// </summary>
-    public class Process<TId, TProcessState> : IProcess<TId, TProcessState>
+    public class Process<TId, TProcessState> : IProcess
         where TId : IIdentity
         where TProcessState : IProcessState<TId>
     {
-        IEnumerable<IMessage> IProcess.Execute(ICommand command, IProcessState state)
-        {
-            var dynamicThis = (dynamic) this;
-            var result = (IResult) dynamicThis.Handle((dynamic) command, (dynamic) state);
-            return result.BuildMessages(command, state);
+        /// <summary>
+        /// Current operation message (command or event)
+        /// </summary>
+        protected IMessage _message;
 
-//            return this.AsDynamic().Handle(command, state);
+        /// <summary>
+        /// Current operation message headers
+        /// </summary>
+        protected Header _messageHeaders;
+
+        /// <summary>
+        /// Current operation state
+        /// </summary>
+        protected TProcessState _state;
+
+        IEnumerable<IMessage> IProcess.Execute(ICommand command, Header header, IProcessState state)
+        {
+            return ExecuteHandler(command, header, state);
+        }
+
+        public IEnumerable<IMessage> Execute(ICommand<TId> command, Header header, TProcessState state)
+        {
+            return ExecuteHandler(command, header, state);
         }
 
         /// <summary>
         /// Notify about event
         /// </summary>
-        public IEnumerable<IMessage> Notify(IEvent evnt, IProcessState state)
+        public IEnumerable<IMessage> Notify(IEvent evnt, Header header, IProcessState state)
         {
-            throw new NotImplementedException();
+            return ExecuteHandler(evnt, header, state);
         }
 
-        public IEnumerable<IMessage> Execute(ICommand<TId> command, TProcessState state)
+        private IEnumerable<IMessage> ExecuteHandler(IMessage message, Header header, IProcessState state)
         {
-            // Redirect to explicit implementation
-            return ((IProcess) this).Execute(command, state);
+            if (message == null) throw new ArgumentNullException("message");
+            if (state == null) throw new ArgumentNullException("state");
+
+            _message = message;
+            _messageHeaders = header ?? new Header();
+            _state = (TProcessState)state;
+
+            var dynamicThis = (dynamic)this;
+            var result = (IResult)dynamicThis.Handle((dynamic)message);
+            return result.BuildMessages(message, _state);
         }
 
-        public ResultCollection<TId> Apply(params IEvent<TId>[] events)
+        #region Result builders
+
+        protected ResultCollection<TId> Apply(params IEvent<TId>[] events)
         {
             return new ResultCollection<TId>().Apply(events);
         }
 
-        public ResultCollection<TId> Reply(params ICommand<TId>[] commands)
+        protected ResultCollection<TId> Reply(params ICommand<TId>[] commands)
         {
             return new ResultCollection<TId>().Reply(commands);
         }
 
-        public ResultCollection<TId> Send(params ICommand<TId>[] commands)
+        protected ResultCollection<TId> Send(params ICommand<TId>[] commands)
         {
             return new ResultCollection<TId>().Send(commands);
         }
@@ -78,37 +104,39 @@ namespace Paralect.Machine.Processes
          * return Subscribe<DeveloperChanged>().Of(25);
          * return Subscribe<DeveloperChanged>(e => 25);  // don't like...
          */
-        public ResultCollection<TId> Subscribe<TProcessId, TProcessEvent>(TProcessId id)
+        protected ResultCollection<TId> Subscribe<TProcessId, TProcessEvent>(TProcessId id)
             where TProcessEvent : IEvent<TProcessId>
         {
             return new ResultCollection<TId>().Send(null);
-        }        
-        
-        public ResultCollection<TId> Unsubscribe<TEvent>(IIdentity id)
+        }
+
+        protected ResultCollection<TId> Unsubscribe<TEvent>(IIdentity id)
         {
             return new ResultCollection<TId>().Send(null);
         }        
 
         /* Schedule? */
-        public ResultCollection<TId> StartTimer(Int32 afterSeconds, String timerName, Boolean oneTimeOnly = true)
+        protected ResultCollection<TId> StartTimer(Int32 afterSeconds, String timerName, Boolean oneTimeOnly = true)
         {
             return new ResultCollection<TId>().Send(null);
         }
 
         /* Unschedule? */
-        public ResultCollection<TId> StopTimer(String timerName)
+        protected ResultCollection<TId> StopTimer(String timerName)
         {
             return new ResultCollection<TId>().Send(null);
         }
 
-        public ResultCollection<TId> Forward()
+        protected ResultCollection<TId> Forward()
         {
             return new ResultCollection<TId>().Send(null);
-        } 
+        }
 
-        public IResult Empty()
+        protected IResult Empty()
         {
             return new EmptyResult();
         }
+        
+        #endregion
     }
 }

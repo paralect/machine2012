@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using NUnit.Framework;
 using Paralect.Machine.Messages;
 using Paralect.Machine.Processes;
@@ -76,6 +77,7 @@ namespace Paralect.Machine.Tests.Areas.Domain.Fixtures
             //dynamic.Apply(list);
         }
 
+        [Test]
         public void test2()
         {
             var e1 = new DeveloperCreated { Name = "Vasya" };
@@ -91,7 +93,9 @@ namespace Paralect.Machine.Tests.Areas.Domain.Fixtures
             var factory = new ProcessFactory();
             var agr = factory.Create<DeveloperAR>();
 
-            var result = agr.Execute(new ChangeDeveloperName() { NewName = "Cohen" }, state);
+            var result = agr.Execute(new ChangeDeveloperName() { NewName = "Cohen" }, null, state);
+
+            Assert.That(((DeveloperNameChanged)result.First()).NewName, Is.EqualTo("Cohen"));
 
 
         }

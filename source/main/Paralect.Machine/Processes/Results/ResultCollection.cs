@@ -19,7 +19,7 @@ namespace Paralect.Machine.Processes
             _responses.Add(result);
         }
 
-        public IEnumerable<IMessage> BuildMessages(ICommand command, IProcessState state)
+        public IEnumerable<IMessage> BuildMessages(IMessage command, IProcessState state)
         {
             foreach (var response in _responses)
             {

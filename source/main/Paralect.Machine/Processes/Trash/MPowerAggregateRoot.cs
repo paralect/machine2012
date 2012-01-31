@@ -107,6 +107,27 @@ namespace Paralect.Machine.Processes.Trash
                 _changes.Add(evnt);
         }
 
+        public void Initialize(IMessage message, Header header, IProcessState state)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Execute command 
+        /// </summary>
+        public IEnumerable<IMessage> Execute(ICommand command)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Notify about event
+        /// </summary>
+        public IEnumerable<IMessage> Notify(IEvent evnt)
+        {
+            throw new NotImplementedException();
+        }
+
         public IEnumerable<IMessage> Execute(ICommand command, IProcessState state)
         {
             throw new NotImplementedException();
@@ -116,6 +137,22 @@ namespace Paralect.Machine.Processes.Trash
         /// Notify about event
         /// </summary>
         public IEnumerable<IMessage> Notify(IEvent evnt, IProcessState state)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Execute command 
+        /// </summary>
+        public IEnumerable<IMessage> Execute(ICommand command, Header header, IProcessState state)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Notify about event
+        /// </summary>
+        public IEnumerable<IMessage> Notify(IEvent evnt, Header header, IProcessState state)
         {
             throw new NotImplementedException();
         }

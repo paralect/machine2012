@@ -20,7 +20,7 @@ namespace Paralect.Machine.Processes
             this.evnt = evnt;
         }
 
-        public IEnumerable<IMessage> BuildMessages(ICommand command, IProcessState state)
+        public IEnumerable<IMessage> BuildMessages(IMessage command, IProcessState state)
         {
             yield return evnt;
         }

@@ -8,7 +8,6 @@
     <SkipFolder>8BB02D8B-D654-4054-AAA2-D16743CFB501/d:Messages/d:Abstract</SkipFolder>
     <SkipFolder>8BB02D8B-D654-4054-AAA2-D16743CFB501/d:Messages/d:Attributes</SkipFolder>
     <SkipFolder>8BB02D8B-D654-4054-AAA2-D16743CFB501/d:Messages/d:Envelopes</SkipFolder>
-    <SkipFolder>8BB02D8B-D654-4054-AAA2-D16743CFB501/d:Messages/d:Metadata</SkipFolder>
     <SkipFolder>8BB02D8B-D654-4054-AAA2-D16743CFB501/d:Messages/d:Registration/d:Exceptions</SkipFolder>
     <SkipFolder>8BB02D8B-D654-4054-AAA2-D16743CFB501/d:Messages/d:Registration</SkipFolder>
     <SkipFolder>8BB02D8B-D654-4054-AAA2-D16743CFB501/d:Nodes/d:Abstract</SkipFolder>
