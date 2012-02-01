@@ -6,8 +6,10 @@ namespace Paralect.Machine.Processes
 {
     /*public class OperationContext
     {
-        public Header Headers { get; set; }
+        public IMessage Message { get; set; }
+        public Header MessageHeaders { get; set; }
         public IProcessState State { get; set; }
+        public Header StateHeaders { get; set; }
 
         // .. to be continued
     }*/

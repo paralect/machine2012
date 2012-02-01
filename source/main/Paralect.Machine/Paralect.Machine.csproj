@@ -61,6 +61,7 @@
     <Compile Include="Processes\ProcessState.cs" />
     <Compile Include="Processes\Abstract\IProcess.cs" />
     <Compile Include="Processes\Abstract\IProcessState.cs" />
+    <Compile Include="Processes\ProcessStateSpooler.cs" />
     <Compile Include="Processes\Results\ApplyResult.cs" />
     <Compile Include="Processes\Results\EmptyResult.cs" />
     <Compile Include="Processes\Results\Abstract\ICompositeResult.cs" />
