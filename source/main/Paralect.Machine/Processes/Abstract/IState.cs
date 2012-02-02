@@ -8,7 +8,7 @@ namespace Paralect.Machine.Processes
     /// <summary>
     /// Serializable object, that represent state of process
     /// </summary>
-    public interface IProcessState
+    public interface IState
     {
         /// <summary>
         /// Apply specified event to transite to another state

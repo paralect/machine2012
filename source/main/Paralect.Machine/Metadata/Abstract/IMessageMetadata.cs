@@ -1,7 +1,8 @@
 using System;
+using System.Collections.Generic;
 using Paralect.Machine.Identities;
 
-namespace Paralect.Machine.Messages
+namespace Paralect.Machine.Metadata
 {
     public interface IMessageMetadata
     {
@@ -18,7 +19,11 @@ namespace Paralect.Machine.Messages
         Guid TriggerMessageId { get; set; }
 
         /// <summary>
-        /// TODO: Out-of-band information?
+        /// List of receivers this message should be delivered to 
+        /// </summary>
+        ICollection<IIdentity> Receivers { get; set; }
+
+        /// <summary>
         /// Lamport Timestamp allows partial ordering of messages in distributed computer system.
         /// 
         /// Here is a simple rules that allows to achieve partial ordering:
@@ -34,10 +39,9 @@ namespace Paralect.Machine.Messages
         Int64 LamportTimestamp { get; set; }
 
         /// <summary>
-        /// TODO: Out-of-band information?
         /// UTC time on when to deliver this message to 
         /// </summary>
-        //DateTime DeliverOnUtc { get; set; }
-        //DateTime CreatedOnUtc { get; set; }
+        DateTime DeliverOnUtc { get; set; }
+        DateTime CreatedOnUtc { get; set; }
     }
 }

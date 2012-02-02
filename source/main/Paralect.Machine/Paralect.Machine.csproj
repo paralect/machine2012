@@ -56,12 +56,18 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MachineContext.cs" />
+    <Compile Include="Metadata\Abstract\IEnvelopeMetadata.cs" />
+    <Compile Include="Metadata\Abstract\IStateMetadata.cs" />
+    <Compile Include="Metadata\CommandMetadata.cs" />
+    <Compile Include="Metadata\EnvelopeMetadata.cs" />
+    <Compile Include="Metadata\MessageMetadata.cs" />
+    <Compile Include="Metadata\StateMetadata.cs" />
     <Compile Include="Processes\ProcessFactory.cs" />
     <Compile Include="Processes\Process.cs" />
-    <Compile Include="Processes\ProcessState.cs" />
+    <Compile Include="Processes\State.cs" />
     <Compile Include="Processes\Abstract\IProcess.cs" />
-    <Compile Include="Processes\Abstract\IProcessState.cs" />
-    <Compile Include="Processes\ProcessStateSpooler.cs" />
+    <Compile Include="Processes\Abstract\IState.cs" />
+    <Compile Include="Processes\StateSpooler.cs" />
     <Compile Include="Processes\Results\ApplyResult.cs" />
     <Compile Include="Processes\Results\EmptyResult.cs" />
     <Compile Include="Processes\Results\Abstract\ICompositeResult.cs" />
@@ -94,9 +100,9 @@
     <Compile Include="Messages\Envelopes\BinaryMessageEnvelope.cs" />
     <Compile Include="Messages\Envelopes\MessageEnvelope.cs" />
     <Compile Include="Messages\Envelopes\EnvelopeSerializer.cs" />
-    <Compile Include="Messages\Abstract\trash\EventMetadata.cs" />
+    <Compile Include="Metadata\EventMetadata.cs" />
     <Compile Include="Messages\Abstract\ICommand.cs" />
-    <Compile Include="Messages\Abstract\trash\ICommandMetadata.cs" />
+    <Compile Include="Metadata\Abstract\ICommandMetadata.cs" />
     <Compile Include="Messages\Abstract\IEvent.cs" />
     <Compile Include="Processes\Abstract\IRepository.cs" />
     <Compile Include="Processes\Trash\Repository.cs" />
@@ -113,8 +119,8 @@
     <Compile Include="Nodes\Events\EngineStarted.cs" />
     <Compile Include="Nodes\Events\EngineStopped.cs" />
     <Compile Include="Nodes\Abstract\INode.cs" />
-    <Compile Include="Messages\Abstract\trash\IEventMetadata.cs" />
-    <Compile Include="Messages\Abstract\trash\IMessageMetadata.cs" />
+    <Compile Include="Metadata\Abstract\IEventMetadata.cs" />
+    <Compile Include="Metadata\Abstract\IMessageMetadata.cs" />
     <Compile Include="Messages\Abstract\ISystemEvent.cs" />
     <Compile Include="Messages\Abstract\IMessage.cs" />
     <Compile Include="Messages\Envelopes\MessageHeader.cs" />

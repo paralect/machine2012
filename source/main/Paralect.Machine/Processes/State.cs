@@ -10,14 +10,14 @@ namespace Paralect.Machine.Processes
     /// Strongly-typed aggregate state.
     /// </summary>
     /// <typeparam name="TId">Identity of Aggregate and Aggregate State</typeparam>
-    public class ProcessState<TId> : IProcessState where TId : class, IIdentity
+    public class State<TId> : IState where TId : class, IIdentity
     {
         /// <summary>
         /// Replay specified events to restore state of IAggregateState.
         /// Explicit implementation to prevent easy access from non-infrastructural code. In most cases
         /// strongly-typed version should be used.
         /// </summary>
-        void IProcessState.Apply(IEvent evnt)
+        void IState.Apply(IEvent evnt)
         {
             this.AsDynamic().When(evnt);
         }
@@ -29,7 +29,7 @@ namespace Paralect.Machine.Processes
         public void Apply(IEvent<TId> evnt)
         {
             // Redirect to explicit Replay
-            ((IProcessState)this).Apply(evnt);
+            ((IState)this).Apply(evnt);
         }
     }
 }

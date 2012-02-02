@@ -39,7 +39,7 @@ namespace Paralect.Machine.Tests.Areas.Domain.Aggregates
         public DeveloperId(string value) { Value = value; }
     }
 
-    public class DeveloperState : ProcessState<DeveloperId>
+    public class DeveloperState : State<DeveloperId>
     {
         //[ProtoBuf.ProtoMember(1, ]
         public string Name { get; set; }

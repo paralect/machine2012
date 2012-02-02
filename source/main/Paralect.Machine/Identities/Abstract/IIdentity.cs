@@ -1,4 +1,5 @@
 ﻿using System;
+using ProtoBuf;
 
 namespace Paralect.Machine.Identities
 {
@@ -7,6 +8,9 @@ namespace Paralect.Machine.Identities
     /// distinct type. It introduces strong-typing and speeds up development
     /// on larger projects. Idea by Jeremie, implementation approach stolen from Rinat
     /// </summary>
+    [ProtoContract]
+    [ProtoInclude(10, typeof(StringId))]
+    //[ProtoInclude(11, typeof(GuidId))]
     public interface IIdentity
     {
         /// <summary>

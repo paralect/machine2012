@@ -84,9 +84,9 @@ namespace Paralect.Machine.Tests.Areas.Domain.Fixtures
             var e2 = new DeveloperCreated { Name = "Dima" };
 
             var state = new DeveloperState();
-            state.Apply(e1, e2);
+            state.Apply(e2);
             state.Apply(e1);
-            state.Apply(e1, e2);
+            state.Apply(e2);
             state.Apply(e1);
 
 

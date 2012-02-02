@@ -2,44 +2,42 @@
 using System.Collections.Generic;
 using Paralect.Machine.Identities;
 using Paralect.Machine.Messages;
+using Paralect.Machine.Metadata;
 using Paralect.Machine.Processes.Utilities;
 
 namespace Paralect.Machine.Processes
 {
-    public class ProcessStateSpooler
+    public class StateSpooler
     {
-        private IProcessState _state;
-        private readonly Header _stateHeaders;
+        private readonly IState _state;
 
         /// <summary>
         /// Aggregate ID
         /// </summary>
-        private String _id;
+        private readonly IIdentity _id;
 
         /// <summary>
         /// Version of Aggregate Root.
         /// Can be used to support commutativity of events.
         /// </summary>
-        private Int32 _version;
+        private readonly Int32 _version;
 
-        public ProcessStateSpooler(IProcessState initialState, Header stateHeaders)
+        public StateSpooler(IState initialState, IStateMetadata stateMetadata)
         {
             _state = initialState;
-            _stateHeaders = stateHeaders;
-
-            _id = stateHeaders.GetString("Process-State-Id");
-            _version = stateHeaders.GetInt32("Process-State-Version");
+            _id = stateMetadata.ProcessId;
+            _version = stateMetadata.Version;
         }
 
         /// <summary>
         /// Replay specified events to restore state of IProcessState.
         /// </summary>
-        public IProcessState Spool(IEnumerable<Tuple<IEvent, Header>> events)
+        public IState Spool(IEnumerable<Tuple<IEvent, IEventMetadata>> events)
         {
             foreach (var evnt in events)
             {
-                var id = evnt.Item2.GetString("Process-State-Id");
-                var version = evnt.Item2.GetInt32("Process-State-Version");
+                var id = evnt.Item2.SenderId;
+                var version = evnt.Item2.SenderVersion;
 
                 if (_id == null)
                     throw new NullReferenceException("Id of state cannot be null");

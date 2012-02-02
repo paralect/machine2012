@@ -1,5 +1,5 @@
 
-namespace Paralect.Machine.Messages
+namespace Paralect.Machine.Metadata
 {
     /// <summary>
     /// Why Command Receiver and not Command Recipient?
@@ -11,7 +11,7 @@ namespace Paralect.Machine.Messages
     ///  the financial affairs of someone who is bankrupt."
     ///  http://www.english-test.net/forum/ftopic25013.html
     /// </summary>
-    public interface ICommandMetadata
+    public interface ICommandMetadata : IMessageMetadata
     {
         
     }

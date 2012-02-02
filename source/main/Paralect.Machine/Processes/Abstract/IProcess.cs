@@ -19,11 +19,11 @@ namespace Paralect.Machine.Processes
         /// <summary>
         /// Execute command 
         /// </summary>
-        IEnumerable<IMessage> Execute(ICommand command, Header header, IProcessState state);
+        IEnumerable<IMessage> Execute(ICommand command, Header header, IState state);
 
         /// <summary>
         /// Notify about event
         /// </summary>
-        IEnumerable<IMessage> Notify(IEvent evnt, Header header, IProcessState state);
+        IEnumerable<IMessage> Notify(IEvent evnt, Header header, IState state);
     }
 }

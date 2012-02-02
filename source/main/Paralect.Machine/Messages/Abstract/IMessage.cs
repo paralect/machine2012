@@ -5,4 +5,6 @@ namespace Paralect.Machine.Messages
     public interface IMessage
     {
     }
+
+
 }

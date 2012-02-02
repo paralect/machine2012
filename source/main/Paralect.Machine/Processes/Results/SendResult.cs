@@ -17,7 +17,7 @@ namespace Paralect.Machine.Processes
             this._command = command;
         }
 
-        public IEnumerable<IMessage> BuildMessages(IMessage command, IProcessState state)
+        public IEnumerable<IMessage> BuildMessages(IMessage command, IState state)
         {
             yield return _command;
         }

@@ -5,7 +5,7 @@ namespace Paralect.Machine.Processes
 {
     public class EmptyResult : IResult
     {
-        public IEnumerable<IMessage> BuildMessages(IMessage command, IProcessState state)
+        public IEnumerable<IMessage> BuildMessages(IMessage command, IState state)
         {
             yield break;
         }

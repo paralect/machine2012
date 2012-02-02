@@ -30,7 +30,7 @@ namespace Paralect.Machine.Processes
     /// </summary>
     public class Process<TId, TProcessState> : IProcess
         where TId : IIdentity
-        where TProcessState : IProcessState<TId>
+        where TProcessState : IState
     {
         /// <summary>
         /// Current operation message (command or event)
@@ -47,7 +47,7 @@ namespace Paralect.Machine.Processes
         /// </summary>
         protected TProcessState _state;
 
-        IEnumerable<IMessage> IProcess.Execute(ICommand command, Header header, IProcessState state)
+        IEnumerable<IMessage> IProcess.Execute(ICommand command, Header header, IState state)
         {
             return ExecuteHandler(command, header, state);
         }
@@ -60,12 +60,12 @@ namespace Paralect.Machine.Processes
         /// <summary>
         /// Notify about event
         /// </summary>
-        public IEnumerable<IMessage> Notify(IEvent evnt, Header header, IProcessState state)
+        public IEnumerable<IMessage> Notify(IEvent evnt, Header header, IState state)
         {
             return ExecuteHandler(evnt, header, state);
         }
 
-        private IEnumerable<IMessage> ExecuteHandler(IMessage message, Header header, IProcessState state)
+        private IEnumerable<IMessage> ExecuteHandler(IMessage message, Header header, IState state)
         {
             if (message == null) throw new ArgumentNullException("message");
             if (state == null) throw new ArgumentNullException("state");
