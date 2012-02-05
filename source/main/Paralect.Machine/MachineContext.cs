@@ -7,7 +7,7 @@ using Paralect.Machine.Nodes;
 using Paralect.Machine.Packets;
 using Paralect.Machine.Routers;
 using Paralect.Machine.Serialization;
-using ZMQ;
+using Paralect.Machine.Sockets;
 
 namespace Paralect.Machine
 {
@@ -20,7 +20,7 @@ namespace Paralect.Machine
         private readonly EnvelopeSerializer _envelopeSerializer;
         private readonly Packets.PacketPartsSerializer _partsSerializer;
 
-        private readonly Context _zeromqContext;
+        private readonly ZMQ.Context _zeromqContext;
 
         public MessageFactory MessageFactory
         {
@@ -42,7 +42,12 @@ namespace Paralect.Machine
             get { return _envelopeSerializer; }
         }
 
-        public Context ZeromqContext
+        public PacketPartsSerializer PartsSerializer
+        {
+            get { return _partsSerializer; }
+        }
+
+        public ZMQ.Context ZmqContext
         {
             get { return _zeromqContext; }
         }
@@ -59,7 +64,7 @@ namespace Paralect.Machine
             _envelopeSerializer = new EnvelopeSerializer(_serializer, _messageFactory.TagToTypeResolver);
             _partsSerializer = new PacketPartsSerializer(_serializer, _messageFactory.TagToTypeResolver);
 
-            _zeromqContext = new Context(2);
+            _zeromqContext = new ZMQ.Context(2);
         }
 
         public static MachineContext Create(Action<MachineContextBuilder> action)
@@ -114,6 +119,13 @@ namespace Paralect.Machine
             }
 
 
+        }
+
+        public Socket CreateSocket(ZMQ.SocketType socketType)
+        {
+            var zmqsocket = _zeromqContext.Socket(socketType);
+            var socket = new Socket(this, zmqsocket);
+            return socket;
         }
     }
 

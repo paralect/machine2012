@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Paralect.Machine.Envelopes;
 
 namespace Paralect.Machine.Packets
 {
@@ -6,9 +7,10 @@ namespace Paralect.Machine.Packets
     {
         private readonly PacketPartsSerializer _serializer;
         private IPacketHeaders _headers;
+        private IEnumerable<IMessageEnvelope> _envelopes = new List<IMessageEnvelope>();
 
         private byte[] _headersBinary;
-        private readonly IEnumerable<byte[]> _partsBinary;
+        private IEnumerable<byte[]> _envelopesBinary;
 
         public IPacketHeaders Headers
         {
@@ -24,9 +26,28 @@ namespace Paralect.Machine.Packets
             }
         }
 
+        public IEnumerable<IMessageEnvelope> Envelopes
+        {
+            get
+            {
+                if (_envelopesBinary == null)
+                {
+                    _envelopes = GetEnvelopesCopy();
+                    _envelopesBinary = null;
+                }
+
+                return _envelopes;
+            }
+        }
+
         public IPacketHeaders GetHeadersCopy()
         {
             return _serializer.DeserializeHeaders(_headersBinary);
+        }
+
+        public IEnumerable<IMessageEnvelope> GetEnvelopesCopy()
+        {
+            return _serializer.Deserialize(_envelopesBinary);
         }
 
         public IEnumerable<byte[]> Serialize()
@@ -34,31 +55,29 @@ namespace Paralect.Machine.Packets
             if (_headersBinary == null)
                 _headersBinary = _serializer.SerializeHeaders(_headers);
 
+            if (_envelopesBinary == null)
+                _envelopesBinary = _serializer.Serialize(_envelopes);
+
             yield return _headersBinary;
 
-            foreach (var part in _partsBinary)
+            foreach (var part in _envelopesBinary)
             {
                 yield return part;
             }
         }
 
-        public IEnumerable<byte[]> Parts
-        {
-            get { return _partsBinary;  }
-        }
-
-        public Packet(PacketPartsSerializer serializer, byte[] headersBinary, IEnumerable<byte[]> partsBinary)
+        public Packet(PacketPartsSerializer serializer, byte[] headersBinary, IEnumerable<byte[]> envelopesBinary)
         {
             _serializer = serializer;
             _headersBinary = headersBinary;
-            _partsBinary = partsBinary;
+            _envelopesBinary = envelopesBinary;
         }
 
-        public Packet(PacketPartsSerializer serializer, IPacketHeaders headers, IEnumerable<byte[]> partsBinary)
+        public Packet(PacketPartsSerializer serializer, IPacketHeaders headers, IEnumerable<byte[]> envelopesBinary)
         {
             _serializer = serializer;
             _headers = headers;
-            _partsBinary = partsBinary;
+            _envelopesBinary = envelopesBinary;
         }
 
         public Queue<byte[]> ToQueue()

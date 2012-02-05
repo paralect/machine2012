@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Paralect.Machine.Envelopes;
 
 namespace Paralect.Machine.Packets
 {
@@ -9,10 +10,7 @@ namespace Paralect.Machine.Packets
         /// </summary>
         IPacketHeaders Headers { get; }
 
-        /// <summary>
-        /// Packets as a multipart data
-        /// </summary>
-        IEnumerable<byte[]> Parts { get; }
+        IEnumerable<IMessageEnvelope> Envelopes { get; }
     }
 
     public interface IPacketHeaders

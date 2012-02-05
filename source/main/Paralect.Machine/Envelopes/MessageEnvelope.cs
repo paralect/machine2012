@@ -6,15 +6,27 @@ namespace Paralect.Machine.Envelopes
 {
     public class MessageEnvelope : IMessageEnvelope
     {
-        public Byte[] MetadataBinary { get; set; }
-        public Byte[] MessageBinary { get; set; }
+        private byte[] _metadataBinary;
+        private byte[] _messageBinary;
+
+        private IMessageMetadata _metadata;
+        private IMessage _message;
 
         /// <summary>
         /// Message tag and key-value information
         /// </summary>
         public IMessageMetadata Metadata
         {
-            get { return null; }
+            get
+            {
+                if (_metadata == null)
+                {
+                    _metadata = null;//GetHeadersCopy();
+                    _metadataBinary = null;
+                }
+
+                return _metadata;
+            }
         }
 
         /// <summary>

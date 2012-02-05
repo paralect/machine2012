@@ -5,21 +5,23 @@ using System.Threading.Tasks;
 using Paralect.Machine.Journals.Abstract;
 using Paralect.Machine.Messages;
 using Paralect.Machine.Nodes;
+using Paralect.Machine.Packets;
 using Paralect.Machine.Serialization;
 using Paralect.Machine.Utilities;
 using ZMQ;
+using Socket = Paralect.Machine.Sockets.Socket;
 
 namespace Paralect.Machine.Routers
 {
     public class RouterNode : INode
     {
-        private readonly Context _context;
+        private readonly MachineContext _context;
         private readonly String _routerRepAddress;
         private readonly String _routerPubAddress;
         private readonly String _domainReqAddress;
         private readonly IJournalStorage _storage;
 
-        public RouterNode(Context context, String routerRepAddress, String routerPubAddress, String domainReqAddress, IJournalStorage storage)
+        public RouterNode(MachineContext context, String routerRepAddress, String routerPubAddress, String domainReqAddress, IJournalStorage storage)
         {
             _context = context;
             _routerRepAddress = routerRepAddress;
@@ -35,9 +37,9 @@ namespace Paralect.Machine.Routers
 
         public void Run(CancellationToken token)
         {
-            using (Socket routerRepSocket = _context.Socket(SocketType.PULL))
-            using (Socket routerPubSocket = _context.Socket(SocketType.PUB))
-            using (Socket domainReqSocket = _context.Socket(SocketType.REQ))
+            using (Socket routerRepSocket = _context.CreateSocket(SocketType.PULL))
+            using (Socket routerPubSocket = _context.CreateSocket(SocketType.PUB))
+            using (Socket domainReqSocket = _context.CreateSocket(SocketType.REQ))
             {
                 // Bind and connect to sockets
                 routerRepSocket.Bind(_routerRepAddress);
@@ -48,11 +50,15 @@ namespace Paralect.Machine.Routers
                 while (!token.IsCancellationRequested)
                 {
                     // Waits for binary envelopes (with timeout)
-                    var binaryEnvelope = routerRepSocket.RecvBinaryEnvelope(200);
-                    if (binaryEnvelope == null) continue;
+                    var packet = routerRepSocket.RecvPacket(200);
+                    if (packet == null) continue;
+
+                    // Ignore packets without messages
+                    if (packet.Headers.ContentType != ContentType.Messages)
+                        continue;
 
                     // Journal all messages
-                    var seq = _storage.Save(binaryEnvelope.MessageEnvelopes);
+/*                    var seq = _storage.Save(binaryEnvelope.MessageEnvelopes);
 
                     for (int i = 0; i < binaryEnvelope.MessageEnvelopes.Count; i++)
                     {
@@ -67,7 +73,7 @@ namespace Paralect.Machine.Routers
                                 
 
                         routerPubSocket.SendBinaryEnvelope(outboxEnvelope);
-                    }
+                    }*/
                 }
             }
         }

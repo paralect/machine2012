@@ -12,7 +12,7 @@ namespace Paralect.Machine.Mongo.Tests.Fixtures
     [TestFixture]
     public class RouterNodeTest
     {
-        [Ignore("Uses mongodb...")]
+/*        [Ignore("Uses mongodb...")]
         public void mongo_journal_integration_test()
         {
             var server = new MongoJournalServer("mongodb://localhost:27018/test_journal");
@@ -49,6 +49,6 @@ namespace Paralect.Machine.Mongo.Tests.Fixtures
             var seq = server.GetCurrentSequence();
             Console.WriteLine(seq);
             //Assert.That(seq, Is.EqualTo(5));
-        }
+        }*/
     }
 }

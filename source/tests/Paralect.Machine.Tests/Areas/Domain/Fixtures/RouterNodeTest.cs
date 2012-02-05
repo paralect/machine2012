@@ -17,7 +17,7 @@ namespace Paralect.Machine.Tests.Areas.Domain.Fixtures
     [TestFixture]
     public class RouterNodeTest
     {
-        [Test]
+/*        [Test]
         public void simple_pum_para_pum()
         {
             var journalStorage = new InMemoryJournalStorage();
@@ -50,6 +50,6 @@ namespace Paralect.Machine.Tests.Areas.Domain.Fixtures
             var seq = journalStorage.GetPrivateFieldValue<Int64>("_sequance");
 
             Assert.That(seq, Is.EqualTo(5));
-        }
+        }*/
     }
 }
