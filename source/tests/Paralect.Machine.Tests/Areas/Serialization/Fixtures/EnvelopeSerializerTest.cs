@@ -41,7 +41,7 @@ namespace Paralect.Machine.Tests.Areas.Serialization.Fixtures
 
             Assert.That(evnt.Rate, Is.EqualTo(message1.Rate));
             Assert.That(evnt.Title, Is.EqualTo(message1.Title));
-        }
+       }
     }
 
     #region helpers

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Paralect.Machine.Messages
@@ -7,10 +8,10 @@ namespace Paralect.Machine.Messages
     {
         private readonly PacketSerializer _serializer;
         private IPacketHeaders _headers;
-        private IEnumerable<IMessageEnvelope> _envelopes;
+        private IList<IMessageEnvelope> _envelopes;
 
         private byte[] _headersBinary;
-        private IEnumerable<byte[]> _envelopesBinary;
+        private IList<IMessageEnvelopeBinary> _envelopesBinary;
 
         public IPacketHeaders GetHeaders()
         {
@@ -23,7 +24,7 @@ namespace Paralect.Machine.Messages
             return _headers;
         }
 
-        public IEnumerable<IMessageEnvelope> GetEnvelopes()
+        public IList<IMessageEnvelope> GetEnvelopes()
         {
             if (_envelopes == null)
             {
@@ -42,7 +43,7 @@ namespace Paralect.Machine.Messages
             return _headersBinary;
         }
 
-        public IEnumerable<byte[]> GetEnvelopesBinary()
+        public IList<IMessageEnvelopeBinary> GetEnvelopesBinary()
         {
             if (_envelopesBinary == null)
                 _envelopesBinary = _serializer.Serialize(_envelopes);
@@ -55,37 +56,53 @@ namespace Paralect.Machine.Messages
             return _serializer.DeserializeHeaders(_headersBinary);
         }
 
-        public IEnumerable<IMessageEnvelope> GetEnvelopesCopy()
+        public IList<IMessageEnvelope> GetEnvelopesCopy()
         {
             return _serializer.Deserialize(_envelopesBinary);
         }
 
-        public IEnumerable<byte[]> Serialize()
+        public IList<byte[]> Serialize()
         {
-            yield return GetHeadersBinary();
+            var list = new List<byte[]>();
+
+            list.Add(GetHeadersBinary());
 
             foreach (var part in GetEnvelopesBinary())
             {
-                yield return part;
+                list.Add(part.GetMetadataBinary());
+                list.Add(part.GetMessageBinary());
             }
+
+            return list.AsReadOnly();
         }
 
-        public Packet(PacketSerializer serializer, byte[] headersBinary, IEnumerable<byte[]> envelopesBinary)
+        public Packet(PacketSerializer serializer, IList<byte[]> parts)
         {
             _serializer = serializer;
-            _headersBinary = headersBinary;
-            _envelopesBinary = envelopesBinary;
+            _headersBinary = parts[0];
+            _envelopesBinary = EnvelopePartsToEnvelopeBinary(parts.Skip(1).ToList());
         }
 
-        public Packet(PacketSerializer serializer, IEnumerable<byte[]> parts)
+        private IList<IMessageEnvelopeBinary> EnvelopePartsToEnvelopeBinary(IList<byte[]> envelopeParts)
         {
-            var list = parts.ToList();
-            _serializer = serializer;
-            _headersBinary = list[0];
-            _envelopesBinary = list.GetRange(1, list.Count - 1);
+            if (envelopeParts.Count % 2 != 0)
+                throw new Exception("Incorrect number of envelope parts");
+
+            var list = new List<IMessageEnvelopeBinary>(envelopeParts.Count / 2);
+
+            for (int i = 0 ; i < envelopeParts.Count / 2; i++)
+            {
+                var binary = new MessageEnvelopeBinary(
+                    envelopeParts[i * 2 + 1],
+                    envelopeParts[i * 2]);
+
+                list.Add(binary);
+            }
+
+            return list.AsReadOnly();
         }
 
-        public Packet(PacketSerializer serializer, IPacketHeaders headers, IEnumerable<IMessageEnvelope> envelopes)
+        public Packet(PacketSerializer serializer, IPacketHeaders headers, IList<IMessageEnvelope> envelopes)
         {
             _serializer = serializer;
             _headers = headers;
@@ -107,15 +124,7 @@ namespace Paralect.Machine.Messages
 
         public static Packet FromQueue(Queue<byte[]> queue, PacketSerializer serializer)
         {
-            var headers = queue.Dequeue();
-            List<byte[]> parts = new List<byte[]>();
-
-            while (queue.Count != 0)
-            {
-                parts.Add(queue.Dequeue());
-            }
-
-            return new Packet(serializer, headers, parts);
+            return new Packet(serializer, queue.ToList());
         }
     }
 }

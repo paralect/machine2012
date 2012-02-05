@@ -18,67 +18,65 @@ namespace Paralect.Machine.Messages
             _tagToTypeResolver = tagToTypeResolver;
         }
 
-        public IEnumerable<byte[]> Serialize(IEnumerable<IMessageEnvelope> envelopes)
+        public IList<IMessageEnvelopeBinary> Serialize(IEnumerable<IMessageEnvelope> envelopes)
         {
-            var memory = new MemoryStream();
+            var list = new List<IMessageEnvelopeBinary>();
 
             foreach (var item in envelopes)
             {
-                var binaryMessageEnvelope = WriteMessageEnvelope(item);
-
-                foreach (var bytese in binaryMessageEnvelope)
-                    yield return bytese;
+                var binary = SerializeMessageEnvelope(item);
+                list.Add(binary);
             }
+
+            return list.AsReadOnly();
         }
 
-        private IEnumerable<byte[]> WriteMessageEnvelope(IMessageEnvelope messageEnvelope)
+        private IMessageEnvelopeBinary SerializeMessageEnvelope(IMessageEnvelope messageEnvelope)
         {
+            byte[] metadataBinary;
+            byte[] messageBinary;
+
             using (var headerMemory = new MemoryStream())
             {
                 _serializer.Model.SerializeWithLengthPrefix(headerMemory, messageEnvelope.GetMetadata(), messageEnvelope.GetMetadata().GetType(), PrefixStyle.Base128, 0);
-                yield return headerMemory.ToArray();
+                metadataBinary = headerMemory.ToArray();
             }
 
             using (var messageMemory = new MemoryStream())
             {
                 _serializer.Model.SerializeWithLengthPrefix(messageMemory, messageEnvelope.GetMessage(), messageEnvelope.GetMessage().GetType(), PrefixStyle.Base128, 0);
-                yield return messageMemory.ToArray();
+                messageBinary = messageMemory.ToArray();
             }
+
+            return new MessageEnvelopeBinary(messageBinary, metadataBinary);
         }
 
-        public IEnumerable<byte[]> Serialize(IMessageEnvelope messageEnvelope)
+        public IList<IMessageEnvelope> Deserialize(IEnumerable<IMessageEnvelopeBinary> binaries)
         {
-            var parts = WriteMessageEnvelope(messageEnvelope);
+            var list = new List<IMessageEnvelope>();
 
-            foreach (var part in parts)
-                yield return part;
-        }
-
-        public IEnumerable<IMessageEnvelope> Deserialize(IEnumerable<byte[]> parts)
-        {
-            var enumerator = parts.GetEnumerator();
-            while (enumerator.MoveNext())
+            foreach (var binary in binaries)
             {
-                var metadata = enumerator.Current;
-                enumerator.MoveNext();
-                var message = enumerator.Current;
-                yield return ReadMessageEnvelope(metadata, message);
+                var envelope = DeserializeMessageEnvelope(binary);
+                list.Add(envelope);
             }
+
+            return list.AsReadOnly();
         }
 
-        private IMessageEnvelope ReadMessageEnvelope(byte[] metadataBytes, byte[] messageBytes)
+        private IMessageEnvelope DeserializeMessageEnvelope(IMessageEnvelopeBinary binary)
         {
             IMessageMetadata messageMetadata = null;
             IMessage message = null;
 
-            using(var headerMemory = new MemoryStream(metadataBytes))
+            using(var headerMemory = new MemoryStream(binary.GetMetadataBinary()))
             {
                 messageMetadata = (IMessageMetadata) _serializer.Model.DeserializeWithLengthPrefix(headerMemory, null, typeof(MessageMetadata), PrefixStyle.Base128, 0, null);    
             }
 
             var messageType = _tagToTypeResolver(messageMetadata.MessageTag);
 
-            using (var messageMemory = new MemoryStream(messageBytes))
+            using (var messageMemory = new MemoryStream(binary.GetMessageBinary()))
             {
                 message = (IMessage)_serializer.Model.DeserializeWithLengthPrefix(messageMemory, null, messageType, PrefixStyle.Base128, 0, null);
             }
@@ -86,12 +84,6 @@ namespace Paralect.Machine.Messages
             return EnvelopeFactory.CreateEnvelope(message, messageMetadata);
         }
 
-        public IMessageEnvelope DeserializeMessageEnvelope(IEnumerable<byte[]> binaryMessageEnvelope)
-        {
-            var metadata = binaryMessageEnvelope.First();
-            var message = binaryMessageEnvelope.ElementAt(1);
-            return ReadMessageEnvelope(metadata, message);
-        }
 
         public byte[] SerializeHeaders(IPacketHeaders headers)
         {

@@ -13,13 +13,13 @@ namespace Paralect.Machine.Messages
         /// <summary>
         /// Message envelopes
         /// </summary>
-        IEnumerable<IMessageEnvelope> GetEnvelopes();
+        IList<IMessageEnvelope> GetEnvelopes();
 
         Byte[] GetHeadersBinary();
         
-        IEnumerable<Byte[]> GetEnvelopesBinary();
+        IList<IMessageEnvelopeBinary> GetEnvelopesBinary();
 
-        IEnumerable<Byte[]> Serialize();
+        IList<Byte[]> Serialize();
     }
 
     public interface IPacketHeaders
