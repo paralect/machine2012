@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading;
 using Paralect.Machine.Messages;
+using Paralect.Machine.Packets;
 using ZMQ;
 
 namespace Paralect.Machine.Utilities
@@ -86,6 +87,25 @@ namespace Paralect.Machine.Utilities
 
 
             // send BinaryEnvelope as multipart message
+            while (parts.Count != 1)
+                socket.SendMore(parts.Dequeue());
+
+            return socket.Send(parts.Dequeue());
+        }
+
+        public static IPacket RecvPacket(this Socket socket, Int32 timeout, PacketPartsSerializer serializer)
+        {
+            var queue = socket.RecvAll(timeout);
+            if (queue == null) return null;
+
+            return Packet.FromQueue(queue, serializer);
+        }
+
+        public static SendStatus SendPacket(this Socket socket, Packet envelope)
+        {
+            var parts = envelope.ToQueue();
+
+            // send Packet as multipart message
             while (parts.Count != 1)
                 socket.SendMore(parts.Dequeue());
 

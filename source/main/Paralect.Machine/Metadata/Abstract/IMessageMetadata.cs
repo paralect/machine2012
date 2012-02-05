@@ -43,5 +43,7 @@ namespace Paralect.Machine.Metadata
         /// </summary>
         DateTime DeliverOnUtc { get; set; }
         DateTime CreatedOnUtc { get; set; }
+
+        Guid MessageTag { get; set; }
     }
 }

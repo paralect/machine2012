@@ -4,6 +4,7 @@ using System.Threading;
 using Paralect.Machine.Identities;
 using Paralect.Machine.Messages;
 using Paralect.Machine.Nodes;
+using Paralect.Machine.Packets;
 using Paralect.Machine.Routers;
 using Paralect.Machine.Serialization;
 using ZMQ;
@@ -17,6 +18,7 @@ namespace Paralect.Machine
         private readonly ProtobufSerializer _serializer;
 
         private readonly EnvelopeSerializer _envelopeSerializer;
+        private readonly Packets.PacketPartsSerializer _partsSerializer;
 
         private readonly Context _zeromqContext;
 
@@ -55,6 +57,7 @@ namespace Paralect.Machine
             _serializer.RegisterIdentities(_identityFactory.IdentityDefinitions);
 
             _envelopeSerializer = new EnvelopeSerializer(_serializer, _messageFactory.TagToTypeResolver);
+            _partsSerializer = new PacketPartsSerializer(_serializer, _messageFactory.TagToTypeResolver);
 
             _zeromqContext = new Context(2);
         }
@@ -66,12 +69,12 @@ namespace Paralect.Machine
             return builder.Build();
         }
 
-        public Envelope CreateEnvelope(Action<EnvelopeBuilder> action)
+        public IPacket CreatePacket(Action<PacketBuilder> action)
         {
-            var envelope = new EnvelopeBuilder(_messageFactory.TypeToTagResolver);
+            var envelope = new PacketBuilder(_messageFactory.TypeToTagResolver);
             action(envelope);
-            return envelope.Build();
-        }
+            return envelope.Build(_partsSerializer);
+        } 
 
         public BinaryEnvelope CreateBinaryEnvelope(Action<EnvelopeBuilder> action)
         {

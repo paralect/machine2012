@@ -55,13 +55,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Binary\ImmutableMessage.cs" />
+    <Compile Include="Envelopes\Abstract\ICommandEnvelope.cs" />
+    <Compile Include="Envelopes\Abstract\IEventEnvelope.cs" />
+    <Compile Include="Envelopes\Abstract\IMessageEnvelope.cs" />
+    <Compile Include="Envelopes\MessageEnvelope.cs" />
     <Compile Include="MachineContext.cs" />
+    <Compile Include="Packets\PacketBuilder.cs" />
+    <Compile Include="Packets\PacketHeaders.cs" />
+    <Compile Include="Packets\PacketSerializer.cs" />
     <Compile Include="Metadata\Abstract\IEnvelopeMetadata.cs" />
     <Compile Include="Metadata\Abstract\IStateMetadata.cs" />
     <Compile Include="Metadata\CommandMetadata.cs" />
     <Compile Include="Metadata\EnvelopeMetadata.cs" />
     <Compile Include="Metadata\MessageMetadata.cs" />
     <Compile Include="Metadata\StateMetadata.cs" />
+    <Compile Include="Packets\Abstract\IPacket.cs" />
+    <Compile Include="Packets\Packet.cs" />
     <Compile Include="Processes\ProcessFactory.cs" />
     <Compile Include="Processes\Process.cs" />
     <Compile Include="Processes\State.cs" />
@@ -157,11 +167,7 @@
     <Compile Include="Utilities\ClrzmqExtensions.cs" />
     <Compile Include="Utilities\ReflectionUtilities.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Partitions\" />
-    <Folder Include="Projections\" />
-    <Folder Include="Views\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

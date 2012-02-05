@@ -27,5 +27,8 @@ namespace Paralect.Machine.Metadata
 
         [ProtoMember(6)]
         public DateTime CreatedOnUtc { get; set; }
+
+        [ProtoMember(7)]
+        public Guid MessageTag { get; set; }
     }
 }
