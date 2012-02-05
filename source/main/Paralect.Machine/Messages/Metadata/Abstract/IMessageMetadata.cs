@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using Paralect.Machine.Identities;
 
-namespace Paralect.Machine.Metadata
+namespace Paralect.Machine.Messages
 {
     public interface IMessageMetadata
     {

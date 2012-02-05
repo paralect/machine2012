@@ -17,6 +17,7 @@ namespace Paralect.Machine.Utilities
         /// <param name="obj">Object from where the Property Value is returned</param>
         /// <param name="propName">Propertyname as string.</param>
         /// <returns>PropertyValue</returns>
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public static T GetPrivatePropertyValue<T>(this object obj, string propName)
         {
             if (obj == null) throw new ArgumentNullException("obj");
@@ -33,6 +34,7 @@ namespace Paralect.Machine.Utilities
         /// <param name="obj">Object from where the Property Value is returned</param>
         /// <param name="propName">Propertyname as string.</param>
         /// <returns>PropertyValue</returns>
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public static T GetPrivateFieldValue<T>(this object obj, string propName)
         {
             if (obj == null) throw new ArgumentNullException("obj");
@@ -56,6 +58,7 @@ namespace Paralect.Machine.Utilities
         /// <param name="propName">Propertyname as string.</param>
         /// <param name="val">Value to set.</param>
         /// <returns>PropertyValue</returns>
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public static void SetPrivatePropertyValue<T>(this object obj, string propName, T val)
         {
             Type t = obj.GetType();
@@ -72,6 +75,7 @@ namespace Paralect.Machine.Utilities
         /// <param name="propName">Propertyname as string.</param>
         /// <param name="val">the value to set</param>
         /// <exception cref="ArgumentOutOfRangeException">if the Property is not found</exception>
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public static void SetPrivateFieldValue<T>(this object obj, string propName, T val)
         {
             if (obj == null) throw new ArgumentNullException("obj");

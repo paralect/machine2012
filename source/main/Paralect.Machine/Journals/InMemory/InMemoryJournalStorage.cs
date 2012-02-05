@@ -7,14 +7,14 @@ namespace Paralect.Machine.Journals
 {
     public class InMemoryJournalStorage : IJournalStorage
     {
-        private readonly List<Tuple<Header, BinaryMessageEnvelope>> _storage = new List<Tuple<Header, BinaryMessageEnvelope>>();
+        private readonly List<IMessageEnvelope> _storage = new List<IMessageEnvelope>();
         private Int64 _sequance = 0;
 
-        public long Save(IEnumerable<BinaryMessageEnvelope> messageEnvelope)
+        public long Save(IEnumerable<IMessageEnvelope> messageEnvelopes)
         {
-            foreach (var envelope in messageEnvelope)
+            foreach (var envelope in messageEnvelopes)
             {
-                _storage.Add(new Tuple<Header, BinaryMessageEnvelope>(envelope.GetHeader(), envelope));
+                _storage.Add(envelope);
                 _sequance++;
             }
 

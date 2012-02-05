@@ -2,37 +2,64 @@
 
 namespace Paralect.Machine.Messages
 {
-    public class MessageEnvelope
+    public class MessageEnvelope : IMessageEnvelope, IMessageEnvelopeBinary
     {
+        private byte[] _metadataBinary;
+        private byte[] _messageBinary;
+
+        private IMessageMetadata _metadata;
+        private IMessage _message;
+
         /// <summary>
         /// Message tag and key-value information
         /// </summary>
-        public MessageHeader Header { get; set; }
+        public IMessageMetadata GetMetadata()
+        {
+            /*
+            if (_metadata == null)
+            {
+                _metadata = null;//GetHeadersCopy();
+                _metadataBinary = null;
+            }*/
+
+            return _metadata;
+        }
 
         /// <summary>
         /// Actual single message in the envelope
         /// </summary>
-        public IMessage Message { get; set; }
+        public IMessage GetMessage()
+        {
+            return _message;
+        }
+
+        public byte[] GetMetadataBinary()
+        {
+            return _metadataBinary;
+        }
+
+        public byte[] GetMessageBinary()
+        {
+            return _messageBinary;
+        }
+
 
         /// <summary>
         /// Constructs MessageEnvelope
         /// </summary>
-        public MessageEnvelope(MessageHeader header, IMessage message)
+        public MessageEnvelope(IMessageMetadata metadata, IMessage message)
         {
-            if (header == null)
-                throw new ArgumentNullException("header");
+            if (metadata == null)
+                throw new ArgumentNullException("metadata");
 
             if (message == null)
                 throw new ArgumentNullException("message");
 
-            if (header.MessageTag == Guid.Empty)
-                throw new Exception("Message tag was not specified in message header");
+//            if (metadata.MessageTag == Guid.Empty)
+//                throw new Exception("Message tag was not specified in message header");
 
-            if (header.Metadata == null)
-                throw new Exception("Metadata is null but should be initialized");
-
-            Header = header;
-            Message = message;
+            _metadata = metadata;
+            _message = message;
         }
     }
 }

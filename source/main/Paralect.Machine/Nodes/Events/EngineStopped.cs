@@ -1,6 +1,5 @@
 ﻿using System;
 using Paralect.Machine.Messages;
-using Paralect.Machine.Metadata;
 
 namespace Paralect.Machine.Nodes
 {

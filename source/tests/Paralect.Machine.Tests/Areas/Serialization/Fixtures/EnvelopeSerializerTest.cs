@@ -27,15 +27,17 @@ namespace Paralect.Machine.Tests.Areas.Serialization.Fixtures
                 Title = "Muahaha!"
             };
 
-            var envelope = new EnvelopeBuilder(messageFactory.TypeToTagResolver)
+            var packetSerializer = new PacketSerializer(serializer, messageFactory.TagToTypeResolver);
+
+            var packet = new PacketBuilder(messageFactory.TypeToTagResolver)
                 .AddMessage(message1)
-                .Build();
+                .Build(packetSerializer);
 
-            var envelopeSerializer = new EnvelopeSerializer(serializer, messageFactory.TagToTypeResolver);
-            var bytes = envelopeSerializer.Serialize(envelope);
-            var back = envelopeSerializer.Deserialize(bytes);
+            var bytes = packet.Serialize();
 
-            var evnt = (EnvelopeSerializer_Event) back.Items.First().Message;
+            var back = new Packet(packetSerializer, bytes);
+
+            var evnt = (EnvelopeSerializer_Event) back.GetEnvelopes().First().GetMessage();
 
             Assert.That(evnt.Rate, Is.EqualTo(message1.Rate));
             Assert.That(evnt.Title, Is.EqualTo(message1.Title));

@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using Paralect.Machine.Envelopes;
-using Paralect.Machine.Messages;
-using Paralect.Machine.Metadata;
 
-namespace Paralect.Machine.Packets
+namespace Paralect.Machine.Messages
 {
     public class PacketBuilder
     {
@@ -21,16 +18,27 @@ namespace Paralect.Machine.Packets
         {
             //var messageTag = _typeToTagResolver(message.GetType());
 
-            var envelope = new Envelopes.MessageEnvelope(metadata, message);
+            var envelope = EnvelopeFactory.CreateEnvelope(message, metadata);
             _envelopes.Add(envelope);
             
             return this;
         }
 
-        public IPacket Build(PacketPartsSerializer serializer)
+        public PacketBuilder AddMessage(IMessage message)
         {
-            var parts = serializer.Serialize(_envelopes);
-            return new Packet(serializer, new PacketHeaders(), parts);
+            var messageTag = _typeToTagResolver(message.GetType());
+
+            var envelope = EnvelopeFactory.CreateEnvelope(message);
+            envelope.GetMetadata().MessageTag = messageTag;
+
+            _envelopes.Add(envelope);
+            
+            return this;
+        }
+
+        public IPacket Build(PacketSerializer serializer)
+        {
+            return new Packet(serializer, new PacketHeaders(), _envelopes);
         }
     }
 }

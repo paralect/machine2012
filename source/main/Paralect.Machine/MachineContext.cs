@@ -4,7 +4,6 @@ using System.Threading;
 using Paralect.Machine.Identities;
 using Paralect.Machine.Messages;
 using Paralect.Machine.Nodes;
-using Paralect.Machine.Packets;
 using Paralect.Machine.Routers;
 using Paralect.Machine.Serialization;
 using Paralect.Machine.Sockets;
@@ -17,8 +16,7 @@ namespace Paralect.Machine
         private readonly IdentityFactory _identityFactory;
         private readonly ProtobufSerializer _serializer;
 
-        private readonly EnvelopeSerializer _envelopeSerializer;
-        private readonly Packets.PacketPartsSerializer _partsSerializer;
+        private readonly PacketSerializer _packetSerializer;
 
         private readonly ZMQ.Context _zeromqContext;
 
@@ -37,14 +35,9 @@ namespace Paralect.Machine
             get { return _serializer; }
         }
 
-        public EnvelopeSerializer EnvelopeSerializer
+        public PacketSerializer PacketSerializer
         {
-            get { return _envelopeSerializer; }
-        }
-
-        public PacketPartsSerializer PartsSerializer
-        {
-            get { return _partsSerializer; }
+            get { return _packetSerializer; }
         }
 
         public ZMQ.Context ZmqContext
@@ -61,8 +54,7 @@ namespace Paralect.Machine
             _serializer.RegisterMessages(_messageFactory.MessageDefinitions);
             _serializer.RegisterIdentities(_identityFactory.IdentityDefinitions);
 
-            _envelopeSerializer = new EnvelopeSerializer(_serializer, _messageFactory.TagToTypeResolver);
-            _partsSerializer = new PacketPartsSerializer(_serializer, _messageFactory.TagToTypeResolver);
+            _packetSerializer = new PacketSerializer(_serializer, _messageFactory.TagToTypeResolver);
 
             _zeromqContext = new ZMQ.Context(2);
         }
@@ -78,27 +70,8 @@ namespace Paralect.Machine
         {
             var envelope = new PacketBuilder(_messageFactory.TypeToTagResolver);
             action(envelope);
-            return envelope.Build(_partsSerializer);
+            return envelope.Build(_packetSerializer);
         } 
-
-        public BinaryEnvelope CreateBinaryEnvelope(Action<EnvelopeBuilder> action)
-        {
-            var envelope = new EnvelopeBuilder(_messageFactory.TypeToTagResolver);
-            action(envelope);
-            return envelope.BuildAndSerialize(_envelopeSerializer);
-        }        
-        
-        public BinaryEnvelope CreateBinaryEnvelope(params IMessage[] messages)
-        {
-            var envelope = new EnvelopeBuilder(_messageFactory.TypeToTagResolver);
-
-            foreach (var message in messages)
-            {
-                envelope.AddMessage(message);
-            }
-            
-            return envelope.BuildAndSerialize(_envelopeSerializer);
-        }
 
         public void RunHost(Action<MachineHostBuilder> action)
         {

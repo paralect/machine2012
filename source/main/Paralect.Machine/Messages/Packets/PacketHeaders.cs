@@ -1,6 +1,6 @@
 using ProtoBuf;
 
-namespace Paralect.Machine.Packets
+namespace Paralect.Machine.Messages
 {
     [ProtoContract]
     public class PacketHeaders : IPacketHeaders

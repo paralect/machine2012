@@ -1,7 +1,7 @@
 ﻿using Paralect.Machine.Identities;
 using ProtoBuf;
 
-namespace Paralect.Machine.Metadata
+namespace Paralect.Machine.Messages
 {
     [ProtoContract]
     public class StateMetadata : IStateMetadata

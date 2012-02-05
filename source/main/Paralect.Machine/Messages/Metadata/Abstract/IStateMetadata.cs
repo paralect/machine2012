@@ -1,7 +1,7 @@
 ﻿using System;
 using Paralect.Machine.Identities;
 
-namespace Paralect.Machine.Metadata
+namespace Paralect.Machine.Messages
 {
     public interface IStateMetadata
     {

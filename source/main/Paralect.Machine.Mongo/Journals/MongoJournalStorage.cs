@@ -21,7 +21,7 @@ namespace Paralect.Machine.Mongo.Journals
         /// <summary>
         /// Returns HEAD of sequence number
         /// </summary>
-        public Int64 Save(IEnumerable<BinaryMessageEnvelope> binaryMessageEnvelopes)
+        public Int64 Save(IEnumerable<IMessageEnvelope> binaryMessageEnvelopes)
         {
             // TODO: We should use here 2PC in order to update seq and message collection
 
@@ -32,13 +32,15 @@ namespace Paralect.Machine.Mongo.Journals
 
             foreach (var binaryMessageEnvelope in binaryMessageEnvelopes)
             {
-                var doc = new BsonDocument();
+/*                var doc = new BsonDocument();
                 SetHeaderInfo(doc, binaryMessageEnvelope.GetHeader());
 
                 doc["Header"] = new BsonBinaryData(binaryMessageEnvelope.Header);
                 doc["Message"] = new BsonBinaryData(binaryMessageEnvelope.Message);
                 doc["Seq"] = seq++;
                 list.Add(doc);
+ * 
+ */
             }
 
             var result = _server.Messages.InsertBatch(list, SafeMode.True);

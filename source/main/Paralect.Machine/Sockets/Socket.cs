@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading;
-using Paralect.Machine.Packets;
+using Paralect.Machine.Messages;
 using ZMQ;
 
 namespace Paralect.Machine.Sockets
@@ -86,7 +86,7 @@ namespace Paralect.Machine.Sockets
             var queue = RecvAll(timeout);
             if (queue == null) return null;
 
-            return Packet.FromQueue(queue, _context.PartsSerializer);
+            return Packet.FromQueue(queue, _context.PacketSerializer);
         }
 
         public SendStatus SendPacket(Packet envelope)

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading;
 using Paralect.Machine.Messages;
-using Paralect.Machine.Packets;
 using ZMQ;
 
 namespace Paralect.Machine.Utilities
@@ -73,27 +72,7 @@ namespace Paralect.Machine.Utilities
             }
         }
 
-        public static BinaryEnvelope RecvBinaryEnvelope(this Socket socket, Int32 timeout)
-        {
-            var queue = socket.RecvAll(timeout);
-            if (queue == null) return null;
-
-            return BinaryEnvelope.FromQueue(queue);
-        }
-
-        public static SendStatus SendBinaryEnvelope(this Socket socket, BinaryEnvelope envelope)
-        {
-            var parts = envelope.ToQueue();
-
-
-            // send BinaryEnvelope as multipart message
-            while (parts.Count != 1)
-                socket.SendMore(parts.Dequeue());
-
-            return socket.Send(parts.Dequeue());
-        }
-
-        public static IPacket RecvPacket(this Socket socket, Int32 timeout, PacketPartsSerializer serializer)
+        public static IPacket RecvPacket(this Socket socket, Int32 timeout, PacketSerializer serializer)
         {
             var queue = socket.RecvAll(timeout);
             if (queue == null) return null;

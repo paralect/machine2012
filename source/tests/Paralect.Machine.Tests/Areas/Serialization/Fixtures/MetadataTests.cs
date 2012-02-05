@@ -2,7 +2,6 @@
 using NUnit.Framework;
 using Paralect.Machine.Identities;
 using Paralect.Machine.Messages;
-using Paralect.Machine.Metadata;
 using Paralect.Machine.Tests.Areas.Serialization.Fixtures.Protobuf;
 using Paralect.Machine.Tests.Helpers.Protobuf;
 using ProtoBuf;

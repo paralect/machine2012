@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using Paralect.Machine.Identities;
 using Paralect.Machine.Messages;
-using Paralect.Machine.Metadata;
 using Paralect.Machine.Processes.Utilities;
 
 namespace Paralect.Machine.Processes

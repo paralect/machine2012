@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Paralect.Machine.Journals.Abstract;
 using Paralect.Machine.Messages;
 using Paralect.Machine.Nodes;
-using Paralect.Machine.Packets;
 using Paralect.Machine.Serialization;
 using Paralect.Machine.Utilities;
 using ZMQ;
@@ -54,13 +53,13 @@ namespace Paralect.Machine.Routers
                     if (packet == null) continue;
 
                     // Ignore packets without messages
-                    if (packet.Headers.ContentType != ContentType.Messages)
+                    if (packet.GetHeaders().ContentType != ContentType.Messages)
                         continue;
 
                     // Journal all messages
-/*                    var seq = _storage.Save(binaryEnvelope.MessageEnvelopes);
+                    var seq = _storage.Save(packet.GetEnvelopes());
 
-                    for (int i = 0; i < binaryEnvelope.MessageEnvelopes.Count; i++)
+/*                    for (int i = 0; i < binaryEnvelope.MessageEnvelopes.Count; i++)
                     {
                         var currentIndex = i;
                         var binaryMessageEnvelope = binaryEnvelope.MessageEnvelopes[i];

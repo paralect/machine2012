@@ -35,7 +35,7 @@ namespace Paralect.Machine.Journals.Processes
         {
             try
             {
-                var envelopeSerializer = new EnvelopeSerializer(_serializer, _messageFactory.TagToTypeResolver);
+/*                var envelopeSerializer = new EnvelopeSerializer(_serializer, _messageFactory.TagToTypeResolver);
 
                 using (var socket = _context.Socket(SocketType.REP))
                 {
@@ -68,6 +68,8 @@ namespace Paralect.Machine.Journals.Processes
                     Console.WriteLine("Done with server");
                         
                 }
+ * 
+ * */
             }
             catch (ObjectDisposedException)
             {

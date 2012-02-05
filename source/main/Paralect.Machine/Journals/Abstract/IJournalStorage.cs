@@ -6,6 +6,6 @@ namespace Paralect.Machine.Journals.Abstract
 {
     public interface IJournalStorage
     {
-        Int64 Save(IEnumerable<BinaryMessageEnvelope> binaryMessageEnvelopes);
+        Int64 Save(IEnumerable<IMessageEnvelope> messageEnvelopes);
     }
 }

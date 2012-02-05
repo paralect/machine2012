@@ -1,5 +1,5 @@
 
-namespace Paralect.Machine.Metadata
+namespace Paralect.Machine.Messages
 {
     /// <summary>
     /// Why Command Receiver and not Command Recipient?

@@ -2,20 +2,17 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Paralect.Machine.Envelopes;
-using Paralect.Machine.Messages;
-using Paralect.Machine.Metadata;
 using Paralect.Machine.Serialization;
 using ProtoBuf;
 
-namespace Paralect.Machine.Packets
+namespace Paralect.Machine.Messages
 {
-    public class PacketPartsSerializer
+    public class PacketSerializer
     {
         private readonly ProtobufSerializer _serializer;
         private readonly Func<Guid, Type> _tagToTypeResolver;
 
-        public PacketPartsSerializer(ProtobufSerializer serializer, Func<Guid, Type> tagToTypeResolver)
+        public PacketSerializer(ProtobufSerializer serializer, Func<Guid, Type> tagToTypeResolver)
         {
             _serializer = serializer;
             _tagToTypeResolver = tagToTypeResolver;
@@ -38,13 +35,13 @@ namespace Paralect.Machine.Packets
         {
             using (var headerMemory = new MemoryStream())
             {
-                _serializer.Model.SerializeWithLengthPrefix(headerMemory, messageEnvelope.Metadata, typeof(MessageMetadata), PrefixStyle.Base128, 0);
+                _serializer.Model.SerializeWithLengthPrefix(headerMemory, messageEnvelope.GetMetadata(), messageEnvelope.GetMetadata().GetType(), PrefixStyle.Base128, 0);
                 yield return headerMemory.ToArray();
             }
 
             using (var messageMemory = new MemoryStream())
             {
-                _serializer.Model.SerializeWithLengthPrefix(messageMemory, messageEnvelope.Message, messageEnvelope.Message.GetType(), PrefixStyle.Base128, 0);
+                _serializer.Model.SerializeWithLengthPrefix(messageMemory, messageEnvelope.GetMessage(), messageEnvelope.GetMessage().GetType(), PrefixStyle.Base128, 0);
                 yield return messageMemory.ToArray();
             }
         }
@@ -85,8 +82,8 @@ namespace Paralect.Machine.Packets
             {
                 message = (IMessage)_serializer.Model.DeserializeWithLengthPrefix(messageMemory, null, messageType, PrefixStyle.Base128, 0, null);
             }
-            
-            return new Envelopes.MessageEnvelope(messageMetadata, message);
+
+            return EnvelopeFactory.CreateEnvelope(message, messageMetadata);
         }
 
         public IMessageEnvelope DeserializeMessageEnvelope(IEnumerable<byte[]> binaryMessageEnvelope)
