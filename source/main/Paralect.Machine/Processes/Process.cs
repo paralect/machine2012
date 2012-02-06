@@ -9,8 +9,10 @@ namespace Paralect.Machine.Processes
     /// Machine Process is a single-threaded, operation-oriented reactive message handler.
     /// 
     /// Rules and guidelines on implementation of your Process:
+    /// 
     ///     1) I/O operations are forbidden to be used in Process.
     ///     2) Generally, any blocking operations are forbidden.
+    /// 
     ///     3) Idempotence of operation is a MUST, all operations have to be idempotent. If you cannot
     ///        make your operation idempotent - think more about it or ask for help.
     ///          3.1) As consequence, there is no time flow for single operation. Each operation 
@@ -18,15 +20,18 @@ namespace Paralect.Machine.Processes
     ///               Current time should be somehow derived from the message you are now handling.
     ///               Subsequent handling of the same message should results in the same NOW time.
     ///               DateTime.Now (or similar functions) shouldn't be used in the Process.
+    /// 
     ///     4) Full ACID 2.0. While not required for our current implementation, still consider 
     ///        the following rules as they are required for more robust and more highly scalable applications:
     ///          4.1) Think and try to make your operations associative
     ///          4.2) Think and try to make your operations commutative
+    /// 
     ///     5) Any long-running computation (that takes more than 10 ms) or any operation that requires blocking 
     ///        of the Process thread (for example database or file system access), should be breaked into three phases:
     ///          Phase 1: Request for long or blocking operations by sending a message.
     ///          Phase 2: Handle message by some external handler, and send result of computation back to the Process.
     ///          Phase 3: Handle result.
+    /// 
     /// </summary>
     public class Process<TId, TProcessState> : IProcess
         where TId : IIdentity

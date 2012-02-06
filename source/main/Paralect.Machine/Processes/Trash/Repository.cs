@@ -21,7 +21,7 @@ namespace Paralect.Machine.Processes.Trash
             this._dataTypeRegistry = _dataTypeRegistry;
         }
 
-        public void Save(MPowerAggregateRoot aggregate)
+        public void Save(LegacyAggregateRoot aggregate)
         {
             if (String.IsNullOrEmpty(aggregate.Id))
                 throw new ArgumentException("Aggregate id was not specified.");
@@ -38,7 +38,7 @@ namespace Paralect.Machine.Processes.Trash
         }
 
         public TAggregate GetById<TAggregate>(String id)
-            where TAggregate : MPowerAggregateRoot
+            where TAggregate : LegacyAggregateRoot
         {
             if (String.IsNullOrEmpty(id))
                 throw new ArgumentException("Aggregate id was not specified.");

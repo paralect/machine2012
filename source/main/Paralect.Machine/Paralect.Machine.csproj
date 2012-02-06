@@ -83,7 +83,7 @@
     <Compile Include="Processes\Results\EmptyResult.cs" />
     <Compile Include="Processes\Results\Abstract\ICompositeResult.cs" />
     <Compile Include="Processes\Results\Abstract\IResult.cs" />
-    <Compile Include="Processes\Trash\MPowerAggregateRoot.cs" />
+    <Compile Include="Processes\Trash\LegacyAggregateRoot.cs" />
     <Compile Include="Processes\EventBus\IEventBus.cs" />
     <Compile Include="Processes\EventBus\InMemoryEventBus.cs" />
     <Compile Include="Processes\Exceptions\AggregateNotFoundException.cs" />

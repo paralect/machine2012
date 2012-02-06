@@ -6,7 +6,7 @@ using Paralect.Machine.Transitions;
 
 namespace Paralect.Machine.Processes.Trash
 {
-    public abstract class MPowerAggregateRoot : IProcess
+    public abstract class LegacyAggregateRoot : IProcess
     {
         /// <summary>
         /// Unique identifier of Aggregate Root
@@ -41,7 +41,7 @@ namespace Paralect.Machine.Processes.Trash
             internal set { _version = value; }
         }
 
-        protected MPowerAggregateRoot() { }
+        protected LegacyAggregateRoot() { }
 
         /// <summary>
         /// Create changeset. Used to persist changes in aggregate

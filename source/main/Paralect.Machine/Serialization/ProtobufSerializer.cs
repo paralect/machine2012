@@ -8,6 +8,10 @@ using ProtoBuf.Meta;
 
 namespace Paralect.Machine.Serialization
 {
+    /// <summary>
+    /// This protobuf serializer reserves tag numbers from 10,000,000 to 26,777,215 inclusively. 
+    /// If your message has tag numbers from this range - behaviour of the serializer is undefined.
+    /// </summary>
     public class ProtobufSerializer
     {
         /// <summary>
@@ -20,6 +24,10 @@ namespace Paralect.Machine.Serialization
         /// </summary>
         private readonly Dictionary<Type, Dictionary<Int32, Type>> _map = new Dictionary<Type, Dictionary<int, Type>>(100);
 
+        /// <summary>
+        /// Offset for automatic hierarchy registration
+        /// </summary>
+        private const int _tagOffset = 10000000;
 
         /// <summary>
         /// Protobuf .net model of types that should be serialized and deserialized
@@ -76,13 +84,13 @@ namespace Paralect.Machine.Serialization
                 tagToChild[tag] = type;
 
                 _model[baseType]
-                    .AddSubType(tag, type);
+                    .AddSubType(tag + _tagOffset, type);
             }
         }
 
         public byte[] Serialize(Object obj)
         {
-            using (MemoryStream ms = new System.IO.MemoryStream())
+            using (MemoryStream ms = new MemoryStream())
             {
                 _model.Serialize(ms, obj);
                 return ms.ToArray();

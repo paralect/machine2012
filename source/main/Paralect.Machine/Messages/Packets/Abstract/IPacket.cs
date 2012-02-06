@@ -20,10 +20,15 @@ namespace Paralect.Machine.Messages
         /// </summary>
         IList<IMessageEnvelope> GetEnvelopes();
 
+        /// <summary>
+        /// Returns list of cloned envelopes. Returned Envelopes are in binary state.
+        /// </summary>
         IList<IMessageEnvelope> GetEnvelopesCloned();
 
+        /// <summary>
+        /// Builds multipart message in the form of list of byte array. 
+        /// </summary>
         IList<Byte[]> Serialize();
-        
     }
 
     public enum ContentType

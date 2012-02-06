@@ -41,7 +41,7 @@ namespace Paralect.Machine.Tests.Areas.Domain.Aggregates
 
     public class DeveloperState : State<DeveloperId>
     {
-        //[ProtoBuf.ProtoMember(1, ]
+        [ProtoMember(1)]
         public string Name { get; set; }
 
         protected void When(DeveloperCreated created)
@@ -71,7 +71,7 @@ namespace Paralect.Machine.Tests.Areas.Domain.Aggregates
 
 
 
-    public class User : MPowerAggregateRoot
+    public class User : LegacyAggregateRoot
     {
         private String _firstName;
         private String _lastName;

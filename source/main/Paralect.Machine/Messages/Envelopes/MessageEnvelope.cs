@@ -155,7 +155,7 @@ namespace Paralect.Machine.Messages
         /// <summary>
         /// Performs deep-clone of this message envelope. To minimize overhead - call this method 
         /// when you know exactly that envelope already have binary data for metadata and message. In this 
-        /// case operation is O(1). Otherwize data will be serialized to create independent message envelope
+        /// case operation is O(1). Otherwize data will be serialized to create independent message envelope.
         /// </summary>
         public IMessageEnvelope CloneEnvelope()
         {

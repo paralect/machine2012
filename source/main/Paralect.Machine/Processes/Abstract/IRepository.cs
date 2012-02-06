@@ -5,12 +5,12 @@ namespace Paralect.Machine.Processes
 {
     public interface IRepository 
     {
-        void Save(MPowerAggregateRoot aggregate);
+        void Save(LegacyAggregateRoot aggregate);
 
         /// <summary>
         /// Generic version
         /// </summary>
         TAggregate GetById<TAggregate>(String id)
-            where TAggregate : MPowerAggregateRoot;
+            where TAggregate : LegacyAggregateRoot;
     }
 }

@@ -57,41 +57,37 @@ namespace Paralect.Machine.Routers
                         continue;
 
                     // Journal all messages
-                    var seq = _storage.Save(packet.GetEnvelopesCloned());
+                    var seq = JournalPacket(packet);
 
-
-                    var clonedEnvelopes = packet.GetEnvelopesCloned();
-
-                    for (int i = 0; i < clonedEnvelopes.Count; i++)
-                    {
-                        var currentIndex = i;
-                        var envelope = clonedEnvelopes[i];
-                        var metadata = envelope.GetMetadata();
-                        metadata.JournalStreamSequence = seq - clonedEnvelopes.Count + currentIndex + 1;
-
-                        var newPacket = _context.CreatePacket(b => b
-                            .AddMessage(envelope.GetMessageBinary(), metadata)
-                        );
-
-                        routerPubSocket.SendPacket(newPacket);
-                    }
-
-
-/*                    for (int i = 0; i < binaryEnvelope.MessageEnvelopes.Count; i++)
-                    {
-                        var currentIndex = i;
-                        var binaryMessageEnvelope = binaryEnvelope.MessageEnvelopes[i];
-
-                        var outboxEnvelope = new BinaryEnvelope()
-                            .AddBinaryMessageEnvelope(binaryMessageEnvelope, header =>
-                            {
-                                header.Set("Journal-Stream-Sequence", seq - binaryEnvelope.MessageEnvelopes.Count + currentIndex + 1);
-                            });
-                                
-
-                        routerPubSocket.SendBinaryEnvelope(outboxEnvelope);
-                    }*/
+                    // Publish all messages
+                    PublishMessages(routerPubSocket, packet, seq);
                 }
+            }
+        }
+
+        private Int64 JournalPacket(IPacket packet)
+        {
+            // Journal all messages
+            var seq = _storage.Save(packet.GetEnvelopesCloned());
+            return seq;
+        }
+
+        private void PublishMessages(Socket routerPubSocket, IPacket packet, Int64 seq)
+        {
+            var clonedEnvelopes = packet.GetEnvelopesCloned();
+
+            for (int i = 0; i < clonedEnvelopes.Count; i++)
+            {
+                var envelope = clonedEnvelopes[i];
+                
+                var metadata = envelope.GetMetadata();
+                metadata.JournalStreamSequence = seq - clonedEnvelopes.Count + i + 1;
+
+                var newPacket = _context.CreatePacket(b => b
+                    .AddMessage(envelope.GetMessageBinary(), metadata)
+                );
+
+                routerPubSocket.SendPacket(newPacket);
             }
         }
 

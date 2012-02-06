@@ -77,6 +77,12 @@ namespace Paralect.Machine.Messages
             return _envelopes;
         }
 
+        /// <summary>
+        /// Returns list of cloned envelopes. Returned Envelopes are in binary state. Original packet has no relations 
+        /// with the cloned envelopes.  Any changes to cloned envelopes does not impact any change 
+        /// to original packet-owned envelopes. This method shows best possible performance when Envelopes were 
+        /// already in binary state. If this is not a case - original envelopes will be serialized before cloning.
+        /// </summary>
         public IList<IMessageEnvelope> GetEnvelopesCloned()
         {
             var cloned = new List<IMessageEnvelope>();
