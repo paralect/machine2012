@@ -2,7 +2,7 @@ namespace Paralect.Machine.Messages
 {
     public class EventEnvelope : MessageEnvelope, IEventEnvelope
     {
-        public EventEnvelope(IEventMetadata metadata, IEvent message) : base(metadata, message)
+        public EventEnvelope(PacketSerializer serializer, IEventMetadata metadata, IEvent message) : base(serializer, metadata, message)
         {
         }
 

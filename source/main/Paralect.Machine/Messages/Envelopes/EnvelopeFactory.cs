@@ -7,7 +7,7 @@ namespace Paralect.Machine.Messages
         /// <summary>
         /// Boring code that enforce correct message and metadata pairs for events, commands and ordinary messages
         /// </summary>
-        public static IMessageEnvelope CreateEnvelope(IMessage message, IMessageMetadata messageMetadata)
+        public static IMessageEnvelope CreateEnvelope(PacketSerializer serializer, IMessage message, IMessageMetadata messageMetadata)
         {
             if (message == null) throw new ArgumentNullException("message");
             if (messageMetadata == null) throw new ArgumentNullException("messageMetadata");
@@ -17,7 +17,7 @@ namespace Paralect.Machine.Messages
                 if (!(messageMetadata is IEventMetadata))
                     throw new Exception("Event metadata must implement IEventMetadata");
 
-                return new EventEnvelope((IEventMetadata) messageMetadata, (IEvent) message);
+                return new EventEnvelope(serializer, (IEventMetadata) messageMetadata, (IEvent) message);
             }
 
             if (message is ICommand)
@@ -25,30 +25,30 @@ namespace Paralect.Machine.Messages
                 if (!(messageMetadata is ICommandMetadata))
                     throw new Exception("Command metadata must implement ICommandMetadata");
 
-                return new CommandEnvelope((ICommandMetadata) messageMetadata, (ICommand) message);
+                return new CommandEnvelope(serializer, (ICommandMetadata) messageMetadata, (ICommand) message);
             }
 
-            return new MessageEnvelope(messageMetadata, message);
+            return new MessageEnvelope(serializer, messageMetadata, message);
         }
 
         /// <summary>
         /// Creates envelope with default and empty metadata
         /// </summary>
-        public static IMessageEnvelope CreateEnvelope(IMessage message)
+        public static IMessageEnvelope CreateEnvelope(PacketSerializer serializer, IMessage message)
         {
             if (message == null) throw new ArgumentNullException("message");
 
             if (message is IEvent)
             {
-                return new EventEnvelope(new EventMetadata(), (IEvent)message);
+                return new EventEnvelope(serializer, new EventMetadata(), (IEvent)message);
             }
 
             if (message is ICommand)
             {
-                return new CommandEnvelope(new CommandMetadata(), (ICommand)message);
+                return new CommandEnvelope(serializer, new CommandMetadata(), (ICommand)message);
             }
 
-            return new MessageEnvelope(new MessageMetadata(), message);
+            return new MessageEnvelope(serializer, new MessageMetadata(), message);
         }
     }
 }

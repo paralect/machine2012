@@ -68,9 +68,16 @@ namespace Paralect.Machine
 
         public IPacket CreatePacket(Action<PacketBuilder> action)
         {
-            var envelope = new PacketBuilder(_messageFactory.TypeToTagResolver);
+            var envelope = new PacketBuilder(_messageFactory.TypeToTagResolver, _packetSerializer);
             action(envelope);
-            return envelope.Build(_packetSerializer);
+            return envelope.Build();
+        } 
+
+        public IPacket CreatePacket(IMessage message)
+        {
+            var envelope = new PacketBuilder(_messageFactory.TypeToTagResolver, _packetSerializer);
+            envelope.AddMessage(message);
+            return envelope.Build();
         } 
 
         public void RunHost(Action<MachineHostBuilder> action)

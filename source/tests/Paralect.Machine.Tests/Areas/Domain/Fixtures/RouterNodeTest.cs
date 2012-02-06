@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using NUnit.Framework;
 using Paralect.Machine.Identities;
@@ -17,7 +18,7 @@ namespace Paralect.Machine.Tests.Areas.Domain.Fixtures
     [TestFixture]
     public class RouterNodeTest
     {
-/*        [Test]
+        [Test]
         public void simple_pum_para_pum()
         {
             var journalStorage = new InMemoryJournalStorage();
@@ -30,26 +31,31 @@ namespace Paralect.Machine.Tests.Areas.Domain.Fixtures
             var message = new EnvelopeSerializer_Event() { Rate = 0.7, Title = "Muahaha!" };
 
             context.RunHost(h => h
-                .AddNode(new RouterNode(context.ZeromqContext, "inproc://rep", "inproc://pub", "inproc://domain", journalStorage))
+                .AddNode(new RouterNode(context, "inproc://rep", "inproc://pub", "inproc://domain", journalStorage))
                 .Execute(token =>
                 {
-                    using (var input = context.ZeromqContext.Socket(SocketType.PUSH))
+                    using (var input = context.CreateSocket(SocketType.PUSH))
                     {
-                        input.EstablishConnect("inproc://rep", token);
+                        input.Connect("inproc://rep", token);
 
-                        input.SendBinaryEnvelope(context.CreateBinaryEnvelope(message));
-                        input.SendBinaryEnvelope(context.CreateBinaryEnvelope(message));
-                        input.SendBinaryEnvelope(context.CreateBinaryEnvelope(message));
-                        input.SendBinaryEnvelope(context.CreateBinaryEnvelope(message));
-                        input.SendBinaryEnvelope(context.CreateBinaryEnvelope(message));
-
+                        input.SendPacket(context.CreatePacket(message));
+                        input.SendPacket(context.CreatePacket(message));
+                        input.SendPacket(context.CreatePacket(message));
+                        input.SendPacket(context.CreatePacket(message));
+                        input.SendPacket(context.CreatePacket(message));
                     }                    
                 })
             );
 
             var seq = journalStorage.GetPrivateFieldValue<Int64>("_sequance");
+            var storage = journalStorage.GetPrivateFieldValue<List<IMessageEnvelope>>("_storage");
 
             Assert.That(seq, Is.EqualTo(5));
-        }*/
+            var firstMessage = (EnvelopeSerializer_Event)storage[0].GetMessage();
+            Assert.That(firstMessage == message , Is.False);
+            Assert.That(firstMessage.Rate, Is.EqualTo(message.Rate));
+            Assert.That(firstMessage.Title, Is.EqualTo(message.Title));
+
+        }
     }
 }

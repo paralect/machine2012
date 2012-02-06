@@ -29,9 +29,9 @@ namespace Paralect.Machine.Tests.Areas.Serialization.Fixtures
 
             var packetSerializer = new PacketSerializer(serializer, messageFactory.TagToTypeResolver);
 
-            var packet = new PacketBuilder(messageFactory.TypeToTagResolver)
+            var packet = new PacketBuilder(messageFactory.TypeToTagResolver, packetSerializer)
                 .AddMessage(message1)
-                .Build(packetSerializer);
+                .Build();
 
             var bytes = packet.Serialize();
 

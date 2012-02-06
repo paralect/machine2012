@@ -1,6 +1,6 @@
 ﻿namespace Paralect.Machine.Messages
 {
-    public interface IMessageEnvelope
+    public interface IMessageEnvelope : IMessageEnvelopeBinary
     {
         IMessageMetadata GetMetadata();
         IMessage GetMessage();

@@ -12,7 +12,7 @@ namespace Paralect.Machine.Mongo.Tests.Fixtures
     [TestFixture]
     public class RouterNodeTest
     {
-/*        [Ignore("Uses mongodb...")]
+        [Ignore("Uses mongodb...")]
         public void mongo_journal_integration_test()
         {
             var server = new MongoJournalServer("mongodb://localhost:27018/test_journal");
@@ -26,29 +26,28 @@ namespace Paralect.Machine.Mongo.Tests.Fixtures
             var message = new EnvelopeSerializer_Event() { Rate = 0.7, Title = "Muahaha!" };
 
             context.RunHost(h => h
-                .AddNode(new RouterNode(context.ZeromqContext, "inproc://rep", "inproc://pub", "inproc://domain", journalStorage))
-                .SetTimeout(5000)
+                .AddNode(new RouterNode(context, "inproc://rep", "inproc://pub", "inproc://domain", journalStorage))
+                .SetTimeout(1000)
                 .Execute(token =>
                 {
-                    using (var input = context.ZeromqContext.Socket(SocketType.PUSH))
+                    using (var input = context.CreateSocket(SocketType.PUSH))
                     {
-                        input.EstablishConnect("inproc://rep", token);
+                        input.Connect("inproc://rep", token);
 
-                        for (int i = 0; i < 100000; i++)
-                        {
-                            input.SendBinaryEnvelope(context.CreateBinaryEnvelope(message));
-                            input.SendBinaryEnvelope(context.CreateBinaryEnvelope(message));
-                            input.SendBinaryEnvelope(context.CreateBinaryEnvelope(message));
-                            input.SendBinaryEnvelope(context.CreateBinaryEnvelope(message));
-                            input.SendBinaryEnvelope(context.CreateBinaryEnvelope(message));
-                        }
+//                        for (int i = 0; i < 100000; i++)
+//                        {
+                            input.SendPacket(context.CreatePacket(message));
+                            input.SendPacket(context.CreatePacket(message));
+                            input.SendPacket(context.CreatePacket(message));
+                            input.SendPacket(context.CreatePacket(message));
+                            input.SendPacket(context.CreatePacket(message));
+                        //}
                     }
                 })
             );
 
             var seq = server.GetCurrentSequence();
-            Console.WriteLine(seq);
-            //Assert.That(seq, Is.EqualTo(5));
-        }*/
+            Assert.That(seq, Is.EqualTo(5));
+        }
     }
 }

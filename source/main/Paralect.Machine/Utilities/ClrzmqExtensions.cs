@@ -80,7 +80,7 @@ namespace Paralect.Machine.Utilities
             return Packet.FromQueue(queue, serializer);
         }
 
-        public static SendStatus SendPacket(this Socket socket, Packet envelope)
+/*        public static SendStatus SendPacket(this Socket socket, Packet envelope)
         {
             var parts = envelope.ToQueue();
 
@@ -89,6 +89,6 @@ namespace Paralect.Machine.Utilities
                 socket.SendMore(parts.Dequeue());
 
             return socket.Send(parts.Dequeue());
-        }
+        }*/
     }
 }

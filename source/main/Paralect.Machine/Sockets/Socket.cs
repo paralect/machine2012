@@ -89,9 +89,9 @@ namespace Paralect.Machine.Sockets
             return Packet.FromQueue(queue, _context.PacketSerializer);
         }
 
-        public SendStatus SendPacket(Packet envelope)
+        public SendStatus SendPacket(IPacket envelope)
         {
-            var parts = envelope.ToQueue();
+            var parts = new Queue<byte[]>(envelope.Serialize());
 
             // send Packet as multipart message
             while (parts.Count != 1)

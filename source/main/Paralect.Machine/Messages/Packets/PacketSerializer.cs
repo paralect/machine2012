@@ -31,7 +31,7 @@ namespace Paralect.Machine.Messages
             return list.AsReadOnly();
         }
 
-        private IMessageEnvelopeBinary SerializeMessageEnvelope(IMessageEnvelope messageEnvelope)
+        public IMessageEnvelopeBinary SerializeMessageEnvelope(IMessageEnvelope messageEnvelope)
         {
             byte[] metadataBinary;
             byte[] messageBinary;
@@ -49,6 +49,32 @@ namespace Paralect.Machine.Messages
             }
 
             return new MessageEnvelopeBinary(messageBinary, metadataBinary);
+        }        
+        
+        public byte[] SerializeMessage(IMessage messageEnvelope)
+        {
+            byte[] messageBinary;
+
+            using (var messageMemory = new MemoryStream())
+            {
+                _serializer.Model.SerializeWithLengthPrefix(messageMemory, messageEnvelope, messageEnvelope.GetType(), PrefixStyle.Base128, 0);
+                messageBinary = messageMemory.ToArray();
+            }
+
+            return messageBinary;
+        }
+
+        public byte[] SerializeMessageMetadata(IMessageMetadata metadata)
+        {
+            byte[] metadataBinary;
+
+            using (var headerMemory = new MemoryStream())
+            {
+                _serializer.Model.SerializeWithLengthPrefix(headerMemory, metadata, metadata.GetType(), PrefixStyle.Base128, 0);
+                metadataBinary = headerMemory.ToArray();
+            }
+
+            return metadataBinary;
         }
 
         public IList<IMessageEnvelope> Deserialize(IEnumerable<IMessageEnvelopeBinary> binaries)
@@ -64,7 +90,7 @@ namespace Paralect.Machine.Messages
             return list.AsReadOnly();
         }
 
-        private IMessageEnvelope DeserializeMessageEnvelope(IMessageEnvelopeBinary binary)
+        public IMessageEnvelope DeserializeMessageEnvelope(IMessageEnvelopeBinary binary)
         {
             IMessageMetadata messageMetadata = null;
             IMessage message = null;
@@ -81,7 +107,33 @@ namespace Paralect.Machine.Messages
                 message = (IMessage)_serializer.Model.DeserializeWithLengthPrefix(messageMemory, null, messageType, PrefixStyle.Base128, 0, null);
             }
 
-            return EnvelopeFactory.CreateEnvelope(message, messageMetadata);
+            return EnvelopeFactory.CreateEnvelope(this, message, messageMetadata);
+        }
+
+        public IMessage DeserializeMessage(byte[] binary, Guid messageTag)
+        {
+            IMessage message = null;
+
+            var messageType = _tagToTypeResolver(messageTag);
+
+            using (var messageMemory = new MemoryStream(binary))
+            {
+                message = (IMessage)_serializer.Model.DeserializeWithLengthPrefix(messageMemory, null, messageType, PrefixStyle.Base128, 0, null);
+            }
+
+            return message;
+        }
+
+        public IMessageMetadata DeserializeMessageMetadata(byte[] binary)
+        {
+            IMessageMetadata messageMetadata = null;
+
+            using(var headerMemory = new MemoryStream(binary))
+            {
+                messageMetadata = (IMessageMetadata) _serializer.Model.DeserializeWithLengthPrefix(headerMemory, null, typeof(MessageMetadata), PrefixStyle.Base128, 0, null);    
+            }
+
+            return messageMetadata;
         }
 
 

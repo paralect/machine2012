@@ -21,7 +21,7 @@ namespace Paralect.Machine.Mongo.Journals
         /// <summary>
         /// Returns HEAD of sequence number
         /// </summary>
-        public Int64 Save(IEnumerable<IMessageEnvelope> binaryMessageEnvelopes)
+        public Int64 Save(IEnumerable<IMessageEnvelope> messageEnvelopes)
         {
             // TODO: We should use here 2PC in order to update seq and message collection
 
@@ -30,36 +30,34 @@ namespace Paralect.Machine.Mongo.Journals
 
             var list = new List<BsonDocument>();
 
-            foreach (var binaryMessageEnvelope in binaryMessageEnvelopes)
+            foreach (var messageEnvelope in messageEnvelopes)
             {
-/*                var doc = new BsonDocument();
-                SetHeaderInfo(doc, binaryMessageEnvelope.GetHeader());
+                var doc = new BsonDocument();
+                SetHeaderInfo(doc, messageEnvelope.GetMetadata());
 
-                doc["Header"] = new BsonBinaryData(binaryMessageEnvelope.Header);
-                doc["Message"] = new BsonBinaryData(binaryMessageEnvelope.Message);
+                var z = messageEnvelope.GetMetadataBinary();
+                var z2 = messageEnvelope.GetMessageBinary();
+
+                doc["Header"] = new BsonBinaryData(messageEnvelope.GetMetadataBinary());
+                doc["Message"] = new BsonBinaryData(messageEnvelope.GetMessageBinary());
                 doc["Seq"] = seq++;
                 list.Add(doc);
- * 
- */
             }
+
+            _server.SaveCurrentSequence(seq);
 
             var result = _server.Messages.InsertBatch(list, SafeMode.True);
 
             seq--; // current seq number
 
-            _server.SaveCurrentSequence(seq);
+            
 
             return seq;
         }
 
-        public void SetHeaderInfo(BsonDocument doc, Header header)
+        public void SetHeaderInfo(BsonDocument doc, IMessageMetadata metadata)
         {
-            var fields = header.GetFields();
-
-            foreach (var field in fields)
-            {
-                doc[field.Key] = BsonValue.Create(field.Value);
-            }
+            doc["MessageTag"] = metadata.MessageTag;
         }
     }
 }
