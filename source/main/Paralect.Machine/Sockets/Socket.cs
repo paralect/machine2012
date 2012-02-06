@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading;
 using Paralect.Machine.Messages;
@@ -86,7 +87,7 @@ namespace Paralect.Machine.Sockets
             var queue = RecvAll(timeout);
             if (queue == null) return null;
 
-            return Packet.FromQueue(queue, _context.PacketSerializer);
+            return new Packet(_context.PacketSerializer, queue.ToList());
         }
 
         public SendStatus SendPacket(IPacket envelope)

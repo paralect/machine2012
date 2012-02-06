@@ -64,6 +64,7 @@
     <Compile Include="Messages\Envelopes\MessageEnvelope.cs" />
     <Compile Include="MachineContext.cs" />
     <Compile Include="Messages\Envelopes\MessageEnvelopeBinary.cs" />
+    <Compile Include="Messages\Packets\Abstract\IPacketHeaders.cs" />
     <Compile Include="Messages\Packets\PacketBuilder.cs" />
     <Compile Include="Messages\Packets\PacketHeaders.cs" />
     <Compile Include="Messages\Packets\PacketSerializer.cs" />

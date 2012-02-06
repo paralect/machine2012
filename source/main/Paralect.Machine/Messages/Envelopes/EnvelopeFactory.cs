@@ -28,7 +28,7 @@ namespace Paralect.Machine.Messages
                 return new CommandEnvelope(serializer, (ICommandMetadata) messageMetadata, (ICommand) message);
             }
 
-            return new MessageEnvelope(serializer, messageMetadata, message);
+            return new MessageEnvelope(serializer, message, messageMetadata);
         }
 
         /// <summary>
@@ -48,7 +48,7 @@ namespace Paralect.Machine.Messages
                 return new CommandEnvelope(serializer, new CommandMetadata(), (ICommand)message);
             }
 
-            return new MessageEnvelope(serializer, new MessageMetadata(), message);
+            return new MessageEnvelope(serializer, message, new MessageMetadata());
         }
     }
 }

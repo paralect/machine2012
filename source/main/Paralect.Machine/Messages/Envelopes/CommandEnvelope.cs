@@ -2,7 +2,7 @@ namespace Paralect.Machine.Messages
 {
     public class CommandEnvelope : MessageEnvelope, ICommandEnvelope
     {
-        public CommandEnvelope(PacketSerializer serializer, ICommandMetadata metadata, ICommand message) : base(serializer, metadata, message)
+        public CommandEnvelope(PacketSerializer serializer, ICommandMetadata metadata, ICommand message) : base(serializer, message, metadata)
         {
         }
 

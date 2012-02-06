@@ -9,8 +9,8 @@ namespace Paralect.Machine.Messages
     /// message's metadata, without deserializing message. 
     /// 
     /// There are two ways to create Message Envelope:
-    ///   1) By calling first constructor and passing message and metadata in the binary form.
-    ///   2) By calling second constructor and passing IMessage and IMessageMetadata)
+    ///   1) By calling "first" constructor and passing message and metadata in the binary form.
+    ///   2) By calling "second" constructor and passing IMessage and IMessageMetadata
     /// </summary>
     public class MessageEnvelope : IMessageEnvelope
     {
@@ -48,16 +48,25 @@ namespace Paralect.Machine.Messages
         {
             if (_metadata == null)
             {
-                _metadata = GetMetadataCopy();
+                _metadata = _serializer.DeserializeMessageMetadata(_metadataBinary);
                 _metadataBinary = null;
             }
 
             return _metadata;
         }
 
-        public IMessageMetadata GetMetadataCopy()
+        /// <summary>
+        /// Returns message metadata in binary form.
+        /// If metadata are not available in binary form - metadata will be serialized and cached automatically.
+        /// 
+        /// Subsequent calls will use value from cache.
+        /// </summary>
+        public byte[] GetMetadataBinary()
         {
-            return _serializer.DeserializeMessageMetadata(_metadataBinary);
+            if (_metadataBinary == null)
+                _metadataBinary = _serializer.SerializeMessageMetadata(_metadata);
+
+            return _metadataBinary;
         }
 
         /// <summary>
@@ -72,27 +81,20 @@ namespace Paralect.Machine.Messages
         {
             if (_message == null)
             {
-                _message = GetMessageCopy();
+                var metadata = GetMetadata();
+                _message = _serializer.DeserializeMessage(_messageBinary, metadata.MessageTag);
                 _messageBinary = null;
             }
 
             return _message;
         }
 
-        private IMessage GetMessageCopy()
-        {
-            var metadata = GetMetadata();
-            return _serializer.DeserializeMessage(_messageBinary, metadata.MessageTag);
-        }
-
-        public byte[] GetMetadataBinary()
-        {
-            if (_metadataBinary == null)
-                _metadataBinary = _serializer.SerializeMessageMetadata(_metadata);
-
-            return _metadataBinary;
-        }
-
+        /// <summary>
+        /// Returns message data in binary form.
+        /// If message are not available in binary form - message will be serialized and cached automatically.
+        /// 
+        /// Subsequent calls will use value from cache.
+        /// </summary>
         public byte[] GetMessageBinary()
         {
             if (_messageBinary == null)
@@ -103,25 +105,31 @@ namespace Paralect.Machine.Messages
 
 
         /// <summary>
-        /// Constructs MessageEnvelope
+        /// Creates MessageEnvelope with specified message and metadata
         /// </summary>
-        public MessageEnvelope(PacketSerializer packetSerializer, IMessageMetadata metadata, IMessage message)
+        public MessageEnvelope(PacketSerializer packetSerializer, IMessage message, IMessageMetadata metadata)
         {
             if (packetSerializer == null) throw new ArgumentNullException("packetSerializer");
             if (metadata == null) throw new ArgumentNullException("metadata");
             if (message == null) throw new ArgumentNullException("message");
-
-//            if (metadata.MessageTag == Guid.Empty)
-//                throw new Exception("Message tag was not specified in message header");
 
             _serializer = packetSerializer;
             _metadata = metadata;
             _message = message;
         }
 
-        public MessageEnvelope(PacketSerializer packerSerializer, byte[] message, byte[] metadata)
+        /// <summary>
+        /// Creates MessageEnvelope from message and metadata in binary form
+        /// </summary>
+        public MessageEnvelope(PacketSerializer packetSerializer, byte[] message, byte[] metadata)
         {
-            
+            if (packetSerializer == null) throw new ArgumentNullException("packetSerializer");
+            if (message == null) throw new ArgumentNullException("message");
+            if (metadata == null) throw new ArgumentNullException("metadata");
+
+            _serializer = packetSerializer;
+            _metadataBinary = metadata;
+            _messageBinary = message;
         }
     }
 }

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading;
-using Paralect.Machine.Messages;
 using ZMQ;
 
 namespace Paralect.Machine.Utilities
@@ -70,14 +69,6 @@ namespace Paralect.Machine.Utilities
                     throw;
                 }
             }
-        }
-
-        public static IPacket RecvPacket(this Socket socket, Int32 timeout, PacketSerializer serializer)
-        {
-            var queue = socket.RecvAll(timeout);
-            if (queue == null) return null;
-
-            return Packet.FromQueue(queue, serializer);
         }
 
 /*        public static SendStatus SendPacket(this Socket socket, Packet envelope)

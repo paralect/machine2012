@@ -6,25 +6,21 @@ namespace Paralect.Machine.Messages
     public interface IPacket
     {
         /// <summary>
-        /// Packet headers
+        /// Returns packet headers (deserialized, if needed).
         /// </summary>
         IPacketHeaders GetHeaders();
+
+        /// <summary>
+        /// Returns packet headers in binary form.
+        /// </summary>
+        Byte[] GetHeadersBinary();
 
         /// <summary>
         /// Message envelopes
         /// </summary>
         IList<IMessageEnvelope> GetEnvelopes();
 
-        Byte[] GetHeadersBinary();
-        
-        IList<IMessageEnvelopeBinary> GetEnvelopesBinary();
-
         IList<Byte[]> Serialize();
-    }
-
-    public interface IPacketHeaders
-    {
-        ContentType ContentType { get; set; }
     }
 
     public enum ContentType
