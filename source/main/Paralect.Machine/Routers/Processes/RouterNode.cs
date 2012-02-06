@@ -74,15 +74,6 @@ namespace Paralect.Machine.Routers
                         );
 
                         routerPubSocket.SendPacket(newPacket);
-
-/*                        var outboxEnvelope = new BinaryEnvelope()
-                            .AddBinaryMessageEnvelope(binaryMessageEnvelope, header =>
-                            {
-                                header.Set("Journal-Stream-Sequence", seq - binaryEnvelope.MessageEnvelopes.Count + currentIndex + 1);
-                            });
-
-
-                        routerPubSocket.SendBinaryEnvelope(outboxEnvelope);*/
                     }
 
 

@@ -26,10 +26,17 @@ namespace Paralect.Machine.Messages
             return this;
         }
 
+        /// <summary>
+        /// Dangerous method for adding new message, because we unable to check correct state of MessageTag.
+        /// To check this we should deserialize message. For performance reason we are avoiding this. 
+        /// Here we just checking that metadata has MessageTag specified.
+        /// </summary>
         public PacketBuilder AddMessage(byte[] message, IMessageMetadata metadata)
         {
             var envelope = EnvelopeFactory.CreateEnvelope(_serializer, message, metadata);
-            envelope.GetMetadata().MessageTag = _typeToTagResolver(message.GetType());
+
+            if (metadata.MessageTag == default(Guid))
+                throw new Exception("Message tag not specified");
 
             _envelopes.Add(envelope);
 
