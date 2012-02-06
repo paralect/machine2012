@@ -81,6 +81,7 @@ namespace Paralect.Machine.Routers
                 var envelope = clonedEnvelopes[i];
                 
                 var metadata = envelope.GetMetadata();
+                // Set sequence for each message
                 metadata.JournalStreamSequence = seq - clonedEnvelopes.Count + i + 1;
 
                 var newPacket = _context.CreatePacket(b => b
