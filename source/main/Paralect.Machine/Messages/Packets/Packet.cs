@@ -46,7 +46,7 @@ namespace Paralect.Machine.Messages
         {
             if (_headers == null)
             {
-                _headers = _serializer.DeserializeHeaders(_headersBinary);
+                _headers = _serializer.DeserializePacketHeaders(_headersBinary);
                 _headersBinary = null;
             }
 
@@ -61,7 +61,7 @@ namespace Paralect.Machine.Messages
         public byte[] GetHeadersBinary()
         {
             if (_headersBinary == null)
-                _headersBinary = _serializer.SerializeHeaders(_headers);
+                _headersBinary = _serializer.SerializePacketHeaders(_headers);
 
             return _headersBinary;
         }

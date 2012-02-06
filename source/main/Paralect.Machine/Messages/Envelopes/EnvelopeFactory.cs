@@ -9,25 +9,6 @@ namespace Paralect.Machine.Messages
         /// </summary>
         public static IMessageEnvelope CreateEnvelope(PacketSerializer serializer, IMessage message, IMessageMetadata messageMetadata)
         {
-            if (message == null) throw new ArgumentNullException("message");
-            if (messageMetadata == null) throw new ArgumentNullException("messageMetadata");
-
-            if (message is IEvent)
-            {
-                if (!(messageMetadata is IEventMetadata))
-                    throw new Exception("Event metadata must implement IEventMetadata");
-
-                return new EventEnvelope(serializer, (IEventMetadata) messageMetadata, (IEvent) message);
-            }
-
-            if (message is ICommand)
-            {
-                if (!(messageMetadata is ICommandMetadata))
-                    throw new Exception("Command metadata must implement ICommandMetadata");
-
-                return new CommandEnvelope(serializer, (ICommandMetadata) messageMetadata, (ICommand) message);
-            }
-
             return new MessageEnvelope(serializer, message, messageMetadata);
         }
 
@@ -37,18 +18,16 @@ namespace Paralect.Machine.Messages
         public static IMessageEnvelope CreateEnvelope(PacketSerializer serializer, IMessage message)
         {
             if (message == null) throw new ArgumentNullException("message");
+            IMessageMetadata metadata;
 
             if (message is IEvent)
-            {
-                return new EventEnvelope(serializer, new EventMetadata(), (IEvent)message);
-            }
-
-            if (message is ICommand)
-            {
-                return new CommandEnvelope(serializer, new CommandMetadata(), (ICommand)message);
-            }
-
-            return new MessageEnvelope(serializer, message, new MessageMetadata());
+                metadata = new EventMetadata();
+            else if (message is ICommand)
+                metadata = new CommandMetadata();
+            else
+                metadata = new MessageMetadata();
+            
+            return new MessageEnvelope(serializer, message, metadata);
         }
     }
 }

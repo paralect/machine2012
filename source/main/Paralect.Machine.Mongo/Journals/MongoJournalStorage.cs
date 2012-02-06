@@ -35,9 +35,6 @@ namespace Paralect.Machine.Mongo.Journals
                 var doc = new BsonDocument();
                 SetHeaderInfo(doc, messageEnvelope.GetMetadata());
 
-                var z = messageEnvelope.GetMetadataBinary();
-                var z2 = messageEnvelope.GetMessageBinary();
-
                 doc["Header"] = new BsonBinaryData(messageEnvelope.GetMetadataBinary());
                 doc["Message"] = new BsonBinaryData(messageEnvelope.GetMessageBinary());
                 doc["Seq"] = seq++;
