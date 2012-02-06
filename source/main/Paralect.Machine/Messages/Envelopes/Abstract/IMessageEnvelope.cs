@@ -4,6 +4,7 @@
     {
         IMessageMetadata GetMetadata();
         IMessage GetMessage();
+        IMessageEnvelope CloneEnvelope();
     }
 
     public interface IMessageEnvelopeBinary

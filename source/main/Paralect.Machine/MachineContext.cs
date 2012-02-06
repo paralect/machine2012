@@ -45,6 +45,11 @@ namespace Paralect.Machine
             get { return _zeromqContext; }
         }
 
+        public PacketBuilder CreatePacketBuilder()
+        {
+            return new PacketBuilder(_messageFactory.TypeToTagResolver, _packetSerializer);
+        }
+
         public MachineContext(IEnumerable<Type> messageTypes, IEnumerable<Type> identityTypes  )
         {
             _messageFactory = new MessageFactory(messageTypes);
@@ -55,6 +60,7 @@ namespace Paralect.Machine
             _serializer.RegisterIdentities(_identityFactory.IdentityDefinitions);
 
             _packetSerializer = new PacketSerializer(_serializer, _messageFactory.TagToTypeResolver);
+
 
             _zeromqContext = new ZMQ.Context(2);
         }
@@ -71,6 +77,11 @@ namespace Paralect.Machine
             var envelope = new PacketBuilder(_messageFactory.TypeToTagResolver, _packetSerializer);
             action(envelope);
             return envelope.Build();
+        } 
+
+        public IPacket CreatePacket(IList<byte[]> parts)
+        {
+            return new Packet(_packetSerializer, parts);
         } 
 
         public IPacket CreatePacket(IMessage message)

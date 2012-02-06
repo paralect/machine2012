@@ -82,6 +82,7 @@
     <Compile Include="Areas\Serialization\Fixtures\EnvelopeSerializerTest.cs" />
     <Compile Include="Areas\Serialization\Fixtures\HeaderTests.cs" />
     <Compile Include="Areas\Serialization\Fixtures\MetadataTests.cs" />
+    <Compile Include="Areas\Serialization\Fixtures\PacketSerializationTests.cs" />
     <Compile Include="Areas\Serialization\Fixtures\Protobuf\MarshalSizeTest.cs" />
     <Compile Include="Areas\Serialization\Fixtures\TransitionEnvelopeSerializerTests.cs" />
     <Compile Include="Areas\Serialization\Fixtures\IdentityFactoryTests.cs" />

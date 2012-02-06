@@ -45,5 +45,7 @@ namespace Paralect.Machine.Messages
         DateTime CreatedOnUtc { get; set; }
 
         Guid MessageTag { get; set; }
+
+        Int64 JournalStreamSequence { get; set; }
     }
 }

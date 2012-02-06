@@ -57,7 +57,34 @@ namespace Paralect.Machine.Routers
                         continue;
 
                     // Journal all messages
-                    var seq = _storage.Save(packet.GetEnvelopes());
+                    var seq = _storage.Save(packet.GetEnvelopesCloned());
+
+
+                    var clonedEnvelopes = packet.GetEnvelopesCloned();
+
+                    for (int i = 0; i < clonedEnvelopes.Count; i++)
+                    {
+                        var currentIndex = i;
+                        var envelope = clonedEnvelopes[i];
+                        var metadata = envelope.GetMetadata();
+                        metadata.JournalStreamSequence = seq - clonedEnvelopes.Count + currentIndex + 1;
+
+                        var newPacket = _context.CreatePacket(b => b
+                            .AddMessage(envelope.GetMessageBinary(), metadata)
+                        );
+
+                        routerPubSocket.SendPacket(newPacket);
+
+/*                        var outboxEnvelope = new BinaryEnvelope()
+                            .AddBinaryMessageEnvelope(binaryMessageEnvelope, header =>
+                            {
+                                header.Set("Journal-Stream-Sequence", seq - binaryEnvelope.MessageEnvelopes.Count + currentIndex + 1);
+                            });
+
+
+                        routerPubSocket.SendBinaryEnvelope(outboxEnvelope);*/
+                    }
+
 
 /*                    for (int i = 0; i < binaryEnvelope.MessageEnvelopes.Count; i++)
                     {

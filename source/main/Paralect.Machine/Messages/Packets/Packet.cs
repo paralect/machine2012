@@ -61,7 +61,10 @@ namespace Paralect.Machine.Messages
         public byte[] GetHeadersBinary()
         {
             if (_headersBinary == null)
+            {
                 _headersBinary = _serializer.SerializePacketHeaders(_headers);
+                _headers = null;
+            }
 
             return _headersBinary;
         }
@@ -72,6 +75,16 @@ namespace Paralect.Machine.Messages
         public IList<IMessageEnvelope> GetEnvelopes()
         {
             return _envelopes;
+        }
+
+        public IList<IMessageEnvelope> GetEnvelopesCloned()
+        {
+            var cloned = new List<IMessageEnvelope>();
+
+            foreach (var envelope in _envelopes)
+                cloned.Add(envelope.CloneEnvelope());
+
+            return cloned.AsReadOnly();
         }
 
         /// <summary>

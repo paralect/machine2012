@@ -57,6 +57,19 @@ namespace Paralect.Machine.Identities
             return _value.GetHashCode();
         }
 
+        public int CompareTo(object obj)
+        {
+            if (obj == null)
+                return 1;
+
+            var stringId = obj as GuidId;
+
+            if (stringId == null)
+                return 1;
+
+            return Value.CompareTo(stringId.Value);
+        }
+
         /// <summary>
         /// Determines whether the specified object is equal to the current object.
         /// </summary>

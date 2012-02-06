@@ -10,6 +10,14 @@ namespace Paralect.Machine.Messages
         public static IMessageEnvelope CreateEnvelope(PacketSerializer serializer, IMessage message, IMessageMetadata messageMetadata)
         {
             return new MessageEnvelope(serializer, message, messageMetadata);
+        }        
+        
+        /// <summary>
+        /// Boring code that enforce correct message and metadata pairs for events, commands and ordinary messages
+        /// </summary>
+        public static IMessageEnvelope CreateEnvelope(PacketSerializer serializer, byte[] message, IMessageMetadata messageMetadata)
+        {
+            return new MessageEnvelope(serializer, message, messageMetadata);
         }
 
         /// <summary>

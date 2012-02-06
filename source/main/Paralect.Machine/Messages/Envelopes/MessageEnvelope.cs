@@ -64,7 +64,10 @@ namespace Paralect.Machine.Messages
         public byte[] GetMetadataBinary()
         {
             if (_metadataBinary == null)
+            {
                 _metadataBinary = _serializer.SerializeMessageMetadata(_metadata);
+                _metadata = null;
+            }
 
             return _metadataBinary;
         }
@@ -98,7 +101,10 @@ namespace Paralect.Machine.Messages
         public byte[] GetMessageBinary()
         {
             if (_messageBinary == null)
+            {
                 _messageBinary = _serializer.SerializeMessage(_message);
+                _message = null;
+            }
 
             return _messageBinary;
         }
@@ -119,6 +125,20 @@ namespace Paralect.Machine.Messages
         }
 
         /// <summary>
+        /// Creates MessageEnvelope with specified metadata (as object) and message (in binary form)
+        /// </summary>
+        public MessageEnvelope(PacketSerializer packetSerializer, byte[] message, IMessageMetadata metadata)
+        {
+            if (packetSerializer == null) throw new ArgumentNullException("packetSerializer");
+            if (metadata == null) throw new ArgumentNullException("metadata");
+            if (message == null) throw new ArgumentNullException("message");
+
+            _serializer = packetSerializer;
+            _metadata = metadata;
+            _messageBinary = message;
+        }
+
+        /// <summary>
         /// Creates MessageEnvelope from message and metadata in binary form
         /// </summary>
         public MessageEnvelope(PacketSerializer packetSerializer, byte[] message, byte[] metadata)
@@ -130,6 +150,16 @@ namespace Paralect.Machine.Messages
             _serializer = packetSerializer;
             _metadataBinary = metadata;
             _messageBinary = message;
+        }
+
+        /// <summary>
+        /// Performs deep-clone of this message envelope. To minimize overhead - call this method 
+        /// when you know exactly that envelope already have binary data for metadata and message. In this 
+        /// case operation is O(1). Otherwize data will be serialized to create independent message envelope
+        /// </summary>
+        public IMessageEnvelope CloneEnvelope()
+        {
+            return new MessageEnvelope(_serializer, GetMessageBinary(), GetMetadataBinary());
         }
     }
 }

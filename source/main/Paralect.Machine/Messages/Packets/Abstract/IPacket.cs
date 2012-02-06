@@ -20,12 +20,15 @@ namespace Paralect.Machine.Messages
         /// </summary>
         IList<IMessageEnvelope> GetEnvelopes();
 
+        IList<IMessageEnvelope> GetEnvelopesCloned();
+
         IList<Byte[]> Serialize();
+        
     }
 
     public enum ContentType
     {
-        Messages,
-        States
+        Messages = 0,
+        States = 1
     }
 }

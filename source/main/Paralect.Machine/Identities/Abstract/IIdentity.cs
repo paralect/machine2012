@@ -11,7 +11,7 @@ namespace Paralect.Machine.Identities
     [ProtoContract]
     [ProtoInclude(10, typeof(StringId))]
     //[ProtoInclude(11, typeof(GuidId))]
-    public interface IIdentity
+    public interface IIdentity : IComparable
     {
         /// <summary>
         /// Gets the id, converted to a string. Only alphanumerics and '-' are allowed.

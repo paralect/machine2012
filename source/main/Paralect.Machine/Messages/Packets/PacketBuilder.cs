@@ -18,20 +18,28 @@ namespace Paralect.Machine.Messages
 
         public PacketBuilder AddMessage(IMessage message, IMessageMetadata metadata)
         {
-            //var messageTag = _typeToTagResolver(message.GetType());
-
             var envelope = EnvelopeFactory.CreateEnvelope(_serializer, message, metadata);
+            envelope.GetMetadata().MessageTag = _typeToTagResolver(message.GetType());
+
             _envelopes.Add(envelope);
             
             return this;
         }
 
+        public PacketBuilder AddMessage(byte[] message, IMessageMetadata metadata)
+        {
+            var envelope = EnvelopeFactory.CreateEnvelope(_serializer, message, metadata);
+            envelope.GetMetadata().MessageTag = _typeToTagResolver(message.GetType());
+
+            _envelopes.Add(envelope);
+
+            return this;            
+        }
+
         public PacketBuilder AddMessage(IMessage message)
         {
-            var messageTag = _typeToTagResolver(message.GetType());
-
             var envelope = EnvelopeFactory.CreateEnvelope(_serializer, message);
-            envelope.GetMetadata().MessageTag = messageTag;
+            envelope.GetMetadata().MessageTag = _typeToTagResolver(message.GetType());;
 
             _envelopes.Add(envelope);
             

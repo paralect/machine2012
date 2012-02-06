@@ -30,5 +30,8 @@ namespace Paralect.Machine.Messages
 
         [ProtoMember(7)]
         public Guid MessageTag { get; set; }
+
+        [ProtoMember(8)]
+        public Int64 JournalStreamSequence { get; set; }
     }
 }
