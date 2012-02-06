@@ -2,17 +2,47 @@
 
 namespace Paralect.Machine.Messages
 {
+    /// <summary>
+    /// Message Envelope represents a wrapper around IMessage and IMessageMetadata.
+    /// 
+    /// Message Envelope knows how to serialize/deserialize yourself. This makes possible, for example, to deserialize only 
+    /// message's metadata, without deserializing message. 
+    /// 
+    /// There are two ways to create Message Envelope:
+    ///   1) By calling first constructor and passing message and metadata in the binary form.
+    ///   2) By calling second constructor and passing IMessage and IMessageMetadata)
+    /// </summary>
     public class MessageEnvelope : IMessageEnvelope
     {
+        /// <summary>
+        /// Packet serializer that responsible for message and metadata serialization/deserialization
+        /// </summary>
+        private readonly PacketSerializer _serializer;
+
+        /// <summary>
+        /// Message metadata in binary form
+        /// </summary>
         private byte[] _metadataBinary;
+
+        /// <summary>
+        /// Message in binary form
+        /// </summary>
         private byte[] _messageBinary;
 
-        private readonly PacketSerializer _serializer;
+        /// <summary>
+        /// Message metadata contains additional "out-of-band" information about message
+        /// </summary>
         private IMessageMetadata _metadata;
+
+        /// <summary>
+        /// Message
+        /// </summary>
         private IMessage _message;
 
         /// <summary>
-        /// Message tag and key-value information
+        /// Returns message metadata (deserialized, if needed).
+        /// If metadata are available only in binary form - metadata will be deserialized and cached automatically. 
+        /// Subsequent calls will use value from cache.
         /// </summary>
         public IMessageMetadata GetMetadata()
         {
@@ -31,7 +61,12 @@ namespace Paralect.Machine.Messages
         }
 
         /// <summary>
-        /// Actual single message in the envelope
+        /// Returns message (deserialized, if needed).
+        /// If message are available only in binary form - message will be deserialized and cached automatically. 
+        /// To deserialize message we need at least Message Tag that available in message metadata. That is why 
+        /// by calling this method you'll actually fully deserialize envelope - metadata and message.
+        /// 
+        /// Subsequent calls will use value from cache.
         /// </summary>
         public IMessage GetMessage()
         {
@@ -82,6 +117,11 @@ namespace Paralect.Machine.Messages
             _serializer = packetSerializer;
             _metadata = metadata;
             _message = message;
+        }
+
+        public MessageEnvelope(PacketSerializer packerSerializer, byte[] message, byte[] metadata)
+        {
+            
         }
     }
 }

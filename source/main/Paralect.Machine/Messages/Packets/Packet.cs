@@ -4,15 +4,49 @@ using System.Linq;
 
 namespace Paralect.Machine.Messages
 {
+    /// <summary>
+    /// Packet represents "physical", transport-level message.
+    /// 
+    /// Packet knows how to serialize/deserialize yourself. That makes possible, for example, to deserialize only packet's headers,
+    /// without envelopes. 
+    /// 
+    /// There are two ways to create Packet:
+    ///   1) By calling first constructor and passing multipart binary data in the form of IList(byte[])
+    ///   2) By calling second constructor and passing IPacketHeader and IList(IMessageEnvelope)
+    /// </summary>
     public class Packet : IPacket
     {
+        /// <summary>
+        /// Packet serializer that responsible for headers, envelopes, message and metadata 
+        /// serialization/deserialization
+        /// </summary>
         private readonly PacketSerializer _serializer;
+
+        /// <summary>
+        /// Packet headers contains transport-level metadata for each packet.
+        /// </summary>
         private IPacketHeaders _headers;
+
+        /// <summary>
+        /// Message envelopes
+        /// </summary>
         private IList<IMessageEnvelope> _envelopes;
 
+        /// <summary>
+        /// Packet headers in binary form
+        /// </summary>
         private byte[] _headersBinary;
+
+        /// <summary>
+        /// Message envelope in binary form
+        /// </summary>
         private IList<IMessageEnvelopeBinary> _envelopesBinary;
 
+        /// <summary>
+        /// Returns packet headers (deserialized, if needed).
+        /// If headers are available only in binary form - headers will be deserialized and cached automatically. 
+        /// Subsequent calls will use value from cache.
+        /// </summary>
         public IPacketHeaders GetHeaders()
         {
             if (_headers == null)
@@ -24,6 +58,19 @@ namespace Paralect.Machine.Messages
             return _headers;
         }
 
+        /// <summary>
+        /// Returns packet headers in binary form.
+        /// If headers are not available in binary form - headers will be serialized and cached automatically.
+        /// Subsequent calls will use value from cache.
+        /// </summary>
+        public byte[] GetHeadersBinary()
+        {
+            if (_headersBinary == null)
+                _headersBinary = _serializer.SerializeHeaders(_headers);
+
+            return _headersBinary;
+        }
+
         public IList<IMessageEnvelope> GetEnvelopes()
         {
             if (_envelopes == null)
@@ -33,14 +80,6 @@ namespace Paralect.Machine.Messages
             }
 
             return _envelopes;
-        }
-
-        public byte[] GetHeadersBinary()
-        {
-            if (_headersBinary == null)
-                _headersBinary = _serializer.SerializeHeaders(_headers);
-
-            return _headersBinary;
         }
 
         public IList<IMessageEnvelopeBinary> GetEnvelopesBinary()
@@ -55,7 +94,7 @@ namespace Paralect.Machine.Messages
         {
             return _serializer.DeserializeHeaders(_headersBinary);
         }
-
+        
         public IList<IMessageEnvelope> GetEnvelopesCopy()
         {
             return _serializer.Deserialize(_envelopesBinary);
@@ -83,6 +122,13 @@ namespace Paralect.Machine.Messages
             _envelopesBinary = EnvelopePartsToEnvelopeBinary(parts.Skip(1).ToList());
         }
 
+        public Packet(PacketSerializer serializer, IPacketHeaders headers, IList<IMessageEnvelope> envelopes)
+        {
+            _serializer = serializer;
+            _headers = headers;
+            _envelopes = envelopes;
+        }
+
         private IList<IMessageEnvelopeBinary> EnvelopePartsToEnvelopeBinary(IList<byte[]> envelopeParts)
         {
             if (envelopeParts.Count % 2 != 0)
@@ -100,13 +146,6 @@ namespace Paralect.Machine.Messages
             }
 
             return list.AsReadOnly();
-        }
-
-        public Packet(PacketSerializer serializer, IPacketHeaders headers, IList<IMessageEnvelope> envelopes)
-        {
-            _serializer = serializer;
-            _headers = headers;
-            _envelopes = envelopes;
         }
 
         public Queue<byte[]> ToQueue()
