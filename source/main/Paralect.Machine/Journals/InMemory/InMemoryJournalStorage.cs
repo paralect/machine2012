@@ -28,11 +28,11 @@ namespace Paralect.Machine.Journals
         /// <summary>
         /// StartingFrom is Inclusive. Yes, we are repeating message.
         /// </summary>
-        public IList<IMessageEnvelope> Load(long startingFrom, int count)
+        public IList<IMessageEnvelope> Load(long greaterOrEqualThan, int count)
         {
             return _storage
                 .OrderBy(pair => pair.Key)
-                .Where(pair => pair.Key >= startingFrom)
+                .Where(pair => pair.Key >= greaterOrEqualThan)
                 .Take(count)
                 .Select(pair => pair.Value)
                 .ToList();

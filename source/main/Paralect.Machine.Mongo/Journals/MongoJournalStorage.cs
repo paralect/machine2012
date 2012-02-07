@@ -52,7 +52,7 @@ namespace Paralect.Machine.Mongo.Journals
             return seq;
         }
 
-        public IList<IMessageEnvelope> Load(long startingFrom, int count)
+        public IList<IMessageEnvelope> Load(long greatorOrEqualThan, int count)
         {
             throw new NotImplementedException();
         }
