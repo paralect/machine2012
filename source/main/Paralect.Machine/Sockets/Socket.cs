@@ -74,6 +74,7 @@ namespace Paralect.Machine.Sockets
                     if (ex.Errno == 107)
                     {
                         SpinWait.SpinUntil(() => token.IsCancellationRequested, 200);
+                        Thread.Sleep(20);
                         continue;
                     }
 

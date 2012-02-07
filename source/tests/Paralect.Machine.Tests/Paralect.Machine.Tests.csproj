@@ -67,6 +67,7 @@
     <Compile Include="Areas\Domain\Events\UserEmailChangedEvent.cs" />
     <Compile Include="Areas\Domain\Events\UserNameChangedEvent.cs" />
     <Compile Include="Areas\Domain\Fixtures\DeveloperARTest.cs" />
+    <Compile Include="Areas\Domain\Fixtures\RouterAndProcessNodesTest.cs" />
     <Compile Include="Areas\Domain\Fixtures\RouterNodeTest.cs" />
     <Compile Include="Areas\Domain\Fixtures\UserAggregateTest.cs" />
     <Compile Include="Areas\Domain\Helpers\Helper.cs" />

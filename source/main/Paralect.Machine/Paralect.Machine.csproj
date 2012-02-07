@@ -127,7 +127,11 @@
     <Compile Include="Messages\Metadata\Abstract\IMessageMetadata.cs" />
     <Compile Include="Messages\Abstract\ISystemEvent.cs" />
     <Compile Include="Messages\Abstract\IMessage.cs" />
-    <Compile Include="Routers\Processes\RouterNode.cs" />
+    <Compile Include="Nodes\ProcessesNode.cs" />
+    <Compile Include="Nodes\RouterNode.cs" />
+    <Compile Include="Routers\IRouter.cs" />
+    <Compile Include="Routers\ProcessRouter.cs" />
+    <Compile Include="Routers\RouterFactory.cs" />
     <Compile Include="Serialization\Exceptions\ProtoHierarchyTagCollision.cs" />
     <Compile Include="Messages\Registration\Exceptions\MessageTagAlreadyRegistered.cs" />
     <Compile Include="Messages\Registration\Exceptions\MessageTagNotSpecified.cs" />

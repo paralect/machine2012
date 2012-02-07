@@ -25,7 +25,7 @@ namespace Paralect.Machine.Tests.Areas.Engine
 
             using (var token = new CancellationTokenSource())
             {
-                var task1 = engine.Start(token.Token);
+                var task1 = engine.Start(token.Token, 5000);
 
                 if (task1.Wait(5000))
                     Console.WriteLine("Done without forced cancelation"); // This line shouldn't be reached

@@ -62,7 +62,7 @@ namespace Paralect.Machine.Tests.Areas.Serialization.Fixtures
             var packet = context.CreatePacket(b => b.AddMessage(message));
 
             var original = packet.GetEnvelopes()[0];
-            var cloned = packet.GetEnvelopesCloned()[0];
+            var cloned = packet.GetEnvelopesCopy()[0];
 
             Assert.IsFalse(original == cloned);
             Assert.IsFalse(original.GetMessage() == cloned.GetMessage());
@@ -82,7 +82,7 @@ namespace Paralect.Machine.Tests.Areas.Serialization.Fixtures
             var back = context.CreatePacket(parts);
 
             var original = back.GetEnvelopes()[0];
-            var cloned = back.GetEnvelopesCloned()[0];
+            var cloned = back.GetEnvelopesCopy()[0];
 
             Assert.IsFalse(original == cloned);
             Assert.IsFalse(original.GetMessage() == cloned.GetMessage());

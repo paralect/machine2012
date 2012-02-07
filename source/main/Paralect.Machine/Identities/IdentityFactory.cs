@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using Paralect.Machine.Messages;
 
@@ -13,8 +14,8 @@ namespace Paralect.Machine.Identities
         /// <summary>
         /// (Entity Tag --> Entity Type) and (Entity Type --> Entity Tag) maps
         /// </summary>
-        private readonly Dictionary<Guid, IdentityDefinition> _tagToTypeMap = new Dictionary<Guid, IdentityDefinition>(100);
-        private readonly Dictionary<Type, IdentityDefinition> _typeToTagMap = new Dictionary<Type, IdentityDefinition>(100);
+        private readonly ConcurrentDictionary<Guid, IdentityDefinition> _tagToTypeMap = new ConcurrentDictionary<Guid, IdentityDefinition>();
+        private readonly ConcurrentDictionary<Type, IdentityDefinition> _typeToTagMap = new ConcurrentDictionary<Type, IdentityDefinition>();
 
         /// <summary>
         /// All registered Identity Types

@@ -23,7 +23,7 @@ namespace Paralect.Machine.Messages
         /// <summary>
         /// Returns list of cloned envelopes. Returned Envelopes are in binary state.
         /// </summary>
-        IList<IMessageEnvelope> GetEnvelopesCloned();
+        IList<IMessageEnvelope> GetEnvelopesCopy();
 
         /// <summary>
         /// Builds multipart message in the form of list of byte array. 

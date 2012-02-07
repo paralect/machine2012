@@ -3,6 +3,7 @@ using NUnit.Framework;
 using Paralect.Machine.Journals;
 using Paralect.Machine.Mongo.Journals;
 using Paralect.Machine.Mongo.Tests.Messages;
+using Paralect.Machine.Nodes;
 using Paralect.Machine.Routers;
 using Paralect.Machine.Utilities;
 using ZMQ;

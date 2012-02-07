@@ -83,7 +83,7 @@ namespace Paralect.Machine.Messages
         /// to original packet-owned envelopes. This method shows best possible performance when Envelopes were 
         /// already in binary state. If this is not a case - original envelopes will be serialized before cloning.
         /// </summary>
-        public IList<IMessageEnvelope> GetEnvelopesCloned()
+        public IList<IMessageEnvelope> GetEnvelopesCopy()
         {
             var cloned = new List<IMessageEnvelope>();
 

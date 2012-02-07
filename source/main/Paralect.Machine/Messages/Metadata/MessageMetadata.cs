@@ -17,7 +17,7 @@ namespace Paralect.Machine.Messages
         public Guid TriggerMessageId { get; set; }
 
         [ProtoMember(3)]
-        public ICollection<IIdentity> Receivers { get; set; }
+        public IList<IIdentity> Receivers { get; set; }
 
         [ProtoMember(4)]
         public long LamportTimestamp { get; set; }
@@ -32,6 +32,6 @@ namespace Paralect.Machine.Messages
         public Guid MessageTag { get; set; }
 
         [ProtoMember(8)]
-        public Int64 JournalStreamSequence { get; set; }
+        public Int64 JournalSequence { get; set; }
     }
 }

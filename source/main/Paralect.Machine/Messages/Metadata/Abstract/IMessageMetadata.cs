@@ -21,7 +21,7 @@ namespace Paralect.Machine.Messages
         /// <summary>
         /// List of receivers this message should be delivered to 
         /// </summary>
-        ICollection<IIdentity> Receivers { get; set; }
+        IList<IIdentity> Receivers { get; set; }
 
         /// <summary>
         /// Lamport Timestamp allows partial ordering of messages in distributed computer system.
@@ -46,6 +46,6 @@ namespace Paralect.Machine.Messages
 
         Guid MessageTag { get; set; }
 
-        Int64 JournalStreamSequence { get; set; }
+        Int64 JournalSequence { get; set; }
     }
 }

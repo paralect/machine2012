@@ -1,14 +1,10 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
-using System.Threading;
 using NUnit.Framework;
-using Paralect.Machine.Identities;
 using Paralect.Machine.Journals;
 using Paralect.Machine.Messages;
 using Paralect.Machine.Nodes;
 using Paralect.Machine.Routers;
-using Paralect.Machine.Serialization;
-using Paralect.Machine.Tests.Areas.Engine;
 using Paralect.Machine.Tests.Areas.Serialization.Fixtures;
 using Paralect.Machine.Utilities;
 using ZMQ;
@@ -16,9 +12,9 @@ using ZMQ;
 namespace Paralect.Machine.Tests.Areas.Domain.Fixtures
 {
     [TestFixture]
-    public class RouterNodeTest
+    public class RouterAndProcessNodesTest
     {
-        [Ignore("Unable to test router without process node...")]
+        [Test]
         public void simple_pum_para_pum()
         {
             var journalStorage = new InMemoryJournalStorage();
@@ -26,24 +22,27 @@ namespace Paralect.Machine.Tests.Areas.Domain.Fixtures
             var context = MachineContext.Create(b => b
                 .RegisterMessages(typeof(EnvelopeSerializer_Event), typeof(EnvelopeSerializer_Child_Event))
                 .RegisterIdentities(typeof(EnvelopeSerializer_Id))
+                .AddRouter("process", new ProcessRouter())
             );
 
             var message = new EnvelopeSerializer_Event() { Rate = 0.7, Title = "Muahaha!" };
+            var messageMetadata = new EventMetadata() { Receivers = new[] {new EnvelopeSerializer_Id() { Value = "hello" }} };
 
             context.RunHost(h => h
                 .AddNode(new RouterNode(context, "inproc://rep", "inproc://pub", "inproc://domain", journalStorage))
-                .SetTimeout(4000)
+                .AddNode(new ProcessesNode(context, "inproc://domain", "inproc://rep"))
+                .SetTimeout(600)
                 .Execute(token =>
                 {
                     using (var input = context.CreateSocket(SocketType.PUSH))
                     {
                         input.Connect("inproc://rep", token);
 
-                        input.SendPacket(context.CreatePacket(message));
-                        input.SendPacket(context.CreatePacket(message));
-                        input.SendPacket(context.CreatePacket(message));
-                        input.SendPacket(context.CreatePacket(message));
-                        input.SendPacket(context.CreatePacket(message));
+                        input.SendPacket(context.CreatePacket(message, messageMetadata));
+                        input.SendPacket(context.CreatePacket(message, messageMetadata));
+                        input.SendPacket(context.CreatePacket(message, messageMetadata));
+                        input.SendPacket(context.CreatePacket(message, messageMetadata));
+                        input.SendPacket(context.CreatePacket(message, messageMetadata));
                     }                    
                 })
             );

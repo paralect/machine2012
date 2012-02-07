@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 
 namespace Paralect.Machine.Messages
@@ -8,9 +9,9 @@ namespace Paralect.Machine.Messages
         /// <summary>
         /// Different kinds of maps to insure uniqueness of Message Tag, Message Proto Hierarchy Tag and Message Type.
         /// </summary>
-        private readonly Dictionary<Guid, MessageDefinition> _tagToMessageType = new Dictionary<Guid, MessageDefinition>(100);
-        private readonly Dictionary<Type, MessageDefinition> _typeToMessageType = new Dictionary<Type, MessageDefinition>(100);
-        private readonly Dictionary<Int32, MessageDefinition> _protoHierarchyTagToMessageType = new Dictionary<Int32, MessageDefinition>(100);
+        private readonly ConcurrentDictionary<Guid, MessageDefinition> _tagToMessageType = new ConcurrentDictionary<Guid, MessageDefinition>();
+        private readonly ConcurrentDictionary<Type, MessageDefinition> _typeToMessageType = new ConcurrentDictionary<Type, MessageDefinition>();
+        private readonly ConcurrentDictionary<Int32, MessageDefinition> _protoHierarchyTagToMessageType = new ConcurrentDictionary<Int32, MessageDefinition>();
 
         /// <summary>
         /// All registered Identity Types

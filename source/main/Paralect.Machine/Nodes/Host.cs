@@ -63,7 +63,7 @@ namespace Paralect.Machine.Nodes
         /// Start engine host.
         /// This will start each process.
         /// </summary>
-        public Task Start(CancellationToken token)
+        public Task Start(CancellationToken token, Int32 timeout)
         {
             return Task.Factory.StartNew(() =>
             {
@@ -80,7 +80,7 @@ namespace Paralect.Machine.Nodes
                 try
                 {
                     // Wait for all processes to be either completed or canceled 
-                    Task.WaitAll(tasks, token);
+                    Task.WaitAll(tasks, timeout, token);
                 }
                 catch (OperationCanceledException)
                 {

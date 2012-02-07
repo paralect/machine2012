@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using Paralect.Machine.Identities;
@@ -22,7 +23,7 @@ namespace Paralect.Machine.Serialization
         /// <summary>
         /// Base type --> ( Proto tag --> Child type )
         /// </summary>
-        private readonly Dictionary<Type, Dictionary<Int32, Type>> _map = new Dictionary<Type, Dictionary<int, Type>>(100);
+        private readonly ConcurrentDictionary<Type, Dictionary<Int32, Type>> _map = new ConcurrentDictionary<Type, Dictionary<int, Type>>();
 
         /// <summary>
         /// Offset for automatic hierarchy registration

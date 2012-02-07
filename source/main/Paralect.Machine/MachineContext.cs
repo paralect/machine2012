@@ -14,6 +14,8 @@ namespace Paralect.Machine
     {
         private readonly MessageFactory _messageFactory;
         private readonly IdentityFactory _identityFactory;
+        private readonly RouterFactory _routerFactory;
+
         private readonly ProtobufSerializer _serializer;
 
         private readonly PacketSerializer _packetSerializer;
@@ -40,6 +42,11 @@ namespace Paralect.Machine
             get { return _packetSerializer; }
         }
 
+        public RouterFactory RouterFactory
+        {
+            get { return _routerFactory; }
+        }
+
         public ZMQ.Context ZmqContext
         {
             get { return _zeromqContext; }
@@ -50,7 +57,7 @@ namespace Paralect.Machine
             return new PacketBuilder(_messageFactory.TypeToTagResolver, _packetSerializer);
         }
 
-        public MachineContext(IEnumerable<Type> messageTypes, IEnumerable<Type> identityTypes  )
+        public MachineContext(IEnumerable<Type> messageTypes, IEnumerable<Type> identityTypes, IDictionary<String, IRouter> routers)
         {
             _messageFactory = new MessageFactory(messageTypes);
             _identityFactory = new IdentityFactory(identityTypes);
@@ -61,6 +68,7 @@ namespace Paralect.Machine
 
             _packetSerializer = new PacketSerializer(_serializer, _messageFactory.TagToTypeResolver);
 
+            _routerFactory = new RouterFactory(routers);
 
             _zeromqContext = new ZMQ.Context(2);
         }
@@ -79,6 +87,11 @@ namespace Paralect.Machine
             return envelope.Build();
         } 
 
+        public IPacket CreatePacket(IList<IMessageEnvelope> envelopes, IPacketHeaders headers = null)
+        {
+            return new Packet(_packetSerializer, headers ?? new PacketHeaders(), envelopes);
+        }
+
         public IPacket CreatePacket(IList<byte[]> parts)
         {
             return new Packet(_packetSerializer, parts);
@@ -91,6 +104,13 @@ namespace Paralect.Machine
             return envelope.Build();
         } 
 
+        public IPacket CreatePacket(IMessage message, IMessageMetadata metadata)
+        {
+            var envelope = new PacketBuilder(_messageFactory.TypeToTagResolver, _packetSerializer);
+            envelope.AddMessage(message, metadata);
+            return envelope.Build();
+        } 
+
         public void RunHost(Action<MachineHostBuilder> action)
         {
             var builder = new MachineHostBuilder();
@@ -99,17 +119,13 @@ namespace Paralect.Machine
 
             using (var token = new CancellationTokenSource())
             {
-                var task = host.Start(token.Token);
+                var task = host.Start(token.Token, builder._timeout);
 
                 builder._action(token.Token);
 
-                if (!task.Wait(builder._timeout))
-                    Console.WriteLine("\r\nShutdowning host...");
-
-                token.Cancel();
+                task.Wait();
+//                token.Cancel();
             }
-
-
         }
 
         public Socket CreateSocket(ZMQ.SocketType socketType)
@@ -124,6 +140,7 @@ namespace Paralect.Machine
     {
         public List<Type> _messageTypes = new List<Type>();
         public List<Type> _identityTypes = new List<Type>();
+        public Dictionary<String, IRouter> _routers = new Dictionary<string, IRouter>();
 
 
         public MachineContextBuilder RegisterMessages(params Type[] messageTypes)
@@ -138,9 +155,15 @@ namespace Paralect.Machine
             return this;
         }
 
+        public MachineContextBuilder AddRouter(String name, IRouter router)
+        {
+            _routers[name] = router;
+            return this;
+        }
+
         public MachineContext Build()
         {
-            return new MachineContext(_messageTypes, _identityTypes);
+            return new MachineContext(_messageTypes, _identityTypes, _routers);
         }
     }
 

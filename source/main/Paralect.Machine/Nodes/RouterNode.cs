@@ -1,16 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading;
-using System.Threading.Tasks;
 using Paralect.Machine.Journals.Abstract;
 using Paralect.Machine.Messages;
-using Paralect.Machine.Nodes;
-using Paralect.Machine.Serialization;
-using Paralect.Machine.Utilities;
 using ZMQ;
 using Socket = Paralect.Machine.Sockets.Socket;
 
-namespace Paralect.Machine.Routers
+namespace Paralect.Machine.Nodes
 {
     public class RouterNode : INode
     {
@@ -36,14 +33,18 @@ namespace Paralect.Machine.Routers
 
         public void Run(CancellationToken token)
         {
+            Int64 previousJournalSeq = 0;
+            Int64 currentJournalSeq = 0;
+            
+
             using (Socket routerRepSocket = _context.CreateSocket(SocketType.PULL))
             using (Socket routerPubSocket = _context.CreateSocket(SocketType.PUB))
-            using (Socket domainReqSocket = _context.CreateSocket(SocketType.REQ))
+            using (Socket domainReqSocket = _context.CreateSocket(SocketType.PUSH))
             {
                 // Bind and connect to sockets
                 routerRepSocket.Bind(_routerRepAddress);
                 routerPubSocket.Bind(_routerPubAddress);
-                //domainReqSocket.EstablishConnect(_domainReqAddress, token);
+                domainReqSocket.Connect(_domainReqAddress, token);
 
                 // Process while canellation not requested
                 while (!token.IsCancellationRequested)
@@ -56,25 +57,48 @@ namespace Paralect.Machine.Routers
                     if (packet.GetHeaders().ContentType != ContentType.Messages)
                         continue;
 
+                    previousJournalSeq = currentJournalSeq;
+
                     // Journal all messages
-                    var seq = JournalPacket(packet);
+                    currentJournalSeq = JournalPacket(packet);
 
                     // Publish all messages
-                    PublishMessages(routerPubSocket, packet, seq);
+                    PublishMessages(routerPubSocket, packet, currentJournalSeq);
+
+                    // Router to process node
+                    Route(domainReqSocket, "process", packet.GetEnvelopesCopy(), currentJournalSeq, previousJournalSeq);
                 }
             }
+        }
+
+        private void Route(Socket socket, String routerName, IList<IMessageEnvelope> envelopes, Int64 currentJournalSequence, Int64 previousJournalSequence)
+        {
+            var router = _context.RouterFactory.GetRouter(routerName);
+            var outbox = router.Route(envelopes);
+
+            if (outbox.Count == 0)
+                return;
+
+            var headers = new PacketHeaders()
+            {
+                CurrentJournalSequence = currentJournalSequence,
+                PreviousJournalSequence = previousJournalSequence
+            };
+
+            var packet = _context.CreatePacket(outbox, headers);
+            socket.SendPacket(packet);
         }
 
         private Int64 JournalPacket(IPacket packet)
         {
             // Journal all messages
-            var seq = _storage.Save(packet.GetEnvelopesCloned());
+            var seq = _storage.Save(packet.GetEnvelopesCopy());
             return seq;
         }
 
         private void PublishMessages(Socket routerPubSocket, IPacket packet, Int64 seq)
         {
-            var clonedEnvelopes = packet.GetEnvelopesCloned();
+            var clonedEnvelopes = packet.GetEnvelopesCopy();
 
             for (int i = 0; i < clonedEnvelopes.Count; i++)
             {
@@ -82,7 +106,7 @@ namespace Paralect.Machine.Routers
                 
                 var metadata = envelope.GetMetadata();
                 // Set sequence for each message
-                metadata.JournalStreamSequence = seq - clonedEnvelopes.Count + i + 1;
+                metadata.JournalSequence = seq - clonedEnvelopes.Count + i + 1;
 
                 var newPacket = _context.CreatePacket(b => b
                     .AddMessage(envelope.GetMessageBinary(), metadata)

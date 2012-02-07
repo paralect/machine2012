@@ -57,6 +57,11 @@ namespace Paralect.Machine.Tests.Areas.Serialization.Fixtures
 
         [ProtoMember(2)]
         public Double Rate { get; set; }
+
+        public override string ToString()
+        {
+            return String.Format("Title: {0}, Rate: {1}", Title, Rate);
+        }
     }
 
     [ProtoContract, Message("{f55856e9-66b3-4fd4-9f6a-de9c2606a692}")]
