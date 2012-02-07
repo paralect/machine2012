@@ -49,7 +49,7 @@ namespace Paralect.Machine.Routers
 
                     foreach (var envelope in packet.GetEnvelopes())
                     {
-                        //Console.WriteLine("Envelope accepted : {0}. Now = {1}", envelope.GetMessage().ToString(), DateTime.Now.Millisecond);
+                        //Console.WriteLine("Envelope accepted : {0}. Now = {1}. Current: {2}, Previous: {3}", envelope.GetMessage().ToString(), DateTime.Now.Millisecond, packet.GetHeaders().CurrentJournalSequence, packet.GetHeaders().PreviousJournalSequence);
                     }
 
                     // Publish all messages

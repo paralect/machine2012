@@ -52,6 +52,11 @@ namespace Paralect.Machine.Mongo.Journals
             return seq;
         }
 
+        public IList<IMessageEnvelope> Load(long startingFrom, int count)
+        {
+            throw new NotImplementedException();
+        }
+
         public void SetHeaderInfo(BsonDocument doc, IMessageMetadata metadata)
         {
             doc["MessageTag"] = metadata.MessageTag;

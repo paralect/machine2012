@@ -49,10 +49,10 @@ namespace Paralect.Machine.Tests.Areas.Domain.Fixtures
             );
 
             var seq = journalStorage.GetPrivateFieldValue<Int64>("_sequance");
-            var storage = journalStorage.GetPrivateFieldValue<List<IMessageEnvelope>>("_storage");
+            var storage = journalStorage.GetPrivateFieldValue<SortedList<Int64, IMessageEnvelope>>("_storage");
 
             Assert.That(seq, Is.EqualTo(5));
-            var firstMessage = (EnvelopeSerializer_Event)storage[0].GetMessage();
+            var firstMessage = (EnvelopeSerializer_Event)storage[1].GetMessage();
             Assert.That(firstMessage == message , Is.False);
             Assert.That(firstMessage.Rate, Is.EqualTo(message.Rate));
             Assert.That(firstMessage.Title, Is.EqualTo(message.Title));
