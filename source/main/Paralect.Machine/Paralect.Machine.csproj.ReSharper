@@ -21,7 +21,6 @@
     <SkipFolder>8BB02D8B-D654-4054-AAA2-D16743CFB501/d:Processes/d:Exceptions</SkipFolder>
     <SkipFolder>8BB02D8B-D654-4054-AAA2-D16743CFB501/d:Processes/d:Results/d:Abstract</SkipFolder>
     <SkipFolder>8BB02D8B-D654-4054-AAA2-D16743CFB501/d:Processes/d:Results</SkipFolder>
-    <SkipFolder>8BB02D8B-D654-4054-AAA2-D16743CFB501/d:Routers/d:Processes</SkipFolder>
     <SkipFolder>8BB02D8B-D654-4054-AAA2-D16743CFB501/d:Serialization/d:Exceptions</SkipFolder>
     <SkipFolder>8BB02D8B-D654-4054-AAA2-D16743CFB501/d:Transitions/d:Abstract</SkipFolder>
     <SkipFolder>8BB02D8B-D654-4054-AAA2-D16743CFB501/d:Transitions/d:Envelopes</SkipFolder>

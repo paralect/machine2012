@@ -33,5 +33,8 @@ namespace Paralect.Machine.Messages
 
         [ProtoMember(8)]
         public Int64 JournalSequence { get; set; }
+
+        [ProtoMember(9)]
+        public Dictionary<String, Int32> Partitions { get; set; } 
     }
 }

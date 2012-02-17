@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using NUnit.Framework;
 using Paralect.Machine.Journals;
@@ -57,6 +58,9 @@ namespace Paralect.Machine.Tests.Areas.Domain.Fixtures
             Assert.That(firstMessage.Title, Is.EqualTo(message.Title));
 
             var result = journalStorage.Load(3, 100);
+
+            var queue = new Queue(1);
+            
         }
     }
 }
