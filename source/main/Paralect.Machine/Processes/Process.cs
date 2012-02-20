@@ -137,6 +137,19 @@ namespace Paralect.Machine.Processes
             return new ResultCollection<TId>().Send(null);
         }
 
+        protected ResultCollection<TId> Pin()
+        {
+            return new ResultCollection<TId>().Send(null);
+        }
+
+        /// <summary>
+        /// Instead of Pin???
+        /// </summary>
+        protected ResultCollection<TId> Continue(IMessage message)
+        {
+            return new ResultCollection<TId>().Send(null);
+        }
+
         protected IResult Empty()
         {
             return new EmptyResult();

@@ -59,11 +59,16 @@ namespace Paralect.Machine.Tests.Areas.Domain.Aggregates
     {
         public IResult Handle(CreateDeveloper create)
         {
+
+            return Handle(new ChangeDeveloperName());
+
             return Apply(new DeveloperCreated() { Name = create.Name, });
         }
 
         public IResult Handle(ChangeDeveloperName change)
         {
+            
+
             return Apply(new DeveloperNameChanged() { NewName = change.NewName });
             //return Subscribe<DeveloperId, DeveloperNameChanged>(new DeveloperId("dfdf"));
         }
