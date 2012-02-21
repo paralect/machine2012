@@ -93,7 +93,7 @@ namespace Paralect.Machine.Tests.Areas.Domain.Fixtures
             var factory = new ProcessFactory();
             var agr = factory.Create<DeveloperAR>();
 
-            var result = agr.Execute(new ChangeDeveloperName() { NewName = "Cohen" }, null, state);
+            var result = agr.Execute(new ChangeDeveloperName() { NewName = "Cohen" }, new CommandMetadata(), state);
 
             Assert.That(((DeveloperNameChanged)result.First()).NewName, Is.EqualTo("Cohen"));
 

@@ -43,45 +43,52 @@ namespace Paralect.Machine.Processes
         protected IMessage _message;
 
         /// <summary>
-        /// Current operation message headers
+        /// Current operation message metadata
         /// </summary>
-        protected Header _messageHeaders;
+        protected IMessageMetadata _metadata;
 
         /// <summary>
         /// Current operation state
         /// </summary>
         protected TProcessState _state;
 
-        IEnumerable<IMessage> IProcess.Execute(ICommand command, Header header, IState state)
+        /// <summary>
+        /// Execute command 
+        /// </summary>
+        IEnumerable<IMessage> IProcess.Execute(ICommand command, ICommandMetadata metadata, IState state)
         {
-            return ExecuteHandler(command, header, state);
+            return ExecuteHandler(command, metadata, state);
         }
 
-        public IEnumerable<IMessage> Execute(ICommand<TId> command, Header header, TProcessState state)
+        /// <summary>
+        /// Execute command 
+        /// </summary>
+        public IEnumerable<IMessage> Execute(ICommand<TId> command, ICommandMetadata metadata, TProcessState state)
         {
-            return ExecuteHandler(command, header, state);
+            return ExecuteHandler(command, metadata, state);
         }
 
         /// <summary>
         /// Notify about event
         /// </summary>
-        public IEnumerable<IMessage> Notify(IEvent evnt, Header header, IState state)
+        public IEnumerable<IMessage> Notify(IEvent evnt, IEventMetadata metadata, IState state)
         {
-            return ExecuteHandler(evnt, header, state);
+            return ExecuteHandler(evnt, metadata, state);
         }
 
-        private IEnumerable<IMessage> ExecuteHandler(IMessage message, Header header, IState state)
+        private IEnumerable<IMessage> ExecuteHandler(IMessage message, IMessageMetadata metadata, IState state)
         {
             if (message == null) throw new ArgumentNullException("message");
             if (state == null) throw new ArgumentNullException("state");
+            if (metadata == null) throw new ArgumentNullException("metadata");
 
             _message = message;
-            _messageHeaders = header ?? new Header();
-            _state = (TProcessState)state;
+            _metadata = metadata;
+            _state = (TProcessState) state;
 
-            var dynamicThis = (dynamic)this;
-            var result = (IResult)dynamicThis.Handle((dynamic)message);
-            return result.BuildMessages(message, _state);
+            var dynamicThis = (dynamic) this;
+            var result = (IResult) dynamicThis.Handle((dynamic) message);
+            return result.BuildMessages(message, metadata, _state);
         }
 
         #region Result builders

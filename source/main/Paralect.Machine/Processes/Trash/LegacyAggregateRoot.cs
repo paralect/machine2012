@@ -156,5 +156,15 @@ namespace Paralect.Machine.Processes.Trash
         {
             throw new NotImplementedException();
         }
+
+        public IEnumerable<IMessage> Execute(ICommand command, ICommandMetadata header, IState state)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<IMessage> Notify(IEvent evnt, IEventMetadata metadata, IState state)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

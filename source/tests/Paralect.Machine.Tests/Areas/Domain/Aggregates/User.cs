@@ -13,7 +13,7 @@ namespace Paralect.Machine.Tests.Areas.Domain.Aggregates
     {
         public String Name { get; set; }
     }
-
+    
 //    [Message("adfasdfasdfadf", typeof(ChangeDeveloperName))]
     [ProtoInclude(3, "hello")]
     public class ChangeDeveloperName : ICommand<DeveloperId>
@@ -59,16 +59,11 @@ namespace Paralect.Machine.Tests.Areas.Domain.Aggregates
     {
         public IResult Handle(CreateDeveloper create)
         {
-
-            return Handle(new ChangeDeveloperName());
-
             return Apply(new DeveloperCreated() { Name = create.Name, });
         }
 
         public IResult Handle(ChangeDeveloperName change)
         {
-            
-
             return Apply(new DeveloperNameChanged() { NewName = change.NewName });
             //return Subscribe<DeveloperId, DeveloperNameChanged>(new DeveloperId("dfdf"));
         }

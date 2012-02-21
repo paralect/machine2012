@@ -108,8 +108,7 @@ namespace Paralect.Machine.Messages
 
             return _messageBinary;
         }
-
-
+        
         /// <summary>
         /// Creates MessageEnvelope with specified message and metadata
         /// </summary>
