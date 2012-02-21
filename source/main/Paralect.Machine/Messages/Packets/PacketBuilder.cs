@@ -18,7 +18,7 @@ namespace Paralect.Machine.Messages
 
         public PacketBuilder AddMessage(IMessage message, IMessageMetadata metadata)
         {
-            var envelope = EnvelopeFactory.CreateEnvelope(_serializer, message, metadata);
+            var envelope = PacketMessageEnvelopeFactory.CreateEnvelope(_serializer, message, metadata);
             envelope.Metadata.MessageTag = _typeToTagResolver(message.GetType());
 
             _envelopes.Add(envelope);
@@ -33,7 +33,7 @@ namespace Paralect.Machine.Messages
         /// </summary>
         public PacketBuilder AddMessage(byte[] message, IMessageMetadata metadata)
         {
-            var envelope = EnvelopeFactory.CreateEnvelope(_serializer, message, metadata);
+            var envelope = PacketMessageEnvelopeFactory.CreateEnvelope(_serializer, message, metadata);
 
             if (metadata.MessageTag == default(Guid))
                 throw new Exception("Message tag not specified");
@@ -45,7 +45,7 @@ namespace Paralect.Machine.Messages
 
         public PacketBuilder AddMessage(IMessage message)
         {
-            var envelope = EnvelopeFactory.CreateEnvelope(_serializer, message);
+            var envelope = PacketMessageEnvelopeFactory.CreateEnvelope(_serializer, message);
             envelope.Metadata.MessageTag = _typeToTagResolver(message.GetType());;
 
             _envelopes.Add(envelope);

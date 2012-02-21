@@ -2,7 +2,7 @@
 
 namespace Paralect.Machine.Messages
 {
-    public static class EnvelopeFactory
+    public static class PacketMessageEnvelopeFactory
     {
         /// <summary>
         /// Boring code that enforce correct message and metadata pairs for events, commands and ordinary messages

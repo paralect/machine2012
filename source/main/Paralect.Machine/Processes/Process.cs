@@ -55,7 +55,7 @@ namespace Paralect.Machine.Processes
         /// <summary>
         /// Execute command 
         /// </summary>
-        IEnumerable<IMessage> IProcess.Execute(ICommand command, ICommandMetadata metadata, IState state)
+        IEnumerable<IMessageEnvelope> IProcess.Execute(ICommand command, ICommandMetadata metadata, IState state)
         {
             return ExecuteHandler(command, metadata, state);
         }
@@ -63,7 +63,7 @@ namespace Paralect.Machine.Processes
         /// <summary>
         /// Execute command 
         /// </summary>
-        public IEnumerable<IMessage> Execute(ICommand<TId> command, ICommandMetadata metadata, TProcessState state)
+        public IEnumerable<IMessageEnvelope> Execute(ICommand<TId> command, ICommandMetadata metadata, TProcessState state)
         {
             return ExecuteHandler(command, metadata, state);
         }
@@ -71,12 +71,12 @@ namespace Paralect.Machine.Processes
         /// <summary>
         /// Notify about event
         /// </summary>
-        public IEnumerable<IMessage> Notify(IEvent evnt, IEventMetadata metadata, IState state)
+        public IEnumerable<IMessageEnvelope> Notify(IEvent evnt, IEventMetadata metadata, IState state)
         {
             return ExecuteHandler(evnt, metadata, state);
         }
 
-        private IEnumerable<IMessage> ExecuteHandler(IMessage message, IMessageMetadata metadata, IState state)
+        private IEnumerable<IMessageEnvelope> ExecuteHandler(IMessage message, IMessageMetadata metadata, IState state)
         {
             if (message == null) throw new ArgumentNullException("message");
             if (state == null) throw new ArgumentNullException("state");

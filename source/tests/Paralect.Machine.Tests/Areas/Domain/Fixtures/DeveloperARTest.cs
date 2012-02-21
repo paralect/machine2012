@@ -95,7 +95,7 @@ namespace Paralect.Machine.Tests.Areas.Domain.Fixtures
 
             var result = agr.Execute(new ChangeDeveloperName() { NewName = "Cohen" }, new CommandMetadata(), state);
 
-            Assert.That(((DeveloperNameChanged)result.First()).NewName, Is.EqualTo("Cohen"));
+            Assert.That(((DeveloperNameChanged)result.First().Message).NewName, Is.EqualTo("Cohen"));
 
 
         }

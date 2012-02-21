@@ -5,7 +5,7 @@
         public IMessageMetadata Metadata { get; private set; }
         public IMessage Message { get; private set; }
 
-        public MessageEnvelope(IMessageMetadata metadata, IMessage message)
+        public MessageEnvelope(IMessage message, IMessageMetadata metadata)
         {
             Metadata = metadata;
             Message = message;

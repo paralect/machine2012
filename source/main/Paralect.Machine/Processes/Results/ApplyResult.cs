@@ -20,9 +20,9 @@ namespace Paralect.Machine.Processes
             this.evnt = evnt;
         }
 
-        public IEnumerable<IMessage> BuildMessages(IMessage inputCommand, IMessageMetadata inputMetadata, IState inputState)
+        public IEnumerable<IMessageEnvelope> BuildMessages(IMessage inputCommand, IMessageMetadata inputMetadata, IState inputState)
         {
-            yield return evnt;
+            yield return MessageEnvelopeFactory.CreateEnvelope(evnt);
         }
     }
 }

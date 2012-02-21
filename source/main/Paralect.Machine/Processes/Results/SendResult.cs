@@ -17,9 +17,9 @@ namespace Paralect.Machine.Processes
             this._command = command;
         }
 
-        public IEnumerable<IMessage> BuildMessages(IMessage inputCommand, IMessageMetadata inputMetadata, IState inputState)
+        public IEnumerable<IMessageEnvelope> BuildMessages(IMessage inputCommand, IMessageMetadata inputMetadata, IState inputState)
         {
-            yield return _command;
+            yield return MessageEnvelopeFactory.CreateEnvelope(_command);
         }
     }
 }
