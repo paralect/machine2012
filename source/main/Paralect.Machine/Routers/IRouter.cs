@@ -6,7 +6,7 @@ namespace Paralect.Machine.Routers
 {
     public interface IRouter
     {
-        Boolean ShouldRoute(IMessageEnvelope envelope);
-        IList<IMessageEnvelope> Route(IList<IMessageEnvelope> envelopes);
+        Boolean ShouldRoute(IPacketMessageEnvelope envelope);
+        IList<IPacketMessageEnvelope> Route(IList<IPacketMessageEnvelope> envelopes);
     }
 }

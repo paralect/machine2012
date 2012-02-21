@@ -37,7 +37,7 @@ namespace Paralect.Machine.Tests.Areas.Serialization.Fixtures
 
             var back = new Packet(packetSerializer, bytes);
 
-            var evnt = (EnvelopeSerializer_Event) back.GetEnvelopes().First().GetMessage();
+            var evnt = (EnvelopeSerializer_Event) back.Envelopes.First().Message;
 
             Assert.That(evnt.Rate, Is.EqualTo(message1.Rate));
             Assert.That(evnt.Title, Is.EqualTo(message1.Title));

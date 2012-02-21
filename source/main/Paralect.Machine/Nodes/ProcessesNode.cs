@@ -44,10 +44,10 @@ namespace Paralect.Machine.Routers
                     if (packet == null) continue;
 
                     // Ignore packets without messages
-                    if (packet.GetHeaders().ContentType != ContentType.Messages)
+                    if (packet.Headers.ContentType != ContentType.Messages)
                         continue;
 
-                    foreach (var envelope in packet.GetEnvelopes())
+                    foreach (var envelope in packet.Envelopes)
                     {
                         //Console.WriteLine("Envelope accepted : {0}. Now = {1}. Current: {2}, Previous: {3}", envelope.GetMessage().ToString(), DateTime.Now.Millisecond, packet.GetHeaders().CurrentJournalSequence, packet.GetHeaders().PreviousJournalSequence);
                     }
@@ -60,18 +60,18 @@ namespace Paralect.Machine.Routers
 
         private void PublishMessages(Socket routerPubSocket, IPacket packet, Int64 seq)
         {
-            var clonedEnvelopes = packet.GetEnvelopesCopy();
+            var clonedEnvelopes = packet.CloneEnvelopes();
 
             for (int i = 0; i < clonedEnvelopes.Count; i++)
             {
                 var envelope = clonedEnvelopes[i];
                 
-                var metadata = envelope.GetMetadata();
+                var metadata = envelope.Metadata;
                 // Set sequence for each message
                 metadata.JournalSequence = seq - clonedEnvelopes.Count + i + 1;
 
                 var newPacket = _context.CreatePacket(b => b
-                    .AddMessage(envelope.GetMessageBinary(), metadata)
+                    .AddMessage(envelope.MessageBinary, metadata)
                 );
 
                 routerPubSocket.SendPacket(newPacket);

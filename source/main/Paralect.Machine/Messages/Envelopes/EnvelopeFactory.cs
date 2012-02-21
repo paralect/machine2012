@@ -7,23 +7,23 @@ namespace Paralect.Machine.Messages
         /// <summary>
         /// Boring code that enforce correct message and metadata pairs for events, commands and ordinary messages
         /// </summary>
-        public static IMessageEnvelope CreateEnvelope(PacketSerializer serializer, IMessage message, IMessageMetadata messageMetadata)
+        public static IPacketMessageEnvelope CreateEnvelope(PacketSerializer serializer, IMessage message, IMessageMetadata messageMetadata)
         {
-            return new MessageEnvelope(serializer, message, messageMetadata);
+            return new PacketMessageEnvelope(serializer, message, messageMetadata);
         }        
         
         /// <summary>
         /// Boring code that enforce correct message and metadata pairs for events, commands and ordinary messages
         /// </summary>
-        public static IMessageEnvelope CreateEnvelope(PacketSerializer serializer, byte[] message, IMessageMetadata messageMetadata)
+        public static IPacketMessageEnvelope CreateEnvelope(PacketSerializer serializer, byte[] message, IMessageMetadata messageMetadata)
         {
-            return new MessageEnvelope(serializer, message, messageMetadata);
+            return new PacketMessageEnvelope(serializer, message, messageMetadata);
         }
 
         /// <summary>
         /// Creates envelope with default and empty metadata
         /// </summary>
-        public static IMessageEnvelope CreateEnvelope(PacketSerializer serializer, IMessage message)
+        public static IPacketMessageEnvelope CreateEnvelope(PacketSerializer serializer, IMessage message)
         {
             if (message == null) throw new ArgumentNullException("message");
             IMessageMetadata metadata;
@@ -34,8 +34,8 @@ namespace Paralect.Machine.Messages
                 metadata = new CommandMetadata();
             else
                 metadata = new MessageMetadata();
-            
-            return new MessageEnvelope(serializer, message, metadata);
+
+            return new PacketMessageEnvelope(serializer, message, metadata);
         }
     }
 }

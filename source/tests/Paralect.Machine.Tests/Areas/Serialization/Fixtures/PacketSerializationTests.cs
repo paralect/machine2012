@@ -21,7 +21,7 @@ namespace Paralect.Machine.Tests.Areas.Serialization.Fixtures
 
             var back = context.CreatePacket(parts);
 
-            var backMessage = back.GetEnvelopes()[0].GetMessage();
+            var backMessage = back.Envelopes[0].Message;
 
             Assert.IsFalse(backMessage == message);
             AssertObjectsEqual(backMessage, message);
@@ -34,18 +34,18 @@ namespace Paralect.Machine.Tests.Areas.Serialization.Fixtures
             var message = new PacketSerialization_Event() { Rate = 66, Title = "Hello" };
             var packet = context.CreatePacket(b => b.AddMessage(message));
 
-            packet.GetHeadersBinary();
-            packet.GetHeaders();
+            var hb = packet.HeadersBinary;
+            var h = packet.Headers;
 
-            var header = packet.GetHeaders();
+            var header = packet.Headers;
             header.ContentType = ContentType.States;
 
             var parts = packet.Serialize();
 
             var back = context.CreatePacket(parts);
 
-            var backHeaders = back.GetHeaders();
-            var backMessage = back.GetEnvelopes()[0].GetMessage();
+            var backHeaders = back.Headers;
+            var backMessage = back.Envelopes[0].Message;
 
             Assert.IsFalse(backHeaders == header);
             AssertObjectsEqual(backHeaders, header);
@@ -61,14 +61,14 @@ namespace Paralect.Machine.Tests.Areas.Serialization.Fixtures
             var message = new PacketSerialization_Event() { Rate = 66, Title = "Hello" };
             var packet = context.CreatePacket(b => b.AddMessage(message));
 
-            var original = packet.GetEnvelopes()[0];
-            var cloned = packet.GetEnvelopesCopy()[0];
+            var original = packet.Envelopes[0];
+            var cloned = packet.CloneEnvelopes()[0];
 
             Assert.IsFalse(original == cloned);
-            Assert.IsFalse(original.GetMessage() == cloned.GetMessage());
-            Assert.IsFalse(original.GetMetadata() == cloned.GetMetadata());
-            AssertObjectsEqual(original.GetMessage(), cloned.GetMessage());
-            AssertObjectsEqual(original.GetMetadata(), cloned.GetMetadata());
+            Assert.IsFalse(original.Message == cloned.Message);
+            Assert.IsFalse(original.Metadata == cloned.Metadata);
+            AssertObjectsEqual(original.Message, cloned.Message);
+            AssertObjectsEqual(original.Metadata, cloned.Metadata);
         }
 
         [Test]
@@ -81,14 +81,14 @@ namespace Paralect.Machine.Tests.Areas.Serialization.Fixtures
             var parts = packet.Serialize();
             var back = context.CreatePacket(parts);
 
-            var original = back.GetEnvelopes()[0];
-            var cloned = back.GetEnvelopesCopy()[0];
+            var original = back.Envelopes[0];
+            var cloned = back.CloneEnvelopes()[0];
 
             Assert.IsFalse(original == cloned);
-            Assert.IsFalse(original.GetMessage() == cloned.GetMessage());
-            Assert.IsFalse(original.GetMetadata() == cloned.GetMetadata());
-            AssertObjectsEqual(original.GetMessage(), cloned.GetMessage());
-            AssertObjectsEqual(original.GetMetadata(), cloned.GetMetadata());
+            Assert.IsFalse(original.Message == cloned.Message);
+            Assert.IsFalse(original.Metadata == cloned.Metadata);
+            AssertObjectsEqual(original.Message, cloned.Message);
+            AssertObjectsEqual(original.Metadata, cloned.Metadata);
         }
 
         private void AssertObjectsEqual(object one, object two)

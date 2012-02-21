@@ -8,22 +8,22 @@ namespace Paralect.Machine.Messages
         /// <summary>
         /// Returns packet headers (deserialized, if needed).
         /// </summary>
-        IPacketHeaders GetHeaders();
+        IPacketHeaders Headers { get; }
 
         /// <summary>
         /// Returns packet headers in binary form.
         /// </summary>
-        Byte[] GetHeadersBinary();
+        byte[] HeadersBinary { get; }
 
         /// <summary>
         /// Message envelopes
         /// </summary>
-        IList<IMessageEnvelope> GetEnvelopes();
+        IList<IPacketMessageEnvelope> Envelopes { get; }
 
         /// <summary>
         /// Returns list of cloned envelopes. Returned Envelopes are in binary state.
         /// </summary>
-        IList<IMessageEnvelope> GetEnvelopesCopy();
+        IList<IPacketMessageEnvelope> CloneEnvelopes();
 
         /// <summary>
         /// Builds multipart message in the form of list of byte array. 

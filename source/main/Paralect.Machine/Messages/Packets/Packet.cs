@@ -35,22 +35,25 @@ namespace Paralect.Machine.Messages
         /// <summary>
         /// Message envelopes
         /// </summary>
-        private readonly IList<IMessageEnvelope> _envelopes;
+        private readonly IList<IPacketMessageEnvelope> _envelopes;
 
         /// <summary>
         /// Returns packet headers (deserialized, if needed).
         /// If headers are available only in binary form - headers will be deserialized and cached automatically. 
         /// Subsequent calls will use value from cache.
         /// </summary>
-        public IPacketHeaders GetHeaders()
+        public IPacketHeaders Headers
         {
-            if (_headers == null)
+            get
             {
-                _headers = _serializer.DeserializePacketHeaders(_headersBinary);
-                _headersBinary = null;
-            }
+                if (_headers == null)
+                {
+                    _headers = _serializer.DeserializePacketHeaders(_headersBinary);
+                    _headersBinary = null;
+                }
 
-            return _headers;
+                return _headers;
+            }
         }
 
         /// <summary>
@@ -58,23 +61,29 @@ namespace Paralect.Machine.Messages
         /// If headers are not available in binary form - headers will be serialized and cached automatically.
         /// Subsequent calls will use value from cache.
         /// </summary>
-        public byte[] GetHeadersBinary()
+        public byte[] HeadersBinary
         {
-            if (_headersBinary == null)
+            get
             {
-                _headersBinary = _serializer.SerializePacketHeaders(_headers);
-                _headers = null;
-            }
+                if (_headersBinary == null)
+                {
+                    _headersBinary = _serializer.SerializePacketHeaders(_headers);
+                    _headers = null;
+                }
 
-            return _headersBinary;
+                return _headersBinary;
+            }
         }
 
         /// <summary>
         /// Returns list of message envelopes. There is no message deserializations in this method.
         /// </summary>
-        public IList<IMessageEnvelope> GetEnvelopes()
+        public IList<IPacketMessageEnvelope> Envelopes
         {
-            return _envelopes;
+            get
+            {
+                return _envelopes;
+            }
         }
 
         /// <summary>
@@ -83,9 +92,9 @@ namespace Paralect.Machine.Messages
         /// to original packet-owned envelopes. This method shows best possible performance when Envelopes were 
         /// already in binary state. If this is not a case - original envelopes will be serialized before cloning.
         /// </summary>
-        public IList<IMessageEnvelope> GetEnvelopesCopy()
+        public IList<IPacketMessageEnvelope> CloneEnvelopes()
         {
-            var cloned = new List<IMessageEnvelope>();
+            var cloned = new List<IPacketMessageEnvelope>();
 
             foreach (var envelope in _envelopes)
                 cloned.Add(envelope.CloneEnvelope());
@@ -102,12 +111,12 @@ namespace Paralect.Machine.Messages
         {
             var list = new List<byte[]>();
 
-            list.Add(GetHeadersBinary());
+            list.Add(HeadersBinary);
 
-            foreach (var part in GetEnvelopes())
+            foreach (var part in Envelopes)
             {
-                list.Add(part.GetMetadataBinary());
-                list.Add(part.GetMessageBinary());
+                list.Add(part.MetadataBinary);
+                list.Add(part.MessageBinary);
             }
 
             return list.AsReadOnly();
@@ -126,7 +135,7 @@ namespace Paralect.Machine.Messages
         /// <summary>
         /// Creates packet with specified header and list of message envelopes
         /// </summary>
-        public Packet(PacketSerializer serializer, IPacketHeaders headers, IList<IMessageEnvelope> envelopes)
+        public Packet(PacketSerializer serializer, IPacketHeaders headers, IList<IPacketMessageEnvelope> envelopes)
         {
             _serializer = serializer;
             _headers = headers;
@@ -137,19 +146,19 @@ namespace Paralect.Machine.Messages
         /// Helper method that builds list of message envelopes from list of multipart data in binary form.
         /// Returns list of Message Envelopes.
         /// </summary>
-        private IList<IMessageEnvelope> EnvelopePartsToEnvelope(PacketSerializer serializer, IList<byte[]> envelopeParts)
+        private IList<IPacketMessageEnvelope> EnvelopePartsToEnvelope(PacketSerializer serializer, IList<byte[]> envelopeParts)
         {
             // Check that number of parts is even
             if (envelopeParts.Count % 2 != 0)
                 throw new Exception("Incorrect number of envelope parts");
 
             // One message envelope consists of two binary parts - metadata part and message part
-            var list = new List<IMessageEnvelope>(envelopeParts.Count / 2);
+            var list = new List<IPacketMessageEnvelope>(envelopeParts.Count / 2);
 
             // Build message envelope
             for (int i = 0 ; i < envelopeParts.Count / 2; i++)
             {
-                var envelope = new MessageEnvelope(
+                var envelope = new PacketMessageEnvelope(
                     serializer,
                     envelopeParts[i * 2 + 1],
                     envelopeParts[i * 2]);

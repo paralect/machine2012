@@ -58,10 +58,12 @@
     <Compile Include="Messages\Envelopes\Abstract\ICommandEnvelope.cs" />
     <Compile Include="Messages\Envelopes\Abstract\IEventEnvelope.cs" />
     <Compile Include="Messages\Envelopes\Abstract\IMessageEnvelope.cs" />
+    <Compile Include="Messages\Envelopes\MessageEnvelope.cs" />
+    <Compile Include="Messages\Packets\Abstract\IPacketMessageEnvelope.cs" />
     <Compile Include="Messages\Envelopes\EnvelopeFactory.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Messages\Envelopes\MessageEnvelope.cs" />
+    <Compile Include="Messages\Packets\PacketMessageEnvelope.cs" />
     <Compile Include="MachineContext.cs" />
     <Compile Include="Messages\Packets\Abstract\IPacketHeaders.cs" />
     <Compile Include="Messages\Packets\PacketBuilder.cs" />

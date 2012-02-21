@@ -6,9 +6,9 @@ namespace Paralect.Machine.Routers
 {
     public class ProcessRouter : IRouter
     {
-        public Boolean ShouldRoute(IMessageEnvelope envelope)
+        public Boolean ShouldRoute(IPacketMessageEnvelope envelope)
         {
-            var metadata = envelope.GetMetadata();
+            var metadata = envelope.Metadata;
 
             if (metadata.Receivers == null)
                 return false;
@@ -16,9 +16,9 @@ namespace Paralect.Machine.Routers
             return true;
         }
 
-        public IList<IMessageEnvelope> Route(IList<IMessageEnvelope> envelopes)
+        public IList<IPacketMessageEnvelope> Route(IList<IPacketMessageEnvelope> envelopes)
         {
-            var list = new List<IMessageEnvelope>();
+            var list = new List<IPacketMessageEnvelope>();
 
             foreach (var envelope in envelopes)
             {

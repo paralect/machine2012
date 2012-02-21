@@ -21,7 +21,7 @@ namespace Paralect.Machine.Mongo.Journals
         /// <summary>
         /// Returns HEAD of sequence number
         /// </summary>
-        public Int64 Save(IEnumerable<IMessageEnvelope> messageEnvelopes)
+        public Int64 Save(IEnumerable<IPacketMessageEnvelope> messageEnvelopes)
         {
             // TODO: We should use here 2PC in order to update seq and message collection
 
@@ -33,10 +33,10 @@ namespace Paralect.Machine.Mongo.Journals
             foreach (var messageEnvelope in messageEnvelopes)
             {
                 var doc = new BsonDocument();
-                SetHeaderInfo(doc, messageEnvelope.GetMetadata());
+                SetHeaderInfo(doc, messageEnvelope.Metadata);
 
-                doc["Header"] = new BsonBinaryData(messageEnvelope.GetMetadataBinary());
-                doc["Message"] = new BsonBinaryData(messageEnvelope.GetMessageBinary());
+                doc["Header"] = new BsonBinaryData(messageEnvelope.MetadataBinary);
+                doc["Message"] = new BsonBinaryData(messageEnvelope.MessageBinary);
                 doc["Seq"] = seq++;
                 list.Add(doc);
             }
@@ -52,7 +52,7 @@ namespace Paralect.Machine.Mongo.Journals
             return seq;
         }
 
-        public IList<IMessageEnvelope> Load(long greatorOrEqualThan, int count)
+        public IList<IPacketMessageEnvelope> Load(long greatorOrEqualThan, int count)
         {
             throw new NotImplementedException();
         }

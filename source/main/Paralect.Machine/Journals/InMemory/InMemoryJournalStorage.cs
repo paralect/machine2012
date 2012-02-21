@@ -8,16 +8,16 @@ namespace Paralect.Machine.Journals
 {
     public class InMemoryJournalStorage : IJournalStorage
     {
-        private readonly SortedList<Int64, IMessageEnvelope> _storage = new SortedList<Int64, IMessageEnvelope>();
+        private readonly SortedList<Int64, IPacketMessageEnvelope> _storage = new SortedList<Int64, IPacketMessageEnvelope>();
         private Int64 _sequance = 0;
 
-        public long Save(IEnumerable<IMessageEnvelope> messageEnvelopes)
+        public long Save(IEnumerable<IPacketMessageEnvelope> messageEnvelopes)
         {
             foreach (var envelope in messageEnvelopes)
             {
                 _sequance++;
 
-                var metadata = envelope.GetMetadata();
+                var metadata = envelope.Metadata;
                 metadata.JournalSequence = _sequance;
                 _storage.Add(_sequance, envelope);
             }
@@ -28,7 +28,7 @@ namespace Paralect.Machine.Journals
         /// <summary>
         /// StartingFrom is Inclusive. Yes, we are repeating message.
         /// </summary>
-        public IList<IMessageEnvelope> Load(long greaterOrEqualThan, int count)
+        public IList<IPacketMessageEnvelope> Load(long greaterOrEqualThan, int count)
         {
             return _storage
                 .OrderBy(pair => pair.Key)

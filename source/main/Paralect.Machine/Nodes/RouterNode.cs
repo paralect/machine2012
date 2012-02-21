@@ -54,7 +54,7 @@ namespace Paralect.Machine.Nodes
                     if (packet == null) continue;
 
                     // Ignore packets without messages
-                    if (packet.GetHeaders().ContentType != ContentType.Messages)
+                    if (packet.Headers.ContentType != ContentType.Messages)
                         continue;
 
                     previousJournalSeq = currentJournalSeq;
@@ -66,12 +66,12 @@ namespace Paralect.Machine.Nodes
                     PublishMessages(routerPubSocket, packet, currentJournalSeq);
 
                     // Router to process node
-                    Route(domainReqSocket, "process", packet.GetEnvelopesCopy(), currentJournalSeq, previousJournalSeq);
+                    Route(domainReqSocket, "process", packet.CloneEnvelopes(), currentJournalSeq, previousJournalSeq);
                 }
             }
         }
 
-        private void Route(Socket socket, String routerName, IList<IMessageEnvelope> envelopes, Int64 currentJournalSequence, Int64 previousJournalSequence)
+        private void Route(Socket socket, String routerName, IList<IPacketMessageEnvelope> envelopes, Int64 currentJournalSequence, Int64 previousJournalSequence)
         {
             var router = _context.RouterFactory.GetRouter(routerName);
             var outbox = router.Route(envelopes);
@@ -92,24 +92,24 @@ namespace Paralect.Machine.Nodes
         private Int64 JournalPacket(IPacket packet)
         {
             // Journal all messages
-            var seq = _storage.Save(packet.GetEnvelopesCopy());
+            var seq = _storage.Save(packet.CloneEnvelopes());
             return seq;
         }
 
         private void PublishMessages(Socket routerPubSocket, IPacket packet, Int64 seq)
         {
-            var clonedEnvelopes = packet.GetEnvelopesCopy();
+            var clonedEnvelopes = packet.CloneEnvelopes();
 
             for (int i = 0; i < clonedEnvelopes.Count; i++)
             {
                 var envelope = clonedEnvelopes[i];
                 
-                var metadata = envelope.GetMetadata();
+                var metadata = envelope.Metadata;
                 // Set sequence for each message
                 metadata.JournalSequence = seq - clonedEnvelopes.Count + i + 1;
 
                 var newPacket = _context.CreatePacket(b => b
-                    .AddMessage(envelope.GetMessageBinary(), metadata)
+                    .AddMessage(envelope.MessageBinary, metadata)
                 );
 
                 routerPubSocket.SendPacket(newPacket);

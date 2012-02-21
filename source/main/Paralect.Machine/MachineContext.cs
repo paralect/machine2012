@@ -87,7 +87,7 @@ namespace Paralect.Machine
             return envelope.Build();
         } 
 
-        public IPacket CreatePacket(IList<IMessageEnvelope> envelopes, IPacketHeaders headers = null)
+        public IPacket CreatePacket(IList<IPacketMessageEnvelope> envelopes, IPacketHeaders headers = null)
         {
             return new Packet(_packetSerializer, headers ?? new PacketHeaders(), envelopes);
         }

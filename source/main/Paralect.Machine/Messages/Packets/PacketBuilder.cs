@@ -8,7 +8,7 @@ namespace Paralect.Machine.Messages
         private readonly Func<Type, Guid> _typeToTagResolver;
         private readonly PacketSerializer _serializer;
 
-        private readonly List<IMessageEnvelope> _envelopes = new List<IMessageEnvelope>();
+        private readonly List<IPacketMessageEnvelope> _envelopes = new List<IPacketMessageEnvelope>();
 
         public PacketBuilder(Func<Type, Guid> typeToTagResolver, PacketSerializer serializer)
         {
@@ -19,7 +19,7 @@ namespace Paralect.Machine.Messages
         public PacketBuilder AddMessage(IMessage message, IMessageMetadata metadata)
         {
             var envelope = EnvelopeFactory.CreateEnvelope(_serializer, message, metadata);
-            envelope.GetMetadata().MessageTag = _typeToTagResolver(message.GetType());
+            envelope.Metadata.MessageTag = _typeToTagResolver(message.GetType());
 
             _envelopes.Add(envelope);
             
@@ -46,7 +46,7 @@ namespace Paralect.Machine.Messages
         public PacketBuilder AddMessage(IMessage message)
         {
             var envelope = EnvelopeFactory.CreateEnvelope(_serializer, message);
-            envelope.GetMetadata().MessageTag = _typeToTagResolver(message.GetType());;
+            envelope.Metadata.MessageTag = _typeToTagResolver(message.GetType());;
 
             _envelopes.Add(envelope);
             
